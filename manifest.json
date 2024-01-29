@@ -1,0 +1,10 @@
+{
+    "manifest_version": 3,
+    "name": "Yuplay Game Blacklist",
+    "description": "",
+    "version": "1.0",
+    "action": {
+      "//_default_popup": "index.html",
+      "//_default_icon": "hello_extensions.png"
+    }
+  }
