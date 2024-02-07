@@ -21,15 +21,11 @@ function onPageLoaded () {
 
 //* Hide games which are added to user's wishlist.
 function hideGames () {
-    var blocklistEntries = Object.entries(JSON.parse(localStorage.getItem(blacklistName)));
-    if (!blocklistEntries) {
-        blocklistEntries = [];
-    }
-    blacklistMap = new Map(blocklistEntries);
+    initBlacklist();
 
-    var gameList = document.getElementsByClassName('catalog')[0];
+    var gameListContainer = document.getElementsByClassName('catalog')[0];
 
-    Array.from(gameList.children).forEach(e => {
+    Array.from(gameListContainer.children).forEach(e => {
         var catalogImageContainer = e.children[0];
         var gameTitle = catalogImageContainer.getElementsByClassName('catalog-image-ratio-container')[0].title;
         var checkboxImg = catalogImageContainer.getElementsByClassName(checkboxClassName)[0];
@@ -39,13 +35,13 @@ function hideGames () {
             if (isBlock) {
                 showLog('Game "' + gameTitle + '" is in blacklist at starting. ');
                 setCheckboxEnabled(checkboxImg);
-                hideGame(gameList);
+                hideGame(gameListContainer);
             }
             checkboxImg.onclick = () => {
                 if (checkboxImg.dataset.action == actionCheckboxDisabled) {
                     setCheckboxEnabled(checkboxImg);
                     addGameToBlacklist(gameTitle);
-                    hideGame(gameList);
+                    hideGame(gameListContainer);
                 } else {
                     setCheckboxDisabled(checkboxImg);
                     removeGameFromBlacklist(gameTitle);
@@ -54,6 +50,14 @@ function hideGames () {
         }
     });
     setTimeout(hideGames, 500);
+}
+
+function initBlacklist () {
+    var blacklistEntries = Object.entries(JSON.parse(localStorage.getItem(blacklistName)));
+    if (!blacklistEntries) {
+        blacklistEntries = [];
+    }
+    blacklistMap = new Map(blacklistEntries);
 }
 
 function createCheckbox (parent) {
@@ -76,9 +80,9 @@ function setCheckboxDisabled (checkboxImg) {
     checkboxImg.src = srcCheckboxDisabled;
 }
 
-function hideGame (gameList) {
+function hideGame (gameListContainer) {
     if (!showBlacklistdGame) {
-        gameList.removeChild(e);
+        gameListContainer.removeChild(e);
     }
 }
 
