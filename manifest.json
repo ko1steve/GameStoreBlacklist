@@ -1,10 +1,21 @@
 {
-    "manifest_version": 3,
-    "name": "Yuplay Game Blacklist",
-    "description": "",
-    "version": "1.0",
-    "action": {
-      "//_default_popup": "index.html",
-      "//_default_icon": "hello_extensions.png"
+  "name": "Yuplay Filter",
+  "action": {},
+  "manifest_version": 3,
+  "version": "0.1",
+  "description": "",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.yuplay.com/*"
+      ],
+      "js": [
+        "content.js"
+      ]
     }
-  }
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ]
+}
