@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", onPageLoaded());
 
+//* Hide games per second due to Yuplay is a one-page website.
 function onPageLoaded () {
   setInterval(hideGames, 1000);
 }
