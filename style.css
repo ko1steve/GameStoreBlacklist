@@ -3,3 +3,16 @@
     top: 0;
     left: 0;
 }
+
+.showBlaclistGameText {
+    color:aliceblue;
+    font-weight: bolder;
+    font-size: 30px;
+    margin-left: 10px;
+}
+
+.flexbox {
+    display: flex;
+    justify-content: center;    
+    align-items: center;  
+}

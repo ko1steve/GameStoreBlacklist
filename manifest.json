@@ -20,8 +20,10 @@
     "web_accessible_resources": [
         {
             "resources": [
-                "image/checkbox_enabled.png",
-                "image/checkbox_disabled.png"
+                "image/checkbox_across_enabled.png",
+                "image/checkbox_across_disabled.png",
+                "image/checkbox_tick_enabled.png",
+                "image/checkbox_tick_disabled.png"
             ],
             "matches": [
                 "https://www.yuplay.com/*"
