@@ -1,1 +1,1 @@
-This is a tool used to add games to the blacklist when purchasing games on Yuplay.com.
+This is a chrome extension used to add games to the blacklist when purchasing games on Yuplay.com.
