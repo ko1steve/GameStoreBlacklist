@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', onPageLoaded());
 
-var blacklistStorageName = 'Blocklist';
+var blacklistStorageName = 'Blacklist';
 var showblacklistGamesStorageName = 'ShowBlacklistdGames';
 
 var hasInit = false;
