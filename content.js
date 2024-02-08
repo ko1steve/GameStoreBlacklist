@@ -272,7 +272,7 @@ function uploadLocalStorageDataFromJson () {
             const jsonContent = event.target.result;
             localStorage.setItem(blacklistStorageName, jsonContent);
             alert('Finished.');
-            showLog('Data : ' + localStorage.getItem(blacklistStorageName));
+            location.reload();
         };
 
         reader.readAsText(file);
