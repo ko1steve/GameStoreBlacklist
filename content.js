@@ -125,7 +125,7 @@ function handleGamesInPageItems () {
     if (!gameListContainer || gameListContainer.dataset.catalog_id != 'page-products-catalog') {
         return;
     }
-    if (gameListContainer.children[0].dataset && gameListContainer.children[0].dataset.hasInit === "true") {
+    if (gameListContainer.children[0] && gameListContainer.children[0].dataset && gameListContainer.children[0].dataset.hasInit === "true") {
         return;
     }
     Array.from(gameListContainer.children).forEach(e => {
