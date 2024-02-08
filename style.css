@@ -7,7 +7,7 @@
 .showBlaclistGameText {
     color:aliceblue;
     font-weight: bolder;
-    font-size: 30px;
+    font-size: 25px;
     margin-left: 10px;
 }
 
@@ -15,4 +15,16 @@
     display: flex;
     justify-content: center;    
     align-items: center;  
+}
+
+.flexboxItem {
+    margin: 10px 10px 10px 10px;
+}
+
+.downloadLocalStorageAsJsonButton {
+    border-radius: 5px;
+    background-color: seagreen;
+    color: aliceblue;
+    font-weight: bolder;
+    padding: 10px 10px 10px 10px;
 }

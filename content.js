@@ -3,12 +3,15 @@ document.addEventListener('DOMContentLoaded', onPageLoaded());
 var blacklistStorageName = 'Blacklist';
 var showblacklistGamesStorageName = 'ShowBlacklistdGames';
 
-var hasInit = false;
-
 var blacklistMap;
 
 var checkboxClassName = 'checkboxImg';
-var showBlacklistGameCheckboxContainerId = 'showBlacklistGameCheckboxContainerId';
+
+var headerBottomContainerId = 'showBlacklistGameCheckboxContainerId';
+
+var showBlacklistGameCheckboxContainerId = 'showBlacklistGameCheckboxContainer';
+var showBlacklistGameCheckboxContainerClassName = 'flexbox flexboxItem';
+
 var showBlacklistGameCheckboxClassName = 'showBlacklistGameCheckbox';
 var showBlaclistGameTextClassName = 'showBlaclistGameText';
 var showBlaclistGameTextInnerText = 'Also show in-blacklist games';
@@ -19,15 +22,23 @@ var actionCheckboxDisabled = 'checkbox_disabled';
 var srcCheckboxEnabled = 'image/checkbox_across_enabled.png';
 var srcCheckboxDisabled = 'image/checkbox_across_disabled.png';
 
-var actionShowBlacklistGameCheckboxEnabled = 'show_blacklist_game_checkbox_enabled';
-var actionShowBlacklistGameCheckboxDisabled = 'show_blacklist_game_checkbox_disabled';
+var actionShowBlacklistGameCheckboxEnabled = 'actionShowBlacklistGameCheckboxEnabled';
+var actionShowBlacklistGameCheckboxDisabled = 'actionShowBlacklistGameCheckboxDisabled';
 
 var srcShowBlacklistGameCheckboxEnabled = 'image/checkbox_tick_enabled.png';
 var srcShowBlacklistGameCheckboxDisabled = 'image/checkbox_tick_disabled.png';
 
-var showBlacklistGames = true;
+var downloadLocalStorageAsJsonButtonClassName = 'downloadLocalStorageAsJsonButton flexboxItem';
+var downloadLocalStorageAsJsonButtonTextContent = 'Download local stoage data as JSON';
 
-//* Hide games per second due to Yuplay is a one-page website.
+var uploadLocalStorageFromJsonInputId = 'uploadLocalStorageFromJsonInput';
+var uploadLocalStorageFromJsonButtonClassName = 'downloadLocalStorageAsJsonButton flexboxItem';
+var uploadLocalStorageFromJsonButtonTextContent = 'Upload local storage data from JSON';
+
+var showBlacklistGames = true;
+var hasInit = false;
+
+//* Hide games per 500 mileseconds due to Yuplay.com is a one-page website.
 function onPageLoaded () {
     setTimeout(main, 500);
 }
@@ -36,7 +47,7 @@ function onPageLoaded () {
 function main () {
     if (!hasInit) {
         initBlacklist();
-        addShowBlacklistGameCheckbox();
+        createHeaderBottomContainer();
         hasInit = true;
     }
     var gameListContainer = document.getElementsByClassName('catalog')[0];
@@ -86,14 +97,25 @@ function initBlacklist () {
     }
 }
 
-function addShowBlacklistGameCheckbox () {
+function createHeaderBottomContainer () {
     var header = document.getElementById('navbar-main');
     header.className += ' flexbox';
 
-    var showBlacklistContainer = document.createElement('div');
-    showBlacklistContainer.id = showBlacklistGameCheckboxContainerId;
-    showBlacklistContainer.className = 'flexbox';
-    header.appendChild(showBlacklistContainer);
+    var headerBottomContainer = document.createElement('div');
+    headerBottomContainer.id = headerBottomContainerId;
+    headerBottomContainer.className = 'flexbox';
+    header.appendChild(headerBottomContainer);
+
+    createShowBlacklistGameCheckbox(headerBottomContainer);
+    createDownloadButton(headerBottomContainer);
+    createUploadButton(headerBottomContainer);
+}
+
+function createShowBlacklistGameCheckbox (parent) {
+    var showBlacklistGameCheckboxContainer = document.createElement('div');
+    showBlacklistGameCheckboxContainer.id = showBlacklistGameCheckboxContainerId;
+    showBlacklistGameCheckboxContainer.className = showBlacklistGameCheckboxContainerClassName;
+    parent.appendChild(showBlacklistGameCheckboxContainer);
 
     var showBlacklistGameCheckboxImg = document.createElement('img');
     showBlacklistGameCheckboxImg.className = showBlacklistGameCheckboxClassName;
@@ -112,12 +134,65 @@ function addShowBlacklistGameCheckbox () {
         }
         location.reload();
     }
-    showBlacklistContainer.appendChild(showBlacklistGameCheckboxImg);
+    showBlacklistGameCheckboxContainer.appendChild(showBlacklistGameCheckboxImg);
 
     var showBlaclistGameText = document.createElement('text');
     showBlaclistGameText.className = showBlaclistGameTextClassName;
     showBlaclistGameText.innerText = showBlaclistGameTextInnerText;
-    showBlacklistContainer.appendChild(showBlaclistGameText);
+    showBlacklistGameCheckboxContainer.appendChild(showBlaclistGameText);
+}
+
+function createDownloadButton (parent) {
+    var downloadLocalStorageAsJsonButton = document.createElement('button');
+    downloadLocalStorageAsJsonButton.className = downloadLocalStorageAsJsonButtonClassName;
+    downloadLocalStorageAsJsonButton.textContent = downloadLocalStorageAsJsonButtonTextContent;
+    downloadLocalStorageAsJsonButton.onclick = () => {
+        downloadLocalStorageDataAsJson();
+    }
+    parent.appendChild(downloadLocalStorageAsJsonButton);
+}
+
+function downloadLocalStorageDataAsJson () {
+    var blacklistContent = localStorage.getItem(blacklistStorageName);
+    const blob = new Blob([blacklistContent], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'blacklist.json';
+    a.click();
+}
+
+function createUploadButton (parent) {
+    var uploadLocalStorageFromJsonInput = document.createElement('input');
+    uploadLocalStorageFromJsonInput.type = 'file';
+    uploadLocalStorageFromJsonInput.id = uploadLocalStorageFromJsonInputId;
+    uploadLocalStorageFromJsonInput.accept = '.json';
+    parent.appendChild(uploadLocalStorageFromJsonInput);
+
+    var uploadLocalStorageFromJsonButton = document.createElement('button');
+    uploadLocalStorageFromJsonButton.className = uploadLocalStorageFromJsonButtonClassName;
+    uploadLocalStorageFromJsonButton.textContent = uploadLocalStorageFromJsonButtonTextContent;
+    uploadLocalStorageFromJsonButton.onclick = () => uploadLocalStorageFromJson();
+    parent.appendChild(uploadLocalStorageFromJsonButton);
+}
+
+function uploadLocalStorageFromJson () {
+    const fileInput = document.getElementById(uploadLocalStorageFromJsonInputId);
+
+    if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            const jsonContent = event.target.result;
+            localStorage.setItem(blacklistStorageName, jsonContent);
+            alert('Finished.');
+            showLog('Data : ' + localStorage.getItem(blacklistStorageName));
+        };
+
+        reader.readAsText(file);
+    } else {
+        alert('Please select a JSON file to upload.');
+    }
 }
 
 function createCheckbox (parent) {
