@@ -2,9 +2,14 @@
     position: absolute;
     top: 0;
     left: 0;
+    cursor: pointer;
 }
 
-.showBlaclistGameText {
+#showBlacklistGameCheckboxImg {
+    cursor: pointer;
+}
+
+#showBlaclistGameCheckboxText {
     color:aliceblue;
     font-weight: bolder;
     font-size: 25px;
@@ -35,6 +40,7 @@
     color: aliceblue;
     font-weight: bolder;
     padding: 10px 10px 10px 10px;
+    cursor: pointer;
 }
 
 #uploadLocalStorageFromJsonInput {
