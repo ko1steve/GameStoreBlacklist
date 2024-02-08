@@ -3,15 +3,21 @@ document.addEventListener('DOMContentLoaded', onPageLoaded());
 var blacklistStorageName = 'Blacklist';
 var showblacklistGamesStorageName = 'ShowBlacklistdGames';
 
-var hasInit = false;
-
 var blacklistMap;
 
 var checkboxClassName = 'checkboxImg';
-var showBlacklistGameCheckboxContainerId = 'showBlacklistGameCheckboxContainerId';
-var showBlacklistGameCheckboxClassName = 'showBlacklistGameCheckbox';
-var showBlaclistGameTextClassName = 'showBlaclistGameText';
-var showBlaclistGameTextInnerText = 'Also show in-blacklist games';
+
+var headerBottomContainerId = 'showBlacklistGameCheckboxContainerId';
+
+var showBlacklistGameCheckboxContainerId = 'showBlacklistGameCheckboxContainer';
+var showBlacklistGameCheckboxContainerClassName = 'flexbox flexboxItem';
+
+var showBlacklistGameCheckboxImg;
+
+var showBlacklistGameCheckboxImgId = 'showBlacklistGameCheckboxImg';
+
+var showBlaclistGameCheckboxTextId = 'showBlaclistGameCheckboxText';
+var showBlaclistGameCheckboxTextInnerText = 'Also show in-blacklist games';
 
 var actionCheckboxEnabled = 'checkbox_enabled';
 var actionCheckboxDisabled = 'checkbox_disabled';
@@ -19,15 +25,26 @@ var actionCheckboxDisabled = 'checkbox_disabled';
 var srcCheckboxEnabled = 'image/checkbox_across_enabled.png';
 var srcCheckboxDisabled = 'image/checkbox_across_disabled.png';
 
-var actionShowBlacklistGameCheckboxEnabled = 'show_blacklist_game_checkbox_enabled';
-var actionShowBlacklistGameCheckboxDisabled = 'show_blacklist_game_checkbox_disabled';
+var actionShowBlacklistGameCheckboxEnabled = 'actionShowBlacklistGameCheckboxEnabled';
+var actionShowBlacklistGameCheckboxDisabled = 'actionShowBlacklistGameCheckboxDisabled';
 
 var srcShowBlacklistGameCheckboxEnabled = 'image/checkbox_tick_enabled.png';
 var srcShowBlacklistGameCheckboxDisabled = 'image/checkbox_tick_disabled.png';
 
-var showBlacklistGames = true;
+var downloadLocalStorageAsJsonButtonId = 'downloadLocalStorageAsJsonButton';
+var downloadLocalStorageAsJsonButtonClassName = 'flexboxItem';
+var downloadLocalStorageAsJsonButtonTextContent = 'Download local stoage data as JSON';
 
-//* Hide games per second due to Yuplay is a one-page website.
+var uploadLocalStorageFromJsonInputId = 'uploadLocalStorageFromJsonInput';
+
+var uploadLocalStorageFromJsonLabelId = 'uploadLocalStorageFromJsonLabel';
+var uploadLocalStorageFromJsonLabelClassName = 'flexboxItem';
+var uploadLocalStorageFromJsonLabelTextContent = 'Upload JSON to overwrite local storage data';
+
+var showBlacklistGames = true;
+var hasInit = false;
+
+//* Hide games per 500 mileseconds due to Yuplay.com is a one-page website.
 function onPageLoaded () {
     setTimeout(main, 500);
 }
@@ -36,17 +53,17 @@ function onPageLoaded () {
 function main () {
     if (!hasInit) {
         initBlacklist();
-        addShowBlacklistGameCheckbox();
+        createHeaderBottomContainer();
         hasInit = true;
     }
     var gameListContainer = document.getElementsByClassName('catalog')[0];
 
     Array.from(gameListContainer.children).forEach(e => {
-        var catalogImageContainer = e.children[0];
-        var gameTitle = catalogImageContainer.getElementsByClassName('catalog-image-ratio-container')[0].title;
-        var checkboxImg = catalogImageContainer.getElementsByClassName(checkboxClassName)[0];
+        var imageContainer = e.children[0];
+        var gameTitle = imageContainer.getElementsByClassName('catalog-image-ratio-container')[0].title;
+        var checkboxImg = imageContainer.getElementsByClassName(checkboxClassName)[0];
         if (!checkboxImg) {
-            checkboxImg = createCheckbox(catalogImageContainer);
+            checkboxImg = createCheckbox(imageContainer);
             var inBlacklist = getGameStatus(gameTitle);
             if (inBlacklist) {
                 setCheckboxEnabled(checkboxImg);
@@ -70,11 +87,11 @@ function main () {
 
 function initBlacklist () {
     hasInit = true;
-    var blacklistEntriesJson = localStorage.getItem(blacklistStorageName);
-    if (!blacklistEntriesJson) {
+    var jsonContent = localStorage.getItem(blacklistStorageName);
+    if (!jsonContent) {
         blacklistMap = new Map([]);
     } else {
-        blacklistMap = new Map(Object.entries(JSON.parse(blacklistEntriesJson)));
+        blacklistMap = new Map(Object.entries(JSON.parse(jsonContent)));
     }
 
     var showBlacklistGamesInStorage = localStorage.getItem(showblacklistGamesStorageName);
@@ -86,47 +103,121 @@ function initBlacklist () {
     }
 }
 
-function addShowBlacklistGameCheckbox () {
+function createHeaderBottomContainer () {
     var header = document.getElementById('navbar-main');
     header.className += ' flexbox';
 
-    var showBlacklistContainer = document.createElement('div');
-    showBlacklistContainer.id = showBlacklistGameCheckboxContainerId;
-    showBlacklistContainer.className = 'flexbox';
-    header.appendChild(showBlacklistContainer);
+    var container = document.createElement('div');
+    container.id = headerBottomContainerId;
+    container.className = 'flexbox';
+    header.appendChild(container);
 
-    var showBlacklistGameCheckboxImg = document.createElement('img');
-    showBlacklistGameCheckboxImg.className = showBlacklistGameCheckboxClassName;
+    createShowBlacklistGameCheckbox(container);
+    createDownloadButton(container);
+    createUploadButton(container);
+}
+
+function createShowBlacklistGameCheckbox (parent) {
+    var container = document.createElement('div');
+    container.id = showBlacklistGameCheckboxContainerId;
+    container.className = showBlacklistGameCheckboxContainerClassName;
+    parent.appendChild(container);
+
+    showBlacklistGameCheckboxImg = document.createElement('img');
+    showBlacklistGameCheckboxImg.id = showBlacklistGameCheckboxImgId;
     if (showBlacklistGames) {
-        setShowBlacklistGameCheckboxEnabled(showBlacklistGameCheckboxImg);
+        setShowBlacklistGameCheckboxEnabled();
     } else {
-        setShowBlacklistGameCheckboxDisabled(showBlacklistGameCheckboxImg);
+        setShowBlacklistGameCheckboxDisabled();
     }
     showBlacklistGameCheckboxImg.onclick = () => {
         if (showBlacklistGameCheckboxImg.dataset.action == actionShowBlacklistGameCheckboxDisabled) {
-            setShowBlacklistGameCheckboxEnabled(showBlacklistGameCheckboxImg);
+            setShowBlacklistGameCheckboxEnabled();
             localStorage.setItem(showblacklistGamesStorageName, 'true');
         } else {
-            setShowBlacklistGameCheckboxDisabled(showBlacklistGameCheckboxImg);
+            setShowBlacklistGameCheckboxDisabled();
             localStorage.setItem(showblacklistGamesStorageName, 'false');
         }
         location.reload();
     }
-    showBlacklistContainer.appendChild(showBlacklistGameCheckboxImg);
+    container.appendChild(showBlacklistGameCheckboxImg);
 
-    var showBlaclistGameText = document.createElement('text');
-    showBlaclistGameText.className = showBlaclistGameTextClassName;
-    showBlaclistGameText.innerText = showBlaclistGameTextInnerText;
-    showBlacklistContainer.appendChild(showBlaclistGameText);
+    var text = document.createElement('text');
+    text.id = showBlaclistGameCheckboxTextId;
+    text.innerText = showBlaclistGameCheckboxTextInnerText;
+    container.appendChild(text);
+}
+
+function createDownloadButton (parent) {
+    var button = document.createElement('button');
+    button.id = downloadLocalStorageAsJsonButtonId;
+    button.className = downloadLocalStorageAsJsonButtonClassName;
+    button.textContent = downloadLocalStorageAsJsonButtonTextContent;
+    button.onclick = () => {
+        downloadLocalStorageDataAsJson();
+    }
+    parent.appendChild(button);
+}
+
+function downloadLocalStorageDataAsJson () {
+    var blacklistContent = localStorage.getItem(blacklistStorageName);
+    const blob = new Blob([blacklistContent], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'blacklist.json';
+    a.click();
+}
+
+function createUploadButton (parent) {
+    var label = document.createElement('label');
+    label.htmlFor = uploadLocalStorageFromJsonInputId;
+    label.id = uploadLocalStorageFromJsonLabelId;
+    label.className = uploadLocalStorageFromJsonLabelClassName;
+    label.textContent = uploadLocalStorageFromJsonLabelTextContent;
+    parent.appendChild(label);
+
+    var input = document.createElement('input');
+    input.type = 'file';
+    input.id = uploadLocalStorageFromJsonInputId;
+    input.accept = '.json';
+    input.onchange = () => {
+        if (confirm('Are you sure to upload the JSON ?')) {
+            uploadLocalStorageDataFromJson();
+        } else {
+            input.files = null;
+            input.value = null;
+        }
+    };
+    parent.appendChild(input);
+}
+
+function uploadLocalStorageDataFromJson () {
+    const fileInput = document.getElementById(uploadLocalStorageFromJsonInputId);
+
+    if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            const jsonContent = event.target.result;
+            localStorage.setItem(blacklistStorageName, jsonContent);
+            alert('Finished.');
+            showLog('Data : ' + localStorage.getItem(blacklistStorageName));
+        };
+
+        reader.readAsText(file);
+    } else {
+        alert('Please select a JSON file to upload.');
+    }
 }
 
 function createCheckbox (parent) {
-    var checkboxConainer = document.createElement('div');
+    var conainer = document.createElement('div');
     checkboxImg = document.createElement('img');
     checkboxImg.className = checkboxClassName;
     setCheckboxDisabled(checkboxImg);
-    checkboxConainer.appendChild(checkboxImg);
-    parent.appendChild(checkboxConainer);
+    conainer.appendChild(checkboxImg);
+    parent.appendChild(conainer);
     return checkboxImg;
 }
 
@@ -140,12 +231,12 @@ function setCheckboxDisabled (checkboxImg) {
     checkboxImg.src = chrome.runtime.getURL(srcCheckboxDisabled);
 }
 
-function setShowBlacklistGameCheckboxEnabled (showBlacklistGameCheckboxImg) {
+function setShowBlacklistGameCheckboxEnabled () {
     showBlacklistGameCheckboxImg.dataset.action = actionShowBlacklistGameCheckboxEnabled;
     showBlacklistGameCheckboxImg.src = chrome.runtime.getURL(srcShowBlacklistGameCheckboxEnabled);
 }
 
-function setShowBlacklistGameCheckboxDisabled (showBlacklistGameCheckboxImg) {
+function setShowBlacklistGameCheckboxDisabled () {
     showBlacklistGameCheckboxImg.dataset.action = actionShowBlacklistGameCheckboxDisabled;
     showBlacklistGameCheckboxImg.src = chrome.runtime.getURL(srcShowBlacklistGameCheckboxDisabled);
 }
