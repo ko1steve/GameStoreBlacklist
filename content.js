@@ -319,10 +319,10 @@ function hideGame (gameListContainer, gameContainer) {
 
 function getGameStatus (gameTitle) {
     let key = gameTitle[0];
-    if (!blacklistMap.has(key) || !blacklistMap.get(key).includes(gameTitle)) {
+    if (!blacklistMap.has(key)) {
         return false;
     }
-    return true;
+    return blacklistMap.get(key).includes(gameTitle);
 }
 
 function addGameToBlacklist (gameTitle) {
