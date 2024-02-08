@@ -1,0 +1,37 @@
+{
+    "name": "Yuplay Filter",
+    "action": {},
+    "manifest_version": 3,
+    "version": "0.1",
+    "description": "",
+    "content_scripts": [
+        {
+            "css": [
+                "style.css"
+            ],
+            "matches": [
+                "https://www.yuplay.com/*"
+            ],
+            "js": [
+                "content.js"
+            ]
+        }
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "image/checkbox_across_enabled.png",
+                "image/checkbox_across_disabled.png",
+                "image/checkbox_tick_enabled.png",
+                "image/checkbox_tick_disabled.png"
+            ],
+            "matches": [
+                "https://www.yuplay.com/*"
+            ]
+        }
+    ],
+    "host_permissions": [
+        "http://*/*",
+        "https://*/*"
+    ]
+}
