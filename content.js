@@ -28,12 +28,15 @@ var actionShowBlacklistGameCheckboxDisabled = 'actionShowBlacklistGameCheckboxDi
 var srcShowBlacklistGameCheckboxEnabled = 'image/checkbox_tick_enabled.png';
 var srcShowBlacklistGameCheckboxDisabled = 'image/checkbox_tick_disabled.png';
 
-var downloadLocalStorageAsJsonButtonClassName = 'downloadLocalStorageAsJsonButton flexboxItem';
+var downloadLocalStorageAsJsonButtonId = 'downloadLocalStorageAsJsonButton';
+var downloadLocalStorageAsJsonButtonClassName = 'flexboxItem';
 var downloadLocalStorageAsJsonButtonTextContent = 'Download local stoage data as JSON';
 
 var uploadLocalStorageFromJsonInputId = 'uploadLocalStorageFromJsonInput';
-var uploadLocalStorageFromJsonButtonClassName = 'downloadLocalStorageAsJsonButton flexboxItem';
-var uploadLocalStorageFromJsonButtonTextContent = 'Upload local storage data from JSON';
+
+var uploadLocalStorageFromJsonLabelId = 'uploadLocalStorageFromJsonLabel';
+var uploadLocalStorageFromJsonLabelClassName = 'flexboxItem';
+var uploadLocalStorageFromJsonLabelTextContent = 'Upload JSON to overwrite local storage data';
 
 var showBlacklistGames = true;
 var hasInit = false;
@@ -144,6 +147,7 @@ function createShowBlacklistGameCheckbox (parent) {
 
 function createDownloadButton (parent) {
     var downloadLocalStorageAsJsonButton = document.createElement('button');
+    downloadLocalStorageAsJsonButton.id = downloadLocalStorageAsJsonButtonId;
     downloadLocalStorageAsJsonButton.className = downloadLocalStorageAsJsonButtonClassName;
     downloadLocalStorageAsJsonButton.textContent = downloadLocalStorageAsJsonButtonTextContent;
     downloadLocalStorageAsJsonButton.onclick = () => {
@@ -162,17 +166,26 @@ function downloadLocalStorageDataAsJson () {
 }
 
 function createUploadButton (parent) {
+    var uploadLocalStorageFromJsonLabel = document.createElement('label');
+    uploadLocalStorageFromJsonLabel.htmlFor = uploadLocalStorageFromJsonInputId;
+    uploadLocalStorageFromJsonLabel.id = uploadLocalStorageFromJsonLabelId;
+    uploadLocalStorageFromJsonLabel.className = uploadLocalStorageFromJsonLabelClassName;
+    uploadLocalStorageFromJsonLabel.textContent = uploadLocalStorageFromJsonLabelTextContent;
+    parent.appendChild(uploadLocalStorageFromJsonLabel);
+
     var uploadLocalStorageFromJsonInput = document.createElement('input');
     uploadLocalStorageFromJsonInput.type = 'file';
     uploadLocalStorageFromJsonInput.id = uploadLocalStorageFromJsonInputId;
     uploadLocalStorageFromJsonInput.accept = '.json';
+    uploadLocalStorageFromJsonInput.onchange = () => {
+        if (confirm('Are you sure to upload the JSON ?')) {
+            uploadLocalStorageFromJson();
+        } else {
+            uploadLocalStorageFromJsonInput.files = null;
+            uploadLocalStorageFromJsonInput.value = null;
+        }
+    };
     parent.appendChild(uploadLocalStorageFromJsonInput);
-
-    var uploadLocalStorageFromJsonButton = document.createElement('button');
-    uploadLocalStorageFromJsonButton.className = uploadLocalStorageFromJsonButtonClassName;
-    uploadLocalStorageFromJsonButton.textContent = uploadLocalStorageFromJsonButtonTextContent;
-    uploadLocalStorageFromJsonButton.onclick = () => uploadLocalStorageFromJson();
-    parent.appendChild(uploadLocalStorageFromJsonButton);
 }
 
 function uploadLocalStorageFromJson () {

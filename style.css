@@ -21,10 +21,24 @@
     margin: 10px 10px 10px 10px;
 }
 
-.downloadLocalStorageAsJsonButton {
+#downloadLocalStorageAsJsonButton {
     border-radius: 5px;
-    background-color: seagreen;
+    background-color:lightseagreen;
     color: aliceblue;
     font-weight: bolder;
     padding: 10px 10px 10px 10px;
+}
+
+#uploadLocalStorageFromJsonLabel {
+    border-radius: 5px;
+    background-color:lightcoral;
+    color: aliceblue;
+    font-weight: bolder;
+    padding: 10px 10px 10px 10px;
+}
+
+#uploadLocalStorageFromJsonInput {
+    visibility: hidden;
+    width: 0px;
+    height: 0px;
 }
