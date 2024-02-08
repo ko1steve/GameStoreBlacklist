@@ -53,10 +53,12 @@ function main () {
                 setCheckboxEnabled(checkboxImg);
                 hideGame(gameListContainer, e);
             }
+            checkboxImg.gameContainer = e;
             checkboxImg.onclick = () => {
                 if (checkboxImg.dataset.action == actionCheckboxDisabled) {
                     setCheckboxEnabled(checkboxImg);
                     addGameToBlacklist(gameTitle);
+                    hideGame(gameListContainer, checkboxImg.gameContainer);
                 } else {
                     setCheckboxDisabled(checkboxImg);
                     removeGameFromBlacklist(gameTitle);
