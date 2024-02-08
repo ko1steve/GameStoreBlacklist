@@ -49,7 +49,6 @@ function main () {
             checkboxImg = createCheckbox(catalogImageContainer);
             var inBlacklist = getGameStatus(gameTitle);
             if (inBlacklist) {
-                showLog('Game "' + gameTitle + '" is in blacklist at starting. ');
                 setCheckboxEnabled(checkboxImg);
                 hideGame(gameListContainer, e);
             }
@@ -175,7 +174,7 @@ function addGameToBlacklist (gameTitle) {
         blacklistMap.set(key, list);
     }
     localStorage.setItem(blacklistStorageName, JSON.stringify(Object.fromEntries(blacklistMap)));
-    showLog('Add "' + gameTitle + '" to blacklist now. ');
+    showLog('Add "' + gameTitle + '" to blacklist. ');
 }
 
 function removeGameFromBlacklist (gameTitle) {
@@ -191,9 +190,9 @@ function removeGameFromBlacklist (gameTitle) {
     list.splice(index, 1);
     blacklistMap.set(key, list);
     localStorage.setItem(blacklistStorageName, JSON.stringify(Object.fromEntries(blacklistMap)));
-    showLog('Removed "' + gameTitle + '" from blacklist now. ');
+    showLog('Removed "' + gameTitle + '" from blacklist. ');
 }
 
 function showLog (msg) {
-    console.log('%c' + msg, 'color: green; font-weight: bold;');
+    console.log('%c[extension] ' + msg, 'color: green; font-weight: bold;');
 }
