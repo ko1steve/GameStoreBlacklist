@@ -12,9 +12,12 @@ var headerBottomContainerId = 'showBlacklistGameCheckboxContainerId';
 var showBlacklistGameCheckboxContainerId = 'showBlacklistGameCheckboxContainer';
 var showBlacklistGameCheckboxContainerClassName = 'flexbox flexboxItem';
 
-var showBlacklistGameCheckboxClassName = 'showBlacklistGameCheckbox';
-var showBlaclistGameTextClassName = 'showBlaclistGameText';
-var showBlaclistGameTextInnerText = 'Also show in-blacklist games';
+var showBlacklistGameCheckboxImg;
+
+var showBlacklistGameCheckboxImgId = 'showBlacklistGameCheckboxImg';
+
+var showBlaclistGameCheckboxTextId = 'showBlaclistGameCheckboxText';
+var showBlaclistGameCheckboxTextInnerText = 'Also show in-blacklist games';
 
 var actionCheckboxEnabled = 'checkbox_enabled';
 var actionCheckboxDisabled = 'checkbox_disabled';
@@ -56,11 +59,11 @@ function main () {
     var gameListContainer = document.getElementsByClassName('catalog')[0];
 
     Array.from(gameListContainer.children).forEach(e => {
-        var catalogImageContainer = e.children[0];
-        var gameTitle = catalogImageContainer.getElementsByClassName('catalog-image-ratio-container')[0].title;
-        var checkboxImg = catalogImageContainer.getElementsByClassName(checkboxClassName)[0];
+        var imageContainer = e.children[0];
+        var gameTitle = imageContainer.getElementsByClassName('catalog-image-ratio-container')[0].title;
+        var checkboxImg = imageContainer.getElementsByClassName(checkboxClassName)[0];
         if (!checkboxImg) {
-            checkboxImg = createCheckbox(catalogImageContainer);
+            checkboxImg = createCheckbox(imageContainer);
             var inBlacklist = getGameStatus(gameTitle);
             if (inBlacklist) {
                 setCheckboxEnabled(checkboxImg);
@@ -84,11 +87,11 @@ function main () {
 
 function initBlacklist () {
     hasInit = true;
-    var blacklistEntriesJson = localStorage.getItem(blacklistStorageName);
-    if (!blacklistEntriesJson) {
+    var jsonContent = localStorage.getItem(blacklistStorageName);
+    if (!jsonContent) {
         blacklistMap = new Map([]);
     } else {
-        blacklistMap = new Map(Object.entries(JSON.parse(blacklistEntriesJson)));
+        blacklistMap = new Map(Object.entries(JSON.parse(jsonContent)));
     }
 
     var showBlacklistGamesInStorage = localStorage.getItem(showblacklistGamesStorageName);
@@ -104,56 +107,56 @@ function createHeaderBottomContainer () {
     var header = document.getElementById('navbar-main');
     header.className += ' flexbox';
 
-    var headerBottomContainer = document.createElement('div');
-    headerBottomContainer.id = headerBottomContainerId;
-    headerBottomContainer.className = 'flexbox';
-    header.appendChild(headerBottomContainer);
+    var container = document.createElement('div');
+    container.id = headerBottomContainerId;
+    container.className = 'flexbox';
+    header.appendChild(container);
 
-    createShowBlacklistGameCheckbox(headerBottomContainer);
-    createDownloadButton(headerBottomContainer);
-    createUploadButton(headerBottomContainer);
+    createShowBlacklistGameCheckbox(container);
+    createDownloadButton(container);
+    createUploadButton(container);
 }
 
 function createShowBlacklistGameCheckbox (parent) {
-    var showBlacklistGameCheckboxContainer = document.createElement('div');
-    showBlacklistGameCheckboxContainer.id = showBlacklistGameCheckboxContainerId;
-    showBlacklistGameCheckboxContainer.className = showBlacklistGameCheckboxContainerClassName;
-    parent.appendChild(showBlacklistGameCheckboxContainer);
+    var container = document.createElement('div');
+    container.id = showBlacklistGameCheckboxContainerId;
+    container.className = showBlacklistGameCheckboxContainerClassName;
+    parent.appendChild(container);
 
-    var showBlacklistGameCheckboxImg = document.createElement('img');
-    showBlacklistGameCheckboxImg.className = showBlacklistGameCheckboxClassName;
+    showBlacklistGameCheckboxImg = document.createElement('img');
+    showBlacklistGameCheckboxImg.id = showBlacklistGameCheckboxImgId;
     if (showBlacklistGames) {
-        setShowBlacklistGameCheckboxEnabled(showBlacklistGameCheckboxImg);
+        setShowBlacklistGameCheckboxEnabled();
     } else {
-        setShowBlacklistGameCheckboxDisabled(showBlacklistGameCheckboxImg);
+        setShowBlacklistGameCheckboxDisabled();
     }
     showBlacklistGameCheckboxImg.onclick = () => {
         if (showBlacklistGameCheckboxImg.dataset.action == actionShowBlacklistGameCheckboxDisabled) {
-            setShowBlacklistGameCheckboxEnabled(showBlacklistGameCheckboxImg);
+            setShowBlacklistGameCheckboxEnabled();
             localStorage.setItem(showblacklistGamesStorageName, 'true');
         } else {
-            setShowBlacklistGameCheckboxDisabled(showBlacklistGameCheckboxImg);
+            setShowBlacklistGameCheckboxDisabled();
             localStorage.setItem(showblacklistGamesStorageName, 'false');
         }
         location.reload();
     }
-    showBlacklistGameCheckboxContainer.appendChild(showBlacklistGameCheckboxImg);
+    container.appendChild(showBlacklistGameCheckboxImg);
 
-    var showBlaclistGameText = document.createElement('text');
-    showBlaclistGameText.className = showBlaclistGameTextClassName;
-    showBlaclistGameText.innerText = showBlaclistGameTextInnerText;
-    showBlacklistGameCheckboxContainer.appendChild(showBlaclistGameText);
+    var text = document.createElement('text');
+    text.id = showBlaclistGameCheckboxTextId;
+    text.innerText = showBlaclistGameCheckboxTextInnerText;
+    container.appendChild(text);
 }
 
 function createDownloadButton (parent) {
-    var downloadLocalStorageAsJsonButton = document.createElement('button');
-    downloadLocalStorageAsJsonButton.id = downloadLocalStorageAsJsonButtonId;
-    downloadLocalStorageAsJsonButton.className = downloadLocalStorageAsJsonButtonClassName;
-    downloadLocalStorageAsJsonButton.textContent = downloadLocalStorageAsJsonButtonTextContent;
-    downloadLocalStorageAsJsonButton.onclick = () => {
+    var button = document.createElement('button');
+    button.id = downloadLocalStorageAsJsonButtonId;
+    button.className = downloadLocalStorageAsJsonButtonClassName;
+    button.textContent = downloadLocalStorageAsJsonButtonTextContent;
+    button.onclick = () => {
         downloadLocalStorageDataAsJson();
     }
-    parent.appendChild(downloadLocalStorageAsJsonButton);
+    parent.appendChild(button);
 }
 
 function downloadLocalStorageDataAsJson () {
@@ -166,29 +169,29 @@ function downloadLocalStorageDataAsJson () {
 }
 
 function createUploadButton (parent) {
-    var uploadLocalStorageFromJsonLabel = document.createElement('label');
-    uploadLocalStorageFromJsonLabel.htmlFor = uploadLocalStorageFromJsonInputId;
-    uploadLocalStorageFromJsonLabel.id = uploadLocalStorageFromJsonLabelId;
-    uploadLocalStorageFromJsonLabel.className = uploadLocalStorageFromJsonLabelClassName;
-    uploadLocalStorageFromJsonLabel.textContent = uploadLocalStorageFromJsonLabelTextContent;
-    parent.appendChild(uploadLocalStorageFromJsonLabel);
+    var label = document.createElement('label');
+    label.htmlFor = uploadLocalStorageFromJsonInputId;
+    label.id = uploadLocalStorageFromJsonLabelId;
+    label.className = uploadLocalStorageFromJsonLabelClassName;
+    label.textContent = uploadLocalStorageFromJsonLabelTextContent;
+    parent.appendChild(label);
 
-    var uploadLocalStorageFromJsonInput = document.createElement('input');
-    uploadLocalStorageFromJsonInput.type = 'file';
-    uploadLocalStorageFromJsonInput.id = uploadLocalStorageFromJsonInputId;
-    uploadLocalStorageFromJsonInput.accept = '.json';
-    uploadLocalStorageFromJsonInput.onchange = () => {
+    var input = document.createElement('input');
+    input.type = 'file';
+    input.id = uploadLocalStorageFromJsonInputId;
+    input.accept = '.json';
+    input.onchange = () => {
         if (confirm('Are you sure to upload the JSON ?')) {
-            uploadLocalStorageFromJson();
+            uploadLocalStorageDataFromJson();
         } else {
-            uploadLocalStorageFromJsonInput.files = null;
-            uploadLocalStorageFromJsonInput.value = null;
+            input.files = null;
+            input.value = null;
         }
     };
-    parent.appendChild(uploadLocalStorageFromJsonInput);
+    parent.appendChild(input);
 }
 
-function uploadLocalStorageFromJson () {
+function uploadLocalStorageDataFromJson () {
     const fileInput = document.getElementById(uploadLocalStorageFromJsonInputId);
 
     if (fileInput.files.length > 0) {
@@ -209,12 +212,12 @@ function uploadLocalStorageFromJson () {
 }
 
 function createCheckbox (parent) {
-    var checkboxConainer = document.createElement('div');
+    var conainer = document.createElement('div');
     checkboxImg = document.createElement('img');
     checkboxImg.className = checkboxClassName;
     setCheckboxDisabled(checkboxImg);
-    checkboxConainer.appendChild(checkboxImg);
-    parent.appendChild(checkboxConainer);
+    conainer.appendChild(checkboxImg);
+    parent.appendChild(conainer);
     return checkboxImg;
 }
 
@@ -228,12 +231,12 @@ function setCheckboxDisabled (checkboxImg) {
     checkboxImg.src = chrome.runtime.getURL(srcCheckboxDisabled);
 }
 
-function setShowBlacklistGameCheckboxEnabled (showBlacklistGameCheckboxImg) {
+function setShowBlacklistGameCheckboxEnabled () {
     showBlacklistGameCheckboxImg.dataset.action = actionShowBlacklistGameCheckboxEnabled;
     showBlacklistGameCheckboxImg.src = chrome.runtime.getURL(srcShowBlacklistGameCheckboxEnabled);
 }
 
-function setShowBlacklistGameCheckboxDisabled (showBlacklistGameCheckboxImg) {
+function setShowBlacklistGameCheckboxDisabled () {
     showBlacklistGameCheckboxImg.dataset.action = actionShowBlacklistGameCheckboxDisabled;
     showBlacklistGameCheckboxImg.src = chrome.runtime.getURL(srcShowBlacklistGameCheckboxDisabled);
 }
