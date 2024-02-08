@@ -1,6 +1,6 @@
 {
-    "name": "yuplaygameblacklist",
-    "version": "1.0.1",
+    "name": "yuplayfilter",
+    "version": "1.1.0",
     "description": "",
     "main": "index.js",
     "scripts": {
