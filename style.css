@@ -7,7 +7,7 @@
 .showBlaclistGameText {
     color:aliceblue;
     font-weight: bolder;
-    font-size: 30px;
+    font-size: 25px;
     margin-left: 10px;
 }
 
@@ -15,4 +15,30 @@
     display: flex;
     justify-content: center;    
     align-items: center;  
+}
+
+.flexboxItem {
+    margin: 10px 10px 10px 10px;
+}
+
+#downloadLocalStorageAsJsonButton {
+    border-radius: 5px;
+    background-color:lightseagreen;
+    color: aliceblue;
+    font-weight: bolder;
+    padding: 10px 10px 10px 10px;
+}
+
+#uploadLocalStorageFromJsonLabel {
+    border-radius: 5px;
+    background-color:lightcoral;
+    color: aliceblue;
+    font-weight: bolder;
+    padding: 10px 10px 10px 10px;
+}
+
+#uploadLocalStorageFromJsonInput {
+    visibility: hidden;
+    width: 0px;
+    height: 0px;
 }
