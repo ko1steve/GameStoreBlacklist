@@ -2,7 +2,7 @@
     "name": "Yuplay Filter",
     "action": {},
     "manifest_version": 3,
-    "version": "0.1",
+    "version": "1.0.1",
     "description": "",
     "content_scripts": [
         {
