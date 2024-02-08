@@ -96,7 +96,7 @@ function addShowBlacklistGameCheckbox () {
 
     var showBlacklistGameCheckboxImg = document.createElement('img');
     showBlacklistGameCheckboxImg.className = showBlacklistGameCheckboxClassName;
-    if (showBlacklistGames == 'true') {
+    if (showBlacklistGames) {
         setShowBlacklistGameCheckboxEnabled(showBlacklistGameCheckboxImg);
     } else {
         setShowBlacklistGameCheckboxDisabled(showBlacklistGameCheckboxImg);
@@ -109,6 +109,7 @@ function addShowBlacklistGameCheckbox () {
             setShowBlacklistGameCheckboxDisabled(showBlacklistGameCheckboxImg);
             localStorage.setItem(showblacklistGamesStorageName, 'false');
         }
+        location.reload();
     }
     showBlacklistContainer.appendChild(showBlacklistGameCheckboxImg);
 
@@ -150,8 +151,7 @@ function setShowBlacklistGameCheckboxDisabled (showBlacklistGameCheckboxImg) {
 
 function hideGame (gameListContainer, gameContainer) {
     if (!showBlacklistGames) {
-        console.error('hideGame');
-        console.error(gameListContainer.removeChild(gameContainer));
+        gameListContainer.removeChild(gameContainer)
     }
 }
 
