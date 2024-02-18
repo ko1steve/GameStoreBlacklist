@@ -125,7 +125,7 @@ function handleGamesInPageItems () {
     if (!gameListContainer || gameListContainer.dataset.catalog_id != 'page-products-catalog') {
         return;
     }
-    if (gameListContainer.children[0].dataset && gameListContainer.children[0].dataset.hasInit === "true") {
+    if (gameListContainer.children[0] && gameListContainer.children[0].dataset && gameListContainer.children[0].dataset.hasInit === "true") {
         return;
     }
     Array.from(gameListContainer.children).forEach(e => {
@@ -272,7 +272,7 @@ function uploadLocalStorageDataFromJson () {
             const jsonContent = event.target.result;
             localStorage.setItem(blacklistStorageName, jsonContent);
             alert('Finished.');
-            showLog('Data : ' + localStorage.getItem(blacklistStorageName));
+            location.reload();
         };
 
         reader.readAsText(file);
@@ -319,10 +319,10 @@ function hideGame (gameListContainer, gameContainer) {
 
 function getGameStatus (gameTitle) {
     let key = gameTitle[0];
-    if (!blacklistMap.has(key) || !blacklistMap.get(key).includes(gameTitle)) {
+    if (!blacklistMap.has(key)) {
         return false;
     }
-    return true;
+    return blacklistMap.get(key).includes(gameTitle);
 }
 
 function addGameToBlacklist (gameTitle) {
