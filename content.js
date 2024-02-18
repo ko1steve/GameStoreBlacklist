@@ -57,7 +57,7 @@ function main () {
         hasInit = true;
     }
     handleGameInMainItem();
-    handleGamesInRecommendedItems();
+    handleGamesInRecommendedAndMostWantedItems();
     handleGamesInPageItems();
     setTimeout(main, 500);
 }
@@ -88,9 +88,10 @@ function handleGameInMainItem () {
     }
 }
 
-function handleGamesInRecommendedItems () {
+function handleGamesInRecommendedAndMostWantedItems () {
     var gameListContainer = document.getElementsByClassName('catalog')[0];
-    if (!gameListContainer || gameListContainer.dataset.catalog_id != 'recommended-catalog') {
+    var minorGameListNameArr = ['recommended-catalog', 'most-wanted-catalog'];
+    if (!gameListContainer || !minorGameListNameArr.includes(gameListContainer.dataset.catalog_id)) {
         return;
     }
     Array.from(gameListContainer.getElementsByClassName('catalog-item')).forEach(e => {
