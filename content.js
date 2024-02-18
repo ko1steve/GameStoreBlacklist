@@ -56,13 +56,14 @@ function main () {
         createHeaderBottomContainer();
         hasInit = true;
     }
-    handleGameInMainItem();
-    handleGamesInRecommendedAndMostWantedItems();
+    handleGamesInMainItem();
     handleGamesInPageItems();
+    handleSpecifyGameListItems('recommended-catalog');
+    handleSpecifyGameListItems('most-wanted-catalog');
     setTimeout(main, 500);
 }
 
-function handleGameInMainItem () {
+function handleGamesInMainItem () {
     var mainItemContainer = document.getElementById('product-main-information');
     if (!mainItemContainer) {
         return;
@@ -88,10 +89,9 @@ function handleGameInMainItem () {
     }
 }
 
-function handleGamesInRecommendedAndMostWantedItems () {
+function handleSpecifyGameListItems (contanerId) {
     var gameListContainer = document.getElementsByClassName('catalog')[0];
-    var minorGameListNameArr = ['recommended-catalog', 'most-wanted-catalog'];
-    if (!gameListContainer || !minorGameListNameArr.includes(gameListContainer.dataset.catalog_id)) {
+    if (!gameListContainer || gameListContainer.dataset.catalog_id != contanerId) {
         return;
     }
     Array.from(gameListContainer.getElementsByClassName('catalog-item')).forEach(e => {
