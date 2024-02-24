@@ -16,8 +16,8 @@ var showBlacklistGameCheckboxImg;
 
 var showBlacklistGameCheckboxImgId = 'showBlacklistGameCheckboxImg';
 
-var showBlaclistGameCheckboxTextId = 'showBlaclistGameCheckboxText';
-var showBlaclistGameCheckboxTextInnerText = 'Also show in-blacklist games';
+var showBlacklistGameCheckboxTextId = 'showBlaclistGameCheckboxText';
+var showBlacklistGameCheckboxTextInnerText = 'Also show in-blacklist games ({numberOfGames} games)';
 
 var actionCheckboxEnabled = 'checkbox_enabled';
 var actionCheckboxDisabled = 'checkbox_disabled';
@@ -43,6 +43,8 @@ var uploadLocalStorageFromJsonLabelTextContent = 'Upload JSON to overwrite local
 
 var showBlacklistGames = true;
 var hasInit = false;
+
+var numberOfGames = 0;
 
 //* Hide games per 500 mileseconds due to Yuplay.com is a one-page website.
 function onPageLoaded () {
@@ -73,7 +75,7 @@ function initBlacklist () {
     } else {
         blacklistMap = new Map(Object.entries(JSON.parse(jsonContent)));
     }
-
+    initNumberOfGame();
     var showBlacklistGamesInStorage = localStorage.getItem(showblacklistGamesStorageName);
     if (showBlacklistGamesInStorage == null) {
         showBlacklistGames = true;
@@ -81,6 +83,12 @@ function initBlacklist () {
     } else {
         showBlacklistGames = showBlacklistGamesInStorage === 'true';
     }
+}
+
+function initNumberOfGame () {
+    blacklistMap.forEach(list => {
+        numberOfGames += list.length;
+    })
 }
 
 function createHeaderBottomContainer () {
@@ -123,8 +131,9 @@ function createShowBlacklistGameCheckbox (parent) {
     container.appendChild(showBlacklistGameCheckboxImg);
 
     var text = document.createElement('text');
-    text.id = showBlaclistGameCheckboxTextId;
-    text.innerText = showBlaclistGameCheckboxTextInnerText;
+    text.id = showBlacklistGameCheckboxTextId;
+    var textContent = showBlacklistGameCheckboxTextInnerText.replace('{numberOfGames}', numberOfGames);
+    text.innerText = textContent;
     container.appendChild(text);
 }
 
@@ -209,9 +218,11 @@ function handleGamesInMainItem () {
             if (checkboxImg.dataset.action == actionCheckboxDisabled) {
                 setCheckboxEnabled(checkboxImg);
                 addGameToBlacklist(gameTitle);
+                updateNumberOfGameOnAddGame();
             } else {
                 setCheckboxDisabled(checkboxImg);
                 removeGameFromBlacklist(gameTitle);
+                updateNumberOfGameOnRemoveGame();
             }
         }
     }
@@ -246,10 +257,12 @@ function handleSpecifyGameListItems (contanerId) {
                 if (checkboxImg.dataset.action == actionCheckboxDisabled) {
                     setCheckboxEnabled(checkboxImg);
                     addGameToBlacklist(gameTitle);
+                    updateNumberOfGameOnAddGame();
                     hideGame(gameListContainer, checkboxImg.gameContainer);
                 } else {
                     setCheckboxDisabled(checkboxImg);
                     removeGameFromBlacklist(gameTitle);
+                    updateNumberOfGameOnRemoveGame();
                 }
             }
         }
@@ -281,10 +294,12 @@ function handleGamesInPageItems () {
                 if (checkboxImg.dataset.action == actionCheckboxDisabled) {
                     setCheckboxEnabled(checkboxImg);
                     addGameToBlacklist(gameTitle);
+                    updateNumberOfGameOnAddGame();
                     hideGame(gameListContainer, checkboxImg.gameContainer);
                 } else {
                     setCheckboxDisabled(checkboxImg);
                     removeGameFromBlacklist(gameTitle);
+                    updateNumberOfGameOnRemoveGame();
                 }
             }
         }
@@ -319,6 +334,22 @@ function setShowBlacklistGameCheckboxEnabled () {
 function setShowBlacklistGameCheckboxDisabled () {
     showBlacklistGameCheckboxImg.dataset.action = actionShowBlacklistGameCheckboxDisabled;
     showBlacklistGameCheckboxImg.src = chrome.runtime.getURL(srcShowBlacklistGameCheckboxDisabled);
+}
+
+function updateNumberOfGameOnAddGame () {
+    numberOfGames++;
+    updateTextOfNumberOfGame();
+}
+
+function updateNumberOfGameOnRemoveGame () {
+    numberOfGames--;
+    updateTextOfNumberOfGame();
+}
+
+function updateTextOfNumberOfGame () {
+    var text = document.getElementById(showBlacklistGameCheckboxTextId);
+    var textContent = showBlacklistGameCheckboxTextInnerText.replace('{numberOfGames}', numberOfGames);
+    text.innerText = textContent;
 }
 
 function hideGame (gameListContainer, gameContainer) {
