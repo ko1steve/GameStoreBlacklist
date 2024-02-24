@@ -61,6 +61,7 @@ function main () {
     handleSpecifyGameListItems('recommended-catalog');
     handleSpecifyGameListItems('most-wanted-catalog');
     handleSpecifyGameListItems('midweek-madness-catalog');
+    handleSpecifyGameListItems('just-arrived-catalog');
     setTimeout(main, 500);
 }
 
