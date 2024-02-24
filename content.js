@@ -56,13 +56,15 @@ function main () {
         createHeaderBottomContainer();
         hasInit = true;
     }
-    handleGameInMainItem();
-    handleGamesInRecommendedItems();
+    handleGamesInMainItem();
     handleGamesInPageItems();
+    handleSpecifyGameListItems('recommended-catalog');
+    handleSpecifyGameListItems('most-wanted-catalog');
+    handleSpecifyGameListItems('midweek-madness-catalog');
     setTimeout(main, 500);
 }
 
-function handleGameInMainItem () {
+function handleGamesInMainItem () {
     var mainItemContainer = document.getElementById('product-main-information');
     if (!mainItemContainer) {
         return;
@@ -88,13 +90,20 @@ function handleGameInMainItem () {
     }
 }
 
-function handleGamesInRecommendedItems () {
-    var gameListContainer = document.getElementsByClassName('catalog')[0];
-    if (!gameListContainer || gameListContainer.dataset.catalog_id != 'recommended-catalog') {
+function handleSpecifyGameListItems (contanerId) {
+    var gameListContainer;
+    var catalogList = document.getElementsByClassName('catalog');
+    for (let item of catalogList) {
+        if (item.dataset && item.dataset.catalog_id === contanerId) {
+            gameListContainer = item;
+        }
+    }
+    if (!gameListContainer || gameListContainer.children[0].dataset.hasInit === "true") {
         return;
     }
+    console.log('[YuplayFilter]: ' + contanerId + ' found.');
     Array.from(gameListContainer.getElementsByClassName('catalog-item')).forEach(e => {
-        e.dataset.hasInit = "true";
+        e.dataset.hasInit = 'true';
         var imageContainer = e.children[0];
         var gameTitle = imageContainer.getElementsByClassName('catalog-image-ratio-container')[0].title;
         var checkboxImg = imageContainer.getElementsByClassName(checkboxClassName)[0];
