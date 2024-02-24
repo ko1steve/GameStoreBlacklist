@@ -65,106 +65,6 @@ function main () {
     setTimeout(main, 500);
 }
 
-function handleGamesInMainItem () {
-    var mainItemContainer = document.getElementById('product-main-information');
-    if (!mainItemContainer) {
-        return;
-    }
-    var gameTitle = mainItemContainer.getElementsByClassName('product-name')[0].innerHTML;
-    var imageContainer = mainItemContainer.getElementsByClassName('catalog-image-container')[0];
-    var checkboxImg = imageContainer.getElementsByClassName(checkboxClassName)[0];
-    if (!checkboxImg) {
-        checkboxImg = createCheckbox(imageContainer);
-        var inBlacklist = getGameStatus(gameTitle);
-        if (inBlacklist) {
-            setCheckboxEnabled(checkboxImg);
-        }
-        checkboxImg.onclick = () => {
-            if (checkboxImg.dataset.action == actionCheckboxDisabled) {
-                setCheckboxEnabled(checkboxImg);
-                addGameToBlacklist(gameTitle);
-            } else {
-                setCheckboxDisabled(checkboxImg);
-                removeGameFromBlacklist(gameTitle);
-            }
-        }
-    }
-}
-
-function handleSpecifyGameListItems (contanerId) {
-    var gameListContainer;
-    var catalogList = document.getElementsByClassName('catalog');
-    for (let item of catalogList) {
-        if (item.dataset && item.dataset.catalog_id === contanerId) {
-            gameListContainer = item;
-        }
-    }
-    if (!gameListContainer || gameListContainer.children[0].dataset.hasInit === "true") {
-        return;
-    }
-    console.log('[YuplayFilter]: ' + contanerId + ' found.');
-    Array.from(gameListContainer.getElementsByClassName('catalog-item')).forEach(e => {
-        e.dataset.hasInit = 'true';
-        var imageContainer = e.children[0];
-        var gameTitle = imageContainer.getElementsByClassName('catalog-image-ratio-container')[0].title;
-        var checkboxImg = imageContainer.getElementsByClassName(checkboxClassName)[0];
-        if (!checkboxImg) {
-            checkboxImg = createCheckbox(imageContainer);
-            var inBlacklist = getGameStatus(gameTitle);
-            if (inBlacklist) {
-                setCheckboxEnabled(checkboxImg);
-                hideGame(gameListContainer, e);
-            }
-            checkboxImg.gameContainer = e;
-            checkboxImg.onclick = () => {
-                if (checkboxImg.dataset.action == actionCheckboxDisabled) {
-                    setCheckboxEnabled(checkboxImg);
-                    addGameToBlacklist(gameTitle);
-                    hideGame(gameListContainer, checkboxImg.gameContainer);
-                } else {
-                    setCheckboxDisabled(checkboxImg);
-                    removeGameFromBlacklist(gameTitle);
-                }
-            }
-        }
-    });
-}
-
-function handleGamesInPageItems () {
-    var gameListContainer = document.getElementsByClassName('catalog')[0];
-    if (!gameListContainer || gameListContainer.dataset.catalog_id != 'page-products-catalog') {
-        return;
-    }
-    if (gameListContainer.children[0] && gameListContainer.children[0].dataset && gameListContainer.children[0].dataset.hasInit === "true") {
-        return;
-    }
-    Array.from(gameListContainer.children).forEach(e => {
-        e.dataset.hasInit = "true";
-        var imageContainer = e.children[0];
-        var gameTitle = imageContainer.getElementsByClassName('catalog-image-ratio-container')[0].title;
-        var checkboxImg = imageContainer.getElementsByClassName(checkboxClassName)[0];
-        if (!checkboxImg) {
-            checkboxImg = createCheckbox(imageContainer);
-            var inBlacklist = getGameStatus(gameTitle);
-            if (inBlacklist) {
-                setCheckboxEnabled(checkboxImg);
-                hideGame(gameListContainer, e);
-            }
-            checkboxImg.gameContainer = e;
-            checkboxImg.onclick = () => {
-                if (checkboxImg.dataset.action == actionCheckboxDisabled) {
-                    setCheckboxEnabled(checkboxImg);
-                    addGameToBlacklist(gameTitle);
-                    hideGame(gameListContainer, checkboxImg.gameContainer);
-                } else {
-                    setCheckboxDisabled(checkboxImg);
-                    removeGameFromBlacklist(gameTitle);
-                }
-            }
-        }
-    });
-}
-
 function initBlacklist () {
     hasInit = true;
     var jsonContent = localStorage.getItem(blacklistStorageName);
@@ -289,6 +189,106 @@ function uploadLocalStorageDataFromJson () {
     } else {
         alert('Please select a JSON file to upload.');
     }
+}
+
+function handleGamesInMainItem () {
+    var mainItemContainer = document.getElementById('product-main-information');
+    if (!mainItemContainer) {
+        return;
+    }
+    var gameTitle = mainItemContainer.getElementsByClassName('product-name')[0].innerHTML;
+    var imageContainer = mainItemContainer.getElementsByClassName('catalog-image-container')[0];
+    var checkboxImg = imageContainer.getElementsByClassName(checkboxClassName)[0];
+    if (!checkboxImg) {
+        checkboxImg = createCheckbox(imageContainer);
+        var inBlacklist = getGameStatus(gameTitle);
+        if (inBlacklist) {
+            setCheckboxEnabled(checkboxImg);
+        }
+        checkboxImg.onclick = () => {
+            if (checkboxImg.dataset.action == actionCheckboxDisabled) {
+                setCheckboxEnabled(checkboxImg);
+                addGameToBlacklist(gameTitle);
+            } else {
+                setCheckboxDisabled(checkboxImg);
+                removeGameFromBlacklist(gameTitle);
+            }
+        }
+    }
+}
+
+function handleSpecifyGameListItems (contanerId) {
+    var gameListContainer;
+    var catalogList = document.getElementsByClassName('catalog');
+    for (let item of catalogList) {
+        if (item.dataset && item.dataset.catalog_id === contanerId) {
+            gameListContainer = item;
+        }
+    }
+    if (!gameListContainer || gameListContainer.children[0].dataset.hasInit === "true") {
+        return;
+    }
+    console.log('[YuplayFilter]: ' + contanerId + ' found.');
+    Array.from(gameListContainer.getElementsByClassName('catalog-item')).forEach(e => {
+        e.dataset.hasInit = 'true';
+        var imageContainer = e.children[0];
+        var gameTitle = imageContainer.getElementsByClassName('catalog-image-ratio-container')[0].title;
+        var checkboxImg = imageContainer.getElementsByClassName(checkboxClassName)[0];
+        if (!checkboxImg) {
+            checkboxImg = createCheckbox(imageContainer);
+            var inBlacklist = getGameStatus(gameTitle);
+            if (inBlacklist) {
+                setCheckboxEnabled(checkboxImg);
+                hideGame(gameListContainer, e);
+            }
+            checkboxImg.gameContainer = e;
+            checkboxImg.onclick = () => {
+                if (checkboxImg.dataset.action == actionCheckboxDisabled) {
+                    setCheckboxEnabled(checkboxImg);
+                    addGameToBlacklist(gameTitle);
+                    hideGame(gameListContainer, checkboxImg.gameContainer);
+                } else {
+                    setCheckboxDisabled(checkboxImg);
+                    removeGameFromBlacklist(gameTitle);
+                }
+            }
+        }
+    });
+}
+
+function handleGamesInPageItems () {
+    var gameListContainer = document.getElementsByClassName('catalog')[0];
+    if (!gameListContainer || gameListContainer.dataset.catalog_id != 'page-products-catalog') {
+        return;
+    }
+    if (gameListContainer.children[0] && gameListContainer.children[0].dataset && gameListContainer.children[0].dataset.hasInit === "true") {
+        return;
+    }
+    Array.from(gameListContainer.children).forEach(e => {
+        e.dataset.hasInit = "true";
+        var imageContainer = e.children[0];
+        var gameTitle = imageContainer.getElementsByClassName('catalog-image-ratio-container')[0].title;
+        var checkboxImg = imageContainer.getElementsByClassName(checkboxClassName)[0];
+        if (!checkboxImg) {
+            checkboxImg = createCheckbox(imageContainer);
+            var inBlacklist = getGameStatus(gameTitle);
+            if (inBlacklist) {
+                setCheckboxEnabled(checkboxImg);
+                hideGame(gameListContainer, e);
+            }
+            checkboxImg.gameContainer = e;
+            checkboxImg.onclick = () => {
+                if (checkboxImg.dataset.action == actionCheckboxDisabled) {
+                    setCheckboxEnabled(checkboxImg);
+                    addGameToBlacklist(gameTitle);
+                    hideGame(gameListContainer, checkboxImg.gameContainer);
+                } else {
+                    setCheckboxDisabled(checkboxImg);
+                    removeGameFromBlacklist(gameTitle);
+                }
+            }
+        }
+    });
 }
 
 function createCheckbox (parent) {
