@@ -16,8 +16,8 @@ var showBlacklistGameCheckboxImg;
 
 var showBlacklistGameCheckboxImgId = 'showBlacklistGameCheckboxImg';
 
-var showBlaclistGameCheckboxTextId = 'showBlaclistGameCheckboxText';
-var showBlaclistGameCheckboxTextInnerText = 'Also show in-blacklist games';
+var showBlacklistGameCheckboxTextId = 'showBlaclistGameCheckboxText';
+var showBlacklistGameCheckboxTextInnerText = 'Also show in-blacklist games';
 
 var actionCheckboxEnabled = 'checkbox_enabled';
 var actionCheckboxDisabled = 'checkbox_disabled';
@@ -123,8 +123,9 @@ function createShowBlacklistGameCheckbox (parent) {
     container.appendChild(showBlacklistGameCheckboxImg);
 
     var text = document.createElement('text');
-    text.id = showBlaclistGameCheckboxTextId;
-    text.innerText = showBlaclistGameCheckboxTextInnerText;
+    text.id = showBlacklistGameCheckboxTextId;
+    var textContent = showBlacklistGameCheckboxTextInnerText;
+    text.innerText = textContent;
     container.appendChild(text);
 }
 
