@@ -236,7 +236,7 @@ function handleSpecifyGameListItems (contanerId) {
             gameListContainer = item;
         }
     }
-    if (!gameListContainer || gameListContainer.children[0].dataset.hasInit === "true") {
+    if (!gameListContainer || gameListContainer.children.length === 0 || gameListContainer.children[0].dataset.hasInit === "true") {
         return;
     }
     console.log('[YuplayFilter]: ' + contanerId + ' found.');
