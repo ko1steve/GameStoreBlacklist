@@ -31,7 +31,6 @@
         }
     ],
     "host_permissions": [
-        "http://*/*",
-        "https://*/*"
+        "https://www.yuplay.com/*"
     ]
 }
