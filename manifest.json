@@ -7,13 +7,13 @@
     "content_scripts": [
         {
             "css": [
-                "style.css"
+                "src/yuplay/style.css"
             ],
             "matches": [
                 "https://www.yuplay.com/*"
             ],
             "js": [
-                "content.js"
+                "src/yuplay/content.js"
             ]
         }
     ],
