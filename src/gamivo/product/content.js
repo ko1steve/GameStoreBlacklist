@@ -371,6 +371,7 @@ function createCheckbox (parent) {
     checkboxImg.className = checkboxClassName;
     setCheckboxDisabled(checkboxImg);
     conainer.appendChild(checkboxImg);
+    parent.style.position = 'relative';
     parent.appendChild(conainer);
     return checkboxImg;
 }

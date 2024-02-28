@@ -385,10 +385,12 @@ function getTitleWithoutExcludeWords (gameTitle) {
 
 function createCheckbox (parent) {
     var conainer = document.createElement('div');
+    conainer.className = 'checkboxContainer';
     checkboxImg = document.createElement('img');
     checkboxImg.className = checkboxClassName;
     setCheckboxDisabled(checkboxImg);
     conainer.appendChild(checkboxImg);
+    parent.style.position = 'relative';
     parent.appendChild(conainer);
     return checkboxImg;
 }

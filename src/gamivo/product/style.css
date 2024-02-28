@@ -7,9 +7,9 @@
 }
 
 .checkboxContainer {
-    position: relative;
-    top: -685px;
-    left: 475px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
 }
 
 #showBlacklistGameCheckboxImg {
