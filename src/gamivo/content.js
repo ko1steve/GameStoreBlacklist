@@ -293,11 +293,13 @@ function getNewProductElement (producElement) {
     nAhrefImageContainer.appendChild(nAppImageContainer);
 
     var figureContainer = imageLinkContainer.getElementsByTagName('figure')[0];
+    if (!figureContainer) { return null; }
     var nFigureContainer = document.createElement('div');
     nFigureContainer.className = figureContainer.className;
     nAppImageContainer.appendChild(nFigureContainer);
 
     var imageElement = imageLinkContainer.getElementsByTagName('img')[0];
+    if (!imageElement) { return null; }
     var nImageElement = document.createElement('img');
     nImageElement.className = imageElement.className;
     nImageElement.alt = imageElement.alt;
