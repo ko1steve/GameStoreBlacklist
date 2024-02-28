@@ -242,7 +242,7 @@ function handleGamesInSearchItems () {
         var gameTitle = newElement.children[0].children[1].children[0].children[0].innerText;
         gameTitle = getTitleWithoutExcludeWords(gameTitle);
 
-        var checkboxImg = productTitleContainer.getElementsByClassName(checkboxClassName)[0];
+        var checkboxImg = imageLinkContainer.getElementsByClassName(checkboxClassName)[0];
         if (!checkboxImg) {
             checkboxImg = createCheckbox(imageLinkContainer);
             var inBlacklist = getGameStatus(gameTitle);
