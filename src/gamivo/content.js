@@ -221,22 +221,21 @@ function handleGamesInSearchItems () {
         return;
     }
     Array.from(gameListContainer.children).forEach(oldElement => {
-        var gameListContainer = oldElement.parentElement;
-        var e = getNewProductElement(oldElement);
-        if (!e) { return; }
+        var newElement = getNewProductElement(oldElement);
+        if (!newElement) { return; }
         gameListContainer.removeChild(oldElement);
-        gameListContainer.appendChild(e);
+        gameListContainer.appendChild(newElement);
 
-        e.dataset.hasInit = "true";
+        newElement.dataset.hasInit = "true";
 
-        var productTitleContainer = e.getElementsByClassName('product-tile')[0];
+        var productTitleContainer = newElement.getElementsByClassName('product-tile')[0];
 
         var productImageContainer = productTitleContainer.getElementsByClassName('product-tile__image ng-star-inserted')[0];
         if (!productImageContainer) { return; }
 
         var imageLinkContainer = productImageContainer.getElementsByTagName('div')[0];
 
-        var gameTitle = e.children[0].children[1].children[0].children[0].innerText;
+        var gameTitle = newElement.children[0].children[1].children[0].children[0].innerText;
         gameTitle = getTitleWithoutExcludeWords(gameTitle);
 
         var checkboxImg = productTitleContainer.getElementsByClassName(checkboxClassName)[0];
@@ -246,9 +245,9 @@ function handleGamesInSearchItems () {
             if (inBlacklist) {
                 console.log('[extension] In Blacklist : ' + gameTitle);
                 setCheckboxEnabled(checkboxImg);
-                hideGame(gameListContainer, e);
+                hideGame(gameListContainer, newElement);
             }
-            checkboxImg.gameContainer = e;
+            checkboxImg.gameContainer = newElement;
             checkboxImg.onclick = () => {
                 if (checkboxImg.dataset.action == actionCheckboxDisabled) {
                     setCheckboxEnabled(checkboxImg);
@@ -281,18 +280,15 @@ function getNewProductElement (producElement) {
     nProductImageContainer.className = productImageContainer.className;
     nProductTitleContainer.appendChild(nProductImageContainer);
 
-    //  ---- image ----
     var imageLinkContainer = productImageContainer.getElementsByClassName('ng-star-inserted')[0];
     if (!imageLinkContainer) { return null; }
     var nImageLinkContainer = document.createElement('div');
     nImageLinkContainer.className = imageLinkContainer.className;
     nProductImageContainer.appendChild(nImageLinkContainer);
 
-    // var ahrefImageContainer = imageLinkContainer.getElementsByTagName('a')[0];
     var nAhrefImageContainer = document.createElement('div');
     nImageLinkContainer.appendChild(nAhrefImageContainer);
 
-    // var appImageContainer = imageLinkContainer.getElementsByTagName('app-image')[0];
     var nAppImageContainer = document.createElement('div');
     nAhrefImageContainer.appendChild(nAppImageContainer);
 
@@ -308,18 +304,14 @@ function getNewProductElement (producElement) {
     nImageElement.src = imageElement.src;
     nImageElement.width = imageElement.width;
     nImageElement.height = imageElement.height;
-
     nFigureContainer.appendChild(nImageElement);
-    //  ---------------
 
-    //  ---- description ----
     var descriptionContainer = productTitleContainer.getElementsByClassName('product-tile__description ng-star-inserted')[0];
     if (!descriptionContainer) { return null; }
     var nDescriptionContainer = document.createElement('div');
     nDescriptionContainer.className = descriptionContainer.className;
     nProductTitleContainer.appendChild(nDescriptionContainer);
 
-    ////  ---- product name ----
     var producTitleNameContainer = descriptionContainer.getElementsByClassName('product-tile__name')[0];
     if (!producTitleNameContainer) { return null; }
     var nProducTitleNameContainer = document.createElement('div');
@@ -338,7 +330,6 @@ function getNewProductElement (producElement) {
     nProducTitleNameElement.innerText = producTitleNameElement.innerText;
     nProducTitleNameAhrefElement.appendChild(nProducTitleNameElement);
 
-    ////  ---- price ----
     var priceInfoContainer = descriptionContainer.getElementsByClassName('product-tile__price')[0];
     var nPriceInfoContainer = document.createElement('div');
     nPriceInfoContainer.className = priceInfoContainer.className;
