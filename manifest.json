@@ -15,6 +15,18 @@
             "js": [
                 "src/yuplay/content.js"
             ]
+        },
+        {
+            "css": [
+                "src/gamivo/style.css"
+            ],
+            "matches": [
+                "https://www.gamivo.com/store/games/steam*",
+                "https://www.gamivo.com/search*"
+            ],
+            "js": [
+                "src/gamivo/content.js"
+            ]
         }
     ],
     "web_accessible_resources": [
@@ -26,11 +38,13 @@
                 "image/checkbox_tick_disabled.png"
             ],
             "matches": [
-                "https://www.yuplay.com/*"
+                "https://www.yuplay.com/*",
+                "https://www.gamivo.com/*"
             ]
         }
     ],
     "host_permissions": [
-        "https://www.yuplay.com/*"
+        "https://www.yuplay.com/*",
+        "https://www.gamivo.com/*"
     ]
 }

@@ -58,12 +58,7 @@ function main () {
         createHeaderBottomContainer();
         hasInit = true;
     }
-    handleGamesInMainItem();
     handleGamesInSearchItems();
-    handleSpecifyGameListItems('recommended-catalog');
-    handleSpecifyGameListItems('most-wanted-catalog');
-    handleSpecifyGameListItems('midweek-madness-catalog');
-    handleSpecifyGameListItems('just-arrived-catalog');
     setTimeout(main, 500);
 }
 
@@ -92,7 +87,7 @@ function initNumberOfGame () {
 }
 
 function createHeaderBottomContainer () {
-    var header = document.getElementById('navbar-main');
+    var header = document.getElementsByClassName('main-container row no-gutters')[0];
     header.className += ' flexbox';
 
     var container = document.createElement('div');
@@ -200,90 +195,36 @@ function uploadLocalStorageDataFromJson () {
     }
 }
 
-function handleGamesInMainItem () {
-    var mainItemContainer = document.getElementById('product-main-information');
-    if (!mainItemContainer) {
-        return;
-    }
-    var gameTitle = mainItemContainer.getElementsByClassName('product-name')[0].innerHTML;
-    var imageContainer = mainItemContainer.getElementsByClassName('catalog-image-container')[0];
-    var checkboxImg = imageContainer.getElementsByClassName(checkboxClassName)[0];
-    if (!checkboxImg) {
-        checkboxImg = createCheckbox(imageContainer);
-        var inBlacklist = getGameStatus(gameTitle);
-        if (inBlacklist) {
-            setCheckboxEnabled(checkboxImg);
-        }
-        checkboxImg.onclick = () => {
-            if (checkboxImg.dataset.action == actionCheckboxDisabled) {
-                setCheckboxEnabled(checkboxImg);
-                addGameToBlacklist(gameTitle);
-                updateNumberOfGameOnAddGame();
-            } else {
-                setCheckboxDisabled(checkboxImg);
-                removeGameFromBlacklist(gameTitle);
-                updateNumberOfGameOnRemoveGame();
-            }
-        }
-    }
-}
-
-function handleSpecifyGameListItems (contanerId) {
-    var gameListContainer;
-    var catalogList = document.getElementsByClassName('catalog');
-    for (let item of catalogList) {
-        if (item.dataset && item.dataset.catalog_id === contanerId) {
-            gameListContainer = item;
-        }
-    }
-    if (!gameListContainer || gameListContainer.children.length === 0 || gameListContainer.children[0].dataset.hasInit === "true") {
-        return;
-    }
-    console.log('[YuplayFilter]: ' + contanerId + ' found.');
-    Array.from(gameListContainer.getElementsByClassName('catalog-item')).forEach(e => {
-        e.dataset.hasInit = 'true';
-        var imageContainer = e.children[0];
-        var gameTitle = imageContainer.getElementsByClassName('catalog-image-ratio-container')[0].title;
-        var checkboxImg = imageContainer.getElementsByClassName(checkboxClassName)[0];
-        if (!checkboxImg) {
-            checkboxImg = createCheckbox(imageContainer);
-            var inBlacklist = getGameStatus(gameTitle);
-            if (inBlacklist) {
-                setCheckboxEnabled(checkboxImg);
-                hideGame(gameListContainer, e);
-            }
-            checkboxImg.gameContainer = e;
-            checkboxImg.onclick = () => {
-                if (checkboxImg.dataset.action == actionCheckboxDisabled) {
-                    setCheckboxEnabled(checkboxImg);
-                    addGameToBlacklist(gameTitle);
-                    updateNumberOfGameOnAddGame();
-                    hideGame(gameListContainer, checkboxImg.gameContainer);
-                } else {
-                    setCheckboxDisabled(checkboxImg);
-                    removeGameFromBlacklist(gameTitle);
-                    updateNumberOfGameOnRemoveGame();
-                }
-            }
-        }
-    });
-}
-
 function handleGamesInSearchItems () {
-    var gameListContainer = document.getElementsByClassName('catalog')[0];
-    if (!gameListContainer || gameListContainer.dataset.catalog_id != 'page-products-catalog') {
+    var gameListContainer = document.getElementsByClassName('search-results__tiles ng-star-inserted')[0];
+    if (!gameListContainer || !gameListContainer.children[0] || !gameListContainer.children[0].children[0]) {
         return;
     }
     if (gameListContainer.children[0] && gameListContainer.children[0].dataset && gameListContainer.children[0].dataset.hasInit === "true") {
         return;
     }
-    Array.from(gameListContainer.children).forEach(e => {
+    Array.from(gameListContainer.children).forEach(oldElement => {
+        var gameListContainer = oldElement.parentElement;
+        var e = getNewProductElement(oldElement);
+        if (!e) { return; }
+        gameListContainer.removeChild(oldElement);
+        gameListContainer.appendChild(e);
+
         e.dataset.hasInit = "true";
-        var imageContainer = e.children[0];
-        var gameTitle = imageContainer.getElementsByClassName('catalog-image-ratio-container')[0].title;
-        var checkboxImg = imageContainer.getElementsByClassName(checkboxClassName)[0];
+
+        var productTitleContainer = e.getElementsByClassName('product-tile')[0];
+
+        var productImageContainer = productTitleContainer.getElementsByClassName('product-tile__image ng-star-inserted')[0];
+        if (!productImageContainer) { return; }
+
+        var imageLinkContainer = productImageContainer.getElementsByTagName('div')[0];
+
+        var gameTitle = e.children[0].children[1].children[0].children[0].innerText;
+        gameTitle = getTitleWithoutExcludeWords(gameTitle);
+
+        var checkboxImg = productTitleContainer.getElementsByClassName(checkboxClassName)[0];
         if (!checkboxImg) {
-            checkboxImg = createCheckbox(imageContainer);
+            checkboxImg = createCheckbox(imageLinkContainer);
             var inBlacklist = getGameStatus(gameTitle);
             if (inBlacklist) {
                 setCheckboxEnabled(checkboxImg);
@@ -304,6 +245,116 @@ function handleGamesInSearchItems () {
             }
         }
     });
+}
+
+function getNewProductElement (producElement) {
+    var nProducElement = document.createElement('div');
+    nProducElement.className = producElement.className;
+
+    var productTitleContainer = producElement.getElementsByClassName('product-tile')[0];
+    if (!productTitleContainer) { return null; }
+    var nProductTitleContainer = document.createElement('div');
+    nProductTitleContainer.className = productTitleContainer.className;
+    nProducElement.appendChild(nProductTitleContainer);
+
+    var productImageContainer = productTitleContainer.getElementsByClassName('product-tile__image ng-star-inserted')[0];
+    if (!productImageContainer) { return null; }
+    var nProductImageContainer = document.createElement('div');
+    nProductImageContainer.className = productImageContainer.className;
+    nProductTitleContainer.appendChild(nProductImageContainer);
+
+    //  ---- image ----
+    var imageLinkContainer = productImageContainer.getElementsByClassName('ng-star-inserted')[0];
+    if (!imageLinkContainer) { return null; }
+    var nImageLinkContainer = document.createElement('div');
+    nImageLinkContainer.className = imageLinkContainer.className;
+    nProductImageContainer.appendChild(nImageLinkContainer);
+
+    // var ahrefImageContainer = imageLinkContainer.getElementsByTagName('a')[0];
+    var nAhrefImageContainer = document.createElement('div');
+    nImageLinkContainer.appendChild(nAhrefImageContainer);
+
+    // var appImageContainer = imageLinkContainer.getElementsByTagName('app-image')[0];
+    var nAppImageContainer = document.createElement('div');
+    nAhrefImageContainer.appendChild(nAppImageContainer);
+
+    var figureContainer = imageLinkContainer.getElementsByTagName('figure')[0];
+    var nFigureContainer = document.createElement('div');
+    nFigureContainer.className = figureContainer.className;
+    nAppImageContainer.appendChild(nFigureContainer);
+
+    var imageElement = imageLinkContainer.getElementsByTagName('img')[0];
+    var nImageElement = document.createElement('img');
+    nImageElement.className = imageElement.className;
+    nImageElement.alt = imageElement.alt;
+    nImageElement.src = imageElement.src;
+    nImageElement.width = imageElement.width;
+    nImageElement.height = imageElement.height;
+
+    nFigureContainer.appendChild(nImageElement);
+    //  ---------------
+
+    //  ---- description ----
+    var descriptionContainer = productTitleContainer.getElementsByClassName('product-tile__description ng-star-inserted')[0];
+    if (!descriptionContainer) { return null; }
+    var nDescriptionContainer = document.createElement('div');
+    nDescriptionContainer.className = descriptionContainer.className;
+    nProductTitleContainer.appendChild(nDescriptionContainer);
+
+    ////  ---- product name ----
+    var producTitleNameContainer = descriptionContainer.getElementsByClassName('product-tile__name')[0];
+    if (!producTitleNameContainer) { return null; }
+    var nProducTitleNameContainer = document.createElement('div');
+    nProducTitleNameContainer.className = producTitleNameContainer.className;
+    nDescriptionContainer.appendChild(nProducTitleNameContainer);
+
+    var producTitleNameAhrefElement = producTitleNameContainer.getElementsByTagName('a')[0];
+    var nProducTitleNameAhrefElement = document.createElement('a');
+    nProducTitleNameAhrefElement.className = producTitleNameAhrefElement.className;
+    nProducTitleNameAhrefElement.href = producTitleNameAhrefElement.href;
+    nProducTitleNameContainer.appendChild(nProducTitleNameAhrefElement);
+
+    var producTitleNameElement = producTitleNameAhrefElement.getElementsByTagName('span')[0];
+    var nProducTitleNameElement = document.createElement('span');
+    nProducTitleNameElement.className = producTitleNameElement.className;
+    nProducTitleNameElement.innerText = producTitleNameElement.innerText;
+    nProducTitleNameAhrefElement.appendChild(nProducTitleNameElement);
+
+    ////  ---- price ----
+    var priceInfoContainer = descriptionContainer.getElementsByClassName('product-tile__price')[0];
+    var nPriceInfoContainer = document.createElement('div');
+    nPriceInfoContainer.className = priceInfoContainer.className;
+    nDescriptionContainer.appendChild(nPriceInfoContainer);
+
+    var oldAndNewPriceElement = priceInfoContainer.getElementsByTagName('span')[0];
+    var nOldAndNewPriceElement = document.createElement('span');
+    nOldAndNewPriceElement.className = oldAndNewPriceElement.className;
+    nPriceInfoContainer.appendChild(nOldAndNewPriceElement);
+
+    var currentPriceElement = oldAndNewPriceElement.getElementsByTagName('span')[0];
+    var nCurrentPriceElement = document.createElement('span');
+    nCurrentPriceElement.className = currentPriceElement.className;
+    nCurrentPriceElement.innerText = currentPriceElement.innerText;
+    nOldAndNewPriceElement.appendChild(nCurrentPriceElement);
+
+    return nProducElement;
+}
+
+const excludeTitleWords = ['Steam Gift', 'Global Steam Gift', 'Global Steam', 'EU Steam'];
+const cutToEndWords = [
+    ' EN/', ' EU/', ' DE/', ' FR/', ' IT/', ' ZH/', ' JA/', ' ES/', 'ROW/',
+    ' EN ', ' EU ', ' DE ', ' FR ', ' IT ', ' ZH ', ' JA ', ' ES ', ' ROW ',
+];
+
+function getTitleWithoutExcludeWords (gameTitle) {
+    excludeTitleWords.forEach(e => { gameTitle = gameTitle.replace(e, '') });
+    cutToEndWords.forEach(e => {
+        var cutIndex = gameTitle.indexOf(e);
+        if (cutIndex >= 0) {
+            gameTitle = gameTitle.substring(0, cutIndex);
+        }
+    });
+    return gameTitle;
 }
 
 function createCheckbox (parent) {
