@@ -62,6 +62,23 @@ function main () {
     setTimeout(main, 500);
 }
 
+function trimGameName () {
+    var jsonContent = localStorage.getItem(blacklistStorageName);
+    if (!jsonContent) {
+        return;
+    } else {
+        var blacklistMap = new Map(Object.entries(JSON.parse(jsonContent)));
+        blacklistMap.forEach((gameArr, k) => {
+            gameArr.forEach((gameTitle, i) => {
+                gameArr[i] = gameTitle.trim();
+            });
+            blacklistMap.set(k, gameArr);
+        });
+    }
+    localStorage.setItem(blacklistStorageName, JSON.stringify(Object.fromEntries(blacklistMap)));
+    return true;
+}
+
 function initBlacklist () {
     hasInit = true;
     var jsonContent = localStorage.getItem(blacklistStorageName);
@@ -227,6 +244,7 @@ function handleGamesInSearchItems () {
             checkboxImg = createCheckbox(imageLinkContainer);
             var inBlacklist = getGameStatus(gameTitle);
             if (inBlacklist) {
+                console.log('[extension] In Blacklist : ' + gameTitle);
                 setCheckboxEnabled(checkboxImg);
                 hideGame(gameListContainer, e);
             }
@@ -354,6 +372,7 @@ function getTitleWithoutExcludeWords (gameTitle) {
             gameTitle = gameTitle.substring(0, cutIndex);
         }
     });
+    gameTitle = gameTitle.trim();
     return gameTitle;
 }
 
