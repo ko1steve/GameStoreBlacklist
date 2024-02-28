@@ -221,6 +221,10 @@ function handleGamesInSearchItems () {
         return;
     }
     Array.from(gameListContainer.children).forEach(oldElement => {
+        if (oldElement.dataset.hasInit) {
+            gameListContainer.removeChild(oldElement);
+            return;
+        }
         var newElement = getNewProductElement(oldElement);
         if (!newElement) { return; }
         gameListContainer.removeChild(oldElement);
@@ -266,6 +270,7 @@ function handleGamesInSearchItems () {
 
 function getNewProductElement (producElement) {
     var nProducElement = document.createElement('div');
+    nProducElement.dataset.hasInit = 'true';
     nProducElement.className = producElement.className;
 
     var productTitleContainer = producElement.getElementsByClassName('product-tile')[0];
