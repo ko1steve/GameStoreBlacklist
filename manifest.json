@@ -18,14 +18,25 @@
         },
         {
             "css": [
-                "src/gamivo/style.css"
+                "src/gamivo/search/style.css"
             ],
             "matches": [
                 "https://www.gamivo.com/store/games/steam*",
                 "https://www.gamivo.com/search*"
             ],
             "js": [
-                "src/gamivo/content.js"
+                "src/gamivo/search/content.js"
+            ]
+        },
+        {
+            "css": [
+                "src/gamivo/product/style.css"
+            ],
+            "matches": [
+                "https://www.gamivo.com/product/*"
+            ],
+            "js": [
+                "src/gamivo/product/content.js"
             ]
         }
     ],
