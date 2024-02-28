@@ -358,17 +358,26 @@ function getNewProductElement (producElement) {
     return nProducElement;
 }
 
-const excludeTitleWords = ['Steam Gift', 'Global Steam Gift', 'Global Steam', 'EU Steam'];
 const cutToEndWords = [
     ' EN/', ' EU/', ' DE/', ' FR/', ' IT/', ' ZH/', ' JA/', ' ES/', 'ROW/',
-    ' EN ', ' EU ', ' DE ', ' FR ', ' IT ', ' ZH ', ' JA ', ' ES ', ' ROW ',
+    ' EN ', ' EU ', ' DE ', ' FR ', ' IT ', ' ZH ', ' JA ', ' ES ', ' RU ', ' ROW ',
+];
+const excludeTitleWords = ['Steam Gift', 'Global Steam Gift', 'Global Steam'];
+const endWords = [
+    ' EN', ' EU', ' DE', ' FR', ' IT', ' ZH', ' JA', ' ES', ' RU', ' ROW',
 ];
 
 function getTitleWithoutExcludeWords (gameTitle) {
-    excludeTitleWords.forEach(e => { gameTitle = gameTitle.replace(e, '') });
     cutToEndWords.forEach(e => {
         var cutIndex = gameTitle.indexOf(e);
         if (cutIndex >= 0) {
+            gameTitle = gameTitle.substring(0, cutIndex);
+        }
+    });
+    excludeTitleWords.forEach(e => { gameTitle = gameTitle.replace(e, '') });
+    endWords.forEach(e => {
+        if (gameTitle.endsWith(e)) {
+            var cutIndex = gameTitle.lastIndexOf(e);
             gameTitle = gameTitle.substring(0, cutIndex);
         }
     });
