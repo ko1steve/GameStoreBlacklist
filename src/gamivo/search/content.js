@@ -258,6 +258,7 @@ function handleGamesInSearchItems () {
                     addGameToBlacklist(gameTitle);
                     updateNumberOfGameOnAddGame();
                     hideGame(gameListContainer, checkboxImg.gameContainer);
+                    alert('"' + gameTitle + '" has been blacklisted.')
                 } else {
                     setCheckboxDisabled(checkboxImg);
                     removeGameFromBlacklist(gameTitle);
@@ -357,12 +358,12 @@ function getNewProductElement (producElement) {
 }
 
 const cutToEndWords = [
-    ' EN/', ' EU/', ' DE/', ' FR/', ' IT/', ' ZH/', ' JA/', ' ES/', 'ROW/',
-    ' EN ', ' EU ', ' DE ', ' FR ', ' IT ', ' ZH ', ' JA ', ' ES ', ' RU ', ' ROW ',
+    ' EN/', ' EU/', ' DE/', ' FR/', ' IT/', ' ZH/', ' JA/', ' ES/', ' RU/', ' PL/', ' CS/', 'ROW/',
+    ' EN ', ' EU ', ' DE ', ' FR ', ' IT ', ' ZH ', ' JA ', ' ES ', ' RU ', ' PL ', ' CS ', ' ROW ',
 ];
 const excludeTitleWords = ['Steam Gift', 'Global Steam Gift', 'Global Steam'];
 const endWords = [
-    ' EN', ' EU', ' DE', ' FR', ' IT', ' ZH', ' JA', ' ES', ' RU', ' ROW',
+    ' EN', ' EU', ' DE', ' FR', ' IT', ' ZH', ' JA', ' ES', ' RU', ' PL', ' CS', ' ROW',
 ];
 
 function getTitleWithoutExcludeWords (gameTitle) {
