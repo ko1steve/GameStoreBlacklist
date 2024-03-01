@@ -226,8 +226,8 @@ function handleGamesInSearchItems () {
             return;
         }
         var newElement = getNewProductElement(oldElement);
-        if (!newElement) { return; }
         gameListContainer.removeChild(oldElement);
+        if (!newElement) { return; }
         gameListContainer.appendChild(newElement);
 
         newElement.dataset.hasInit = "true";
@@ -285,6 +285,7 @@ function getNewProductElement (producElement) {
     nProductTitleContainer.appendChild(nProductImageContainer);
 
     var nDescriptionContainer = getNewDescriptionContainer(productTitleContainer);
+    if (!nDescriptionContainer) { return null; }
     nProductTitleContainer.appendChild(nDescriptionContainer);
 
     return nProducElement;
@@ -385,6 +386,9 @@ function getNewDescriptionContainer (productTitleContainer) {
     nProducTitleNameAhrefElement.appendChild(nProducTitleNameElement);
 
     var priceInfoContainer = descriptionContainer.getElementsByClassName('product-tile__price')[0];
+    if (!priceInfoContainer) {
+        return null;
+    }
     var nPriceInfoContainer = document.createElement('div');
     nPriceInfoContainer.className = priceInfoContainer.className;
     nDescriptionContainer.appendChild(nPriceInfoContainer);
