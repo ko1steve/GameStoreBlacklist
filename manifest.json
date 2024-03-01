@@ -49,6 +49,17 @@
             "js": [
                 "src/ggdeals/deals/content.js"
             ]
+        },
+        {
+            "css": [
+                "src/ggdeals/game/style.css"
+            ],
+            "matches": [
+                "https://gg.deals/game/*"
+            ],
+            "js": [
+                "src/ggdeals/game/content.js"
+            ]
         }
     ],
     "web_accessible_resources": [
