@@ -200,6 +200,7 @@ function uploadLocalStorageDataFromJson () {
 function handleGameInGamePage () {
     var gameTitle = getGameTitle();
     var checkboxParent = getCheckboxParent();
+    if (!checkboxParent) { return; }
     checkboxParent.style.position = 'relative';
     var checkboxImg = checkboxParent.getElementsByClassName(checkboxClassName)[0];
     if (!checkboxImg) {
@@ -257,12 +258,19 @@ function getCheckboxParent () {
     var gameHeaderElement = gameCardElement.children[0];
     if (!gameHeaderElement) { return; }
 
-    var colLeftElement = gameHeaderElement.children[0];
+    var gameSectionElement = gameHeaderElement.children[0];
+    if (!gameSectionElement) { return; }
+
+    var colLeftElement = gameSectionElement.children[0];
     if (!colLeftElement) { return; }
 
     var gameHeaderBox = colLeftElement.children[0];
+    if (!gameHeaderBox) { return; }
 
-    return gameHeaderBox;
+    var gameInfoImageWrapper = gameHeaderBox.children[0];
+    if (!gameInfoImageWrapper) { return; }
+
+    return gameInfoImageWrapper;
 }
 
 function createCheckbox (parent) {

@@ -1,8 +1,9 @@
 .checkboxImg {
     position: absolute;
-    top: 12px;
-    right: 25px;
+    top: 0px;
+    right: 0px;
     cursor: pointer;
+    z-index: 2;
 }
 
 #showBlacklistGameCheckboxImg {
