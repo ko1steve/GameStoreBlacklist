@@ -41,6 +41,7 @@ var uploadLocalStorageFromJsonLabelId = 'uploadLocalStorageFromJsonLabel';
 var uploadLocalStorageFromJsonLabelClassName = 'flexboxItem';
 var uploadLocalStorageFromJsonLabelTextContent = 'Upload JSON to overwrite local storage data';
 
+var showAlertAferAddBlacklist = false;
 var showBlacklistGames = true;
 var hasInit = false;
 
@@ -231,7 +232,9 @@ function handleGameInProductPage () {
                     addGameToBlacklist(gameTitle);
                     updateNumberOfGameOnAddGame();
                     hideGame(gameListContainer, checkboxImg.gameContainer);
-                    alert('"' + gameTitle + '" has been blacklisted.')
+                    if (showAlertAferAddBlacklist) {
+                        alert('"' + gameTitle + '" has been blacklisted.')
+                    }
                 } else {
                     setCheckboxDisabled(checkboxImg);
                     removeGameFromBlacklist(gameTitle);
