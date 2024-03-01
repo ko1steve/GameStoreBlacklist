@@ -40,13 +40,13 @@
             ]
         },
         {
-            "// css": [
+            "css": [
                 "src/ggdeals/deals/style.css"
             ],
-            "// matches": [
+            "matches": [
                 "https://gg.deals/deals/*"
             ],
-            "// js": [
+            "js": [
                 "src/ggdeals/deals/content.js"
             ]
         }
