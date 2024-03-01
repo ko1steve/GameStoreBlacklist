@@ -2,18 +2,41 @@
     "name": "Yuplay Filter",
     "action": {},
     "manifest_version": 3,
-    "version": "1.3.0",
+    "version": "1.4.0",
     "description": "",
     "content_scripts": [
         {
             "css": [
-                "style.css"
+                "src/yuplay/style.css"
             ],
             "matches": [
                 "https://www.yuplay.com/*"
             ],
             "js": [
-                "content.js"
+                "src/yuplay/content.js"
+            ]
+        },
+        {
+            "css": [
+                "src/gamivo/search/style.css"
+            ],
+            "matches": [
+                "https://www.gamivo.com/store/games/steam*",
+                "https://www.gamivo.com/search*"
+            ],
+            "js": [
+                "src/gamivo/search/content.js"
+            ]
+        },
+        {
+            "css": [
+                "src/gamivo/product/style.css"
+            ],
+            "matches": [
+                "https://www.gamivo.com/product/*"
+            ],
+            "js": [
+                "src/gamivo/product/content.js"
             ]
         }
     ],
@@ -26,11 +49,13 @@
                 "image/checkbox_tick_disabled.png"
             ],
             "matches": [
-                "https://www.yuplay.com/*"
+                "https://www.yuplay.com/*",
+                "https://www.gamivo.com/*"
             ]
         }
     ],
     "host_permissions": [
-        "https://www.yuplay.com/*"
+        "https://www.yuplay.com/*",
+        "https://www.gamivo.com/*"
     ]
 }
