@@ -59,7 +59,7 @@ function main () {
         hasInit = true;
     }
     createHeaderBottomContainer();
-    handleGameInProductPage();
+    handleGameInDealPage();
     setTimeout(main, 500);
 }
 
@@ -197,7 +197,7 @@ function uploadLocalStorageDataFromJson () {
     }
 }
 
-function handleGameInProductPage () {
+function handleGameInDealPage () {
     var dealsList = document.getElementById('deals-list');
     if (!dealsList) { return; }
 
