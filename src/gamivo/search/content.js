@@ -281,6 +281,7 @@ function getNewProductElement (producElement) {
     nProducElement.appendChild(nProductTitleContainer);
 
     var nProductImageContainer = getNewProductImageContainer(productTitleContainer);
+    if (!nProductImageContainer) { return null; }
     nProductTitleContainer.appendChild(nProductImageContainer);
 
     var nDescriptionContainer = getNewDescriptionContainer(productTitleContainer);
@@ -295,11 +296,22 @@ function getNewProductImageContainer (productTitleContainer) {
     var nProductImageContainer = document.createElement('div');
     nProductImageContainer.className = productImageContainer.className;
 
+    var nImageLinkContainer = getNewImageLinkContainer(productImageContainer);
+    nProductImageContainer.appendChild(nImageLinkContainer);
+
+    var nPromotionContainer = getNewPromotionContainer(productImageContainer);
+    if (nPromotionContainer) {
+        nProductImageContainer.appendChild(nPromotionContainer);
+        nProductImageContainer.style.position = 'relative';
+    }
+    return nProductImageContainer;
+}
+
+function getNewImageLinkContainer (productImageContainer) {
     var imageLinkContainer = productImageContainer.getElementsByClassName('ng-star-inserted')[0];
     if (!imageLinkContainer) { return null; }
     var nImageLinkContainer = document.createElement('div');
     nImageLinkContainer.className = imageLinkContainer.className;
-    nProductImageContainer.appendChild(nImageLinkContainer);
 
     var nAhrefImageContainer = document.createElement('div');
     nImageLinkContainer.appendChild(nAhrefImageContainer);
@@ -323,7 +335,29 @@ function getNewProductImageContainer (productTitleContainer) {
     nImageElement.height = imageElement.height;
     nFigureContainer.appendChild(nImageElement);
 
-    return nProductImageContainer;
+    return nImageLinkContainer;
+}
+
+function getNewPromotionContainer (productImageContainer) {
+    var promotionContainer = productImageContainer.getElementsByClassName('product-tile__image--promotion')[0];
+    if (!promotionContainer) { return null; }
+    var nPromotionContainer = document.createElement('div');
+    nPromotionContainer.className = promotionContainer.className;
+
+    var numberContainer = promotionContainer.getElementsByClassName('number')[0];
+    if (!numberContainer) { return null; }
+    var nNumberContainer = document.createElement('div');
+    nNumberContainer.className = numberContainer.className + ' promotion';
+    nPromotionContainer.appendChild(nNumberContainer);
+
+    var percentageElement = numberContainer.getElementsByTagName('span')[0];
+    if (!percentageElement) { return null; }
+    var nPercentageElement = document.createElement('span');
+    nPercentageElement.className = percentageElement.className;
+    nPercentageElement.innerText = percentageElement.innerText;
+    nNumberContainer.appendChild(nPercentageElement);
+
+    return nPromotionContainer;
 }
 
 function getNewDescriptionContainer (productTitleContainer) {
