@@ -38,6 +38,17 @@
             "js": [
                 "src/gamivo/product/content.js"
             ]
+        },
+        {
+            "// css": [
+                "src/ggdeals/deals/style.css"
+            ],
+            "// matches": [
+                "https://gg.deals/deals/*"
+            ],
+            "// js": [
+                "src/ggdeals/deals/content.js"
+            ]
         }
     ],
     "web_accessible_resources": [
@@ -50,12 +61,14 @@
             ],
             "matches": [
                 "https://www.yuplay.com/*",
-                "https://www.gamivo.com/*"
+                "https://www.gamivo.com/*",
+                "https://gg.deals/*"
             ]
         }
     ],
     "host_permissions": [
         "https://www.yuplay.com/*",
-        "https://www.gamivo.com/*"
+        "https://www.gamivo.com/*",
+        "https://gg.deals/*"
     ]
 }
