@@ -55,9 +55,9 @@ function onPageLoaded () {
 function main () {
     if (!hasInit) {
         initBlacklist();
-        createHeaderBottomContainer();
         hasInit = true;
     }
+    createHeaderBottomContainer();
     handleGameInProductPage();
     setTimeout(main, 500);
 }
@@ -87,13 +87,14 @@ function initNumberOfGame () {
 }
 
 function createHeaderBottomContainer () {
-    var header = document.getElementsByClassName('relative container pjax-inner-replace no-padding-sm presets-wrapper page-info-widget')[0];
-    header.className += ' flexbox';
-
+    var pageElement = document.getElementById('page');
+    if (!pageElement || document.getElementById(headerBottomContainerId)) {
+        return;
+    }
     var container = document.createElement('div');
     container.id = headerBottomContainerId;
     container.className = 'flexbox';
-    header.appendChild(container);
+    pageElement.insertBefore(container, pageElement.firstChild);
 
     createShowBlacklistGameCheckbox(container);
     createDownloadButton(container);
@@ -208,10 +209,13 @@ function handleGameInProductPage () {
     }
     Array.from(gameListContainer.children).forEach(e => {
         e.dataset.hasInit = "true";
+
+        var ahrefElement = e.getElementsByTagName('a')[0];
+        if (ahrefElement) {
+            e.removeChild(ahrefElement);
+        }
         var gameTitle = getGameTitle(e);
-
         var checkboxParent = getCheckboxParent(e);
-
         var checkboxImg = checkboxParent.getElementsByClassName(checkboxClassName)[0];
         if (!checkboxImg) {
             checkboxImg = createCheckbox(checkboxParent);
