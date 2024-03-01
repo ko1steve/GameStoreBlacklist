@@ -401,12 +401,13 @@ function getNewDescriptionContainer (productTitleContainer) {
     nOldAndNewPriceElement.appendChild(nCurrentPriceElement);
 
     var officialPriceElement = priceInfoContainer.getElementsByClassName('official-price')[0];
-    if (officialPriceElement) {
-        var nOfficialPriceElement = document.createElement('span');
-        nOfficialPriceElement.className = officialPriceElement.className;
-        nOfficialPriceElement.innerText = officialPriceElement.innerText;
-        nPriceInfoContainer.appendChild(nOfficialPriceElement);
+    if (!officialPriceElement) {
+        return nDescriptionContainer;
     }
+    var nOfficialPriceElement = document.createElement('span');
+    nOfficialPriceElement.className = officialPriceElement.className;
+    nOfficialPriceElement.innerText = officialPriceElement.innerText;
+    nPriceInfoContainer.appendChild(nOfficialPriceElement);
 
     return nDescriptionContainer;
 }
