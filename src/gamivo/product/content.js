@@ -337,7 +337,7 @@ function getNewProductElement (producElement) {
 
     return nProducElement;
 }
-
+const startWords = ['Buy '];
 const cutToEndWords = [
     ' EN/', ' EU/', ' DE/', ' FR/', ' IT/', ' ZH/', ' JA/', ' ES/', ' RU/', ' PL/', ' CS/', 'ROW/',
     ' EN ', ' EU ', ' DE ', ' FR ', ' IT ', ' ZH ', ' JA ', ' ES ', ' RU ', ' PL ', ' CS ', ' ROW ',
@@ -348,6 +348,12 @@ const endWords = [
 ];
 
 function getTitleWithoutExcludeWords (gameTitle) {
+    startWords.forEach(e => {
+        if (gameTitle.startsWith(e)) {
+            var cutIndex = gameTitle.indexOf(e);
+            gameTitle = gameTitle.substring(cutIndex + e.length);
+        }
+    });
     cutToEndWords.forEach(e => {
         var cutIndex = gameTitle.indexOf(e);
         if (cutIndex >= 0) {

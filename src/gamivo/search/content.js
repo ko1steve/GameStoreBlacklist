@@ -360,8 +360,9 @@ function getNewProductElement (producElement) {
 const cutToEndWords = [
     ' EN/', ' EU/', ' DE/', ' FR/', ' IT/', ' ZH/', ' JA/', ' ES/', ' RU/', ' PL/', ' CS/', 'ROW/',
     ' EN ', ' EU ', ' DE ', ' FR ', ' IT ', ' ZH ', ' JA ', ' ES ', ' RU ', ' PL ', ' CS ', ' ROW ',
+    ' Steam Account'
 ];
-const excludeTitleWords = ['Steam Gift', 'Global Steam Gift', 'Global Steam'];
+const excludeTitleWords = ['Steam Gift', 'Global Steam Gift', 'Global Steam', 'Asia Steam'];
 const endWords = [
     ' EN', ' EU', ' DE', ' FR', ' IT', ' ZH', ' JA', ' ES', ' RU', ' PL', ' CS', ' ROW',
 ];
