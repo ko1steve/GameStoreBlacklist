@@ -66,3 +66,8 @@
     width: fit-content;
     padding: 5px;
 }
+
+.official-price {
+    text-decoration:line-through;
+    margin-left: 10px;
+}

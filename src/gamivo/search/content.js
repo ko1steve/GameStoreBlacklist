@@ -213,7 +213,7 @@ function uploadLocalStorageDataFromJson () {
 }
 
 function handleGamesInSearchItems () {
-    var gameListContainer = document.getElementsByClassName('search-results__tiles ng-star-inserted')[0];
+    var gameListContainer = document.getElementsByClassName('search-results__tiles')[0];
     if (!gameListContainer || !gameListContainer.children[0] || !gameListContainer.children[0].children[0]) {
         return;
     }
@@ -234,7 +234,7 @@ function handleGamesInSearchItems () {
 
         var productTitleContainer = newElement.getElementsByClassName('product-tile')[0];
 
-        var productImageContainer = productTitleContainer.getElementsByClassName('product-tile__image ng-star-inserted')[0];
+        var productImageContainer = productTitleContainer.getElementsByClassName('product-tile__image')[0];
         if (!productImageContainer) { return; }
 
         var imageLinkContainer = productImageContainer.getElementsByTagName('div')[0];
@@ -291,7 +291,7 @@ function getNewProductElement (producElement) {
 }
 
 function getNewProductImageContainer (productTitleContainer) {
-    var productImageContainer = productTitleContainer.getElementsByClassName('product-tile__image ng-star-inserted')[0];
+    var productImageContainer = productTitleContainer.getElementsByClassName('product-tile__image')[0];
     if (!productImageContainer) { return null; }
     var nProductImageContainer = document.createElement('div');
     nProductImageContainer.className = productImageContainer.className;
@@ -361,7 +361,7 @@ function getNewPromotionContainer (productImageContainer) {
 }
 
 function getNewDescriptionContainer (productTitleContainer) {
-    var descriptionContainer = productTitleContainer.getElementsByClassName('product-tile__description ng-star-inserted')[0];
+    var descriptionContainer = productTitleContainer.getElementsByClassName('product-tile__description')[0];
     if (!descriptionContainer) { return null; }
     var nDescriptionContainer = document.createElement('div');
     nDescriptionContainer.className = descriptionContainer.className;
@@ -389,16 +389,24 @@ function getNewDescriptionContainer (productTitleContainer) {
     nPriceInfoContainer.className = priceInfoContainer.className;
     nDescriptionContainer.appendChild(nPriceInfoContainer);
 
-    var oldAndNewPriceElement = priceInfoContainer.getElementsByTagName('span')[0];
+    var currentPriceElement = priceInfoContainer.getElementsByClassName('current-price')[0];
     var nOldAndNewPriceElement = document.createElement('span');
-    nOldAndNewPriceElement.className = oldAndNewPriceElement.className;
+    nOldAndNewPriceElement.className = currentPriceElement.className;
     nPriceInfoContainer.appendChild(nOldAndNewPriceElement);
 
-    var currentPriceElement = oldAndNewPriceElement.getElementsByTagName('span')[0];
+    var currentPriceValueElement = currentPriceElement.getElementsByTagName('span')[0];
     var nCurrentPriceElement = document.createElement('span');
-    nCurrentPriceElement.className = currentPriceElement.className;
-    nCurrentPriceElement.innerText = currentPriceElement.innerText;
+    nCurrentPriceElement.className = currentPriceValueElement.className;
+    nCurrentPriceElement.innerText = currentPriceValueElement.innerText;
     nOldAndNewPriceElement.appendChild(nCurrentPriceElement);
+
+    var officialPriceElement = priceInfoContainer.getElementsByClassName('official-price')[0];
+    if (officialPriceElement) {
+        var nOfficialPriceElement = document.createElement('span');
+        nOfficialPriceElement.className = officialPriceElement.className;
+        nOfficialPriceElement.innerText = officialPriceElement.innerText;
+        nPriceInfoContainer.appendChild(nOfficialPriceElement);
+    }
 
     return nDescriptionContainer;
 }
