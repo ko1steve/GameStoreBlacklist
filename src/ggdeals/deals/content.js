@@ -245,10 +245,22 @@ function handleGameInProductPage () {
     });
 }
 
+const cutToEndWords = [' (US)', ' (ROW)', ' (PC)', ' (PC /'];
+
 function getGameTitle (e) {
     var gameInfoElement = e.getElementsByClassName('game-info-wrapper')[0];
     var gameInfoTitleElement = gameInfoElement.getElementsByClassName('game-info-title-wrapper')[0];
-    return gameInfoTitleElement.children[0].innerText;
+    var gameTitle = gameInfoTitleElement.children[0].innerText
+
+    cutToEndWords.forEach(e => {
+        var cutIndex = gameTitle.indexOf(e);
+        if (cutIndex >= 0) {
+            gameTitle = gameTitle.substring(0, cutIndex);
+        }
+    });
+    gameTitle = gameTitle.trim();
+
+    return gameTitle;
 }
 
 function getCheckboxParent (e) {
