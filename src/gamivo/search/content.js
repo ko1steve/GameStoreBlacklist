@@ -280,11 +280,20 @@ function getNewProductElement (producElement) {
     nProductTitleContainer.className = productTitleContainer.className;
     nProducElement.appendChild(nProductTitleContainer);
 
+    var nProductImageContainer = getNewProductImageContainer(productTitleContainer);
+    nProductTitleContainer.appendChild(nProductImageContainer);
+
+    var nDescriptionContainer = getNewDescriptionContainer(productTitleContainer);
+    nProductTitleContainer.appendChild(nDescriptionContainer);
+
+    return nProducElement;
+}
+
+function getNewProductImageContainer (productTitleContainer) {
     var productImageContainer = productTitleContainer.getElementsByClassName('product-tile__image ng-star-inserted')[0];
     if (!productImageContainer) { return null; }
     var nProductImageContainer = document.createElement('div');
     nProductImageContainer.className = productImageContainer.className;
-    nProductTitleContainer.appendChild(nProductImageContainer);
 
     var imageLinkContainer = productImageContainer.getElementsByClassName('ng-star-inserted')[0];
     if (!imageLinkContainer) { return null; }
@@ -314,11 +323,14 @@ function getNewProductElement (producElement) {
     nImageElement.height = imageElement.height;
     nFigureContainer.appendChild(nImageElement);
 
+    return nProductImageContainer;
+}
+
+function getNewDescriptionContainer (productTitleContainer) {
     var descriptionContainer = productTitleContainer.getElementsByClassName('product-tile__description ng-star-inserted')[0];
     if (!descriptionContainer) { return null; }
     var nDescriptionContainer = document.createElement('div');
     nDescriptionContainer.className = descriptionContainer.className;
-    nProductTitleContainer.appendChild(nDescriptionContainer);
 
     var producTitleNameContainer = descriptionContainer.getElementsByClassName('product-tile__name')[0];
     if (!producTitleNameContainer) { return null; }
@@ -354,7 +366,7 @@ function getNewProductElement (producElement) {
     nCurrentPriceElement.innerText = currentPriceElement.innerText;
     nOldAndNewPriceElement.appendChild(nCurrentPriceElement);
 
-    return nProducElement;
+    return nDescriptionContainer;
 }
 
 const cutToEndWords = [
