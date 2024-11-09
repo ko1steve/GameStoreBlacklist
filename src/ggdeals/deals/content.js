@@ -6,6 +6,7 @@ var showblacklistGamesStorageName = 'ShowBlacklistdGames';
 var blacklistMap;
 
 var checkboxClassName = 'checkboxImg';
+var checkboxDivClassName = 'checkboxDiv';
 
 var headerBottomContainerId = 'showBlacklistGameCheckboxContainerId';
 
@@ -200,15 +201,24 @@ function uploadLocalStorageDataFromJson () {
 
 function handleGameInDealPage () {
   var dealsList = document.getElementById('deals-list');
-  if (!dealsList) { return; }
-
-  var listContainer = dealsList.children[0];
-  if (!listContainer) { return; }
-
-  var listItemContainer = listContainer.children[0];
-  if (!listItemContainer || !listItemContainer.children[0] || listItemContainer.children[0].dataset.hasInit === 'true') {
+  if (!dealsList) {
+    showLog('Can not get dealsList!')
     return;
   }
+  var listContainer = dealsList.getElementsByClassName('wrap_items')[0];
+  if (!listContainer) {
+    showLog('Can not get listContainer!')
+    return;
+  }
+  var listItemContainer = listContainer.children[0];
+  if (!listItemContainer) {
+    showLog('Can not get listItemContainer!')
+    return;
+  }
+  if (!listItemContainer.children[0] || listItemContainer.children[0].dataset.hasInit === 'true') {
+    return;
+  }
+  showLog('Filters is working.')
   Array.from(listItemContainer.children).forEach(e => {
     e.dataset.hasInit = "true";
 
@@ -250,7 +260,7 @@ function handleGameInDealPage () {
   });
 }
 
-const cutToEndWords = [' (US)', ' (ROW)', ' (PC)', ' (PC /'];
+const cutToEndWords = [' (US)', ' (ROW)', ' (PC)', ' (PC /', ' RoW Steam CD Key', ' EU/NA Steam CD Key', ' EU Steam CD Key', ' NA Steam CD Key', ' Steam CD Key', ' Steam Altergift', ' Steam Gift', ' (Steam)'];
 
 function getGameTitle (e) {
   var gameInfoElement = e.getElementsByClassName('game-info-wrapper')[0];
@@ -269,12 +279,13 @@ function getGameTitle (e) {
 }
 
 function getCheckboxParent (e) {
-  var gameImageElement = e.getElementsByClassName('game-image')[0];
+  var gameImageElement = e.getElementsByClassName('feature-info')[0];
   return gameImageElement;
 }
 
 function createCheckbox (parent) {
   var conainer = document.createElement('div');
+  conainer.className = checkboxDivClassName;
   checkboxImg = document.createElement('img');
   checkboxImg.className = checkboxClassName;
   setCheckboxDisabled(checkboxImg);

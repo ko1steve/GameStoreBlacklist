@@ -9,57 +9,58 @@
       "css": [
         "src/yuplay/style.css"
       ],
-      "matches": [
-        "https://www.yuplay.com/*"
-      ],
       "js": [
         "src/yuplay/content.js"
+      ],
+      "matches": [
+        "https://www.yuplay.com/*"
       ]
     },
     {
       "css": [
         "src/gamivo/search/style.css"
       ],
+      "js": [
+        "src/gamivo/search/content.js"
+      ],
       "matches": [
         "https://www.gamivo.com/store/games/steam*",
         "https://www.gamivo.com/search*"
-      ],
-      "js": [
-        "src/gamivo/search/content.js"
       ]
     },
     {
       "css": [
         "src/gamivo/product/style.css"
       ],
-      "matches": [
-        "https://www.gamivo.com/product/*"
-      ],
       "js": [
         "src/gamivo/product/content.js"
+      ],
+      "matches": [
+        "https://www.gamivo.com/product/*"
       ]
     },
     {
       "css": [
         "src/ggdeals/deals/style.css"
       ],
-      "matches": [
-        "https://gg.deals/deals/*"
-      ],
       "js": [
         "src/ggdeals/deals/content.js"
+      ],
+      "matches": [
+        "https://gg.deals/deals/*"
       ]
     },
     {
       "css": [
         "src/ggdeals/game/style.css"
       ],
-      "matches": [
-        "https://gg.deals/game/*",
-        "https://gg.deals/dlc/*"
-      ],
       "js": [
         "src/ggdeals/game/content.js"
+      ],
+      "matches": [
+        "https://gg.deals/game/*",
+        "https://gg.deals/dlc/*",
+        "https://gg.deals/pack/*"
       ]
     }
   ],
