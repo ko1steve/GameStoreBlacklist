@@ -244,7 +244,9 @@ function getGameTitle () {
   var catagoryListElement = catagoryContainer.children[0];
   if (!catagoryListElement) { return; }
 
-  var gameNameItem = catagoryListElement.children[3];
+  var length = catagoryListElement.children.length
+
+  var gameNameItem = catagoryListElement.children[length - 1];
   if (!gameNameItem) { return; }
 
   var ahrefElement = gameNameItem.children[0];
