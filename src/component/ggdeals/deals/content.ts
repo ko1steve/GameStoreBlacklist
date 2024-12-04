@@ -1,6 +1,6 @@
 import { Container } from 'typescript-ioc'
 import { GgdealDealsDealConfig } from './config'
-import { ComponentController } from '../../core/componentController'
+import { ComponentController } from '../../../core/componentController'
 import './style.css'
 
 class GgdealsDealController extends ComponentController {

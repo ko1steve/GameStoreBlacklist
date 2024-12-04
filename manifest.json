@@ -7,10 +7,10 @@
   "content_scripts": [
     {
       "css": [
-        "src/yuplay/product/style.css"
+        "src/component/yuplay/product/style.css"
       ],
       "js": [
-        "src/yuplay/product/content.js"
+        "src/component/yuplay/product/content.js"
       ],
       "matches": [
         "https://www.yuplay.com/",
@@ -19,10 +19,10 @@
     },
     {
       "css": [
-        "src/yuplay/products/style.css"
+        "src/component/yuplay/products/style.css"
       ],
       "js": [
-        "src/yuplay/products/content.js"
+        "src/component/yuplay/products/content.js"
       ],
       "matches": [
         "https://www.yuplay.com/products/*"
@@ -30,10 +30,10 @@
     },
     {
       "css": [
-        "src/gamivo/search/style.css"
+        "src/component/gamivo/search/style.css"
       ],
       "js": [
-        "src/gamivo/search/content.js"
+        "src/component/gamivo/search/content.js"
       ],
       "matches": [
         "https://www.gamivo.com/store/games/steam*",
@@ -42,10 +42,10 @@
     },
     {
       "css": [
-        "src/gamivo/product/style.css"
+        "src/component/gamivo/product/style.css"
       ],
       "js": [
-        "src/gamivo/product/content.js"
+        "src/component/gamivo/product/content.js"
       ],
       "matches": [
         "https://www.gamivo.com/product/*"
@@ -53,10 +53,10 @@
     },
     {
       "css": [
-        "src/ggdeals/deals/style.css"
+        "src/component/ggdeals/deals/style.css"
       ],
       "js": [
-        "src/ggdeals/deals/content.js"
+        "src/component/ggdeals/deals/content.js"
       ],
       "matches": [
         "https://gg.deals/deals/*"
@@ -64,10 +64,10 @@
     },
     {
       "css": [
-        "src/ggdeals/game/style.css"
+        "src/component/ggdeals/game/style.css"
       ],
       "js": [
-        "src/ggdeals/game/content.js"
+        "src/component/ggdeals/game/content.js"
       ],
       "matches": [
         "https://gg.deals/game/*",
