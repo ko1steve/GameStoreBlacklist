@@ -1,5 +1,5 @@
 import { Container } from 'typescript-ioc'
-import { ComponentController } from '../../core/componentController'
+import { ComponentController } from '../../../core/componentController'
 import { YuplayProductConfig } from './config'
 import './style.css'
 

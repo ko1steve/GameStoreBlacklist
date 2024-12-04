@@ -11,12 +11,12 @@ const appDir = Path.dirname(__dirname)
 module.exports = {
   mode: 'none',
   entry: {
-    'src/gamivo/product/content': './src/gamivo/product/content.ts',
-    'src/gamivo/search/content': './src/gamivo/search/content.ts',
-    'src/ggdeals/deals/content': './src/ggdeals/deals/content.ts',
-    'src/ggdeals/game/content': './src/ggdeals/game/content.ts',
-    'src/yuplay/product/content': './src/yuplay/product/content.ts',
-    'src/yuplay/products/content': './src/yuplay/products/content.ts'
+    'src/component/gamivo/product/content': './src/component/gamivo/product/content.ts',
+    'src/component/gamivo/search/content': './src/component/gamivo/search/content.ts',
+    'src/component/ggdeals/deals/content': './src/component/ggdeals/deals/content.ts',
+    'src/component/ggdeals/game/content': './src/component/ggdeals/game/content.ts',
+    'src/component/yuplay/product/content': './src/component/yuplay/product/content.ts',
+    'src/component/yuplay/products/content': './src/component/yuplay/products/content.ts'
   },
   output: {
     path: Path.join(appDir, 'dist'),
