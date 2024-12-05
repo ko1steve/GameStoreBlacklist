@@ -20,23 +20,13 @@ class YuplayProductController extends ComponentController {
     setTimeout(() => this.initailzie(), 500)
   }
 
-  protected createHeaderBottomContainer (): void {
+  protected getPageHeader (): HTMLElement | null {
     const header = document.getElementById('navbar-main')
-    if (!header || header.dataset?.hasInit === 'true') {
-      return
+    if (!header) {
+      return null
     }
     header.className += ' flexbox'
-    header.dataset.hasInit = 'true'
-
-    const containerConfig = this.componentConfig.headerBottomContainer
-    const container = document.createElement('div')
-    container.id = containerConfig.id!
-    container.className = containerConfig.className!
-    header.appendChild(container)
-
-    this.createShowBlacklistGameCheckbox(container)
-    this.createDownloadButton(container)
-    this.createUploadButton(container)
+    return header
   }
 
   protected getRawGameTitle (): string {

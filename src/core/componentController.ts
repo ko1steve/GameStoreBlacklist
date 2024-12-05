@@ -61,13 +61,10 @@ export class ComponentController {
   }
 
   protected createHeaderBottomContainer (): void {
-    const header = document.getElementsByClassName('main-container row no-gutters')[0] as HTMLElement
+    const header = this.getPageHeader()
     if (!header || header.dataset?.hasInit === 'true') {
       return
     }
-    header.className += ' flexbox'
-    header.dataset.hasInit = 'true'
-
     const config = this.componentConfig.headerBottomContainer
     const container = document.createElement('div')
     container.id = config.id!
@@ -77,6 +74,17 @@ export class ComponentController {
     this.createShowBlacklistGameCheckbox(container)
     this.createDownloadButton(container)
     this.createUploadButton(container)
+
+    header.dataset.hasInit = 'true'
+  }
+
+  protected getPageHeader (): HTMLElement | null {
+    const header = document.getElementById('header-id')
+    if (!header) {
+      return null
+    }
+    // modify header (ex. add class, modify style)
+    return header
   }
 
   protected createShowBlacklistGameCheckbox (parent: HTMLElement): void {
@@ -239,11 +247,16 @@ export class ComponentController {
   }
 
   protected getGameListContainer (): HTMLElement | null {
-    return null
+    const container = document.getElementById('gameList')
+    return container
   }
 
   protected getRawGameTitle (infoContainer?: HTMLElement): string {
-    return ''
+    const titleContainer = document.getElementById('title')
+    if (!titleContainer) {
+      return ''
+    }
+    return titleContainer.innerText
   }
 
   protected getModifiedGameTitle (gameTitle: string): string {
@@ -272,7 +285,8 @@ export class ComponentController {
   }
 
   protected getCheckboxParent (infoContainer?: HTMLElement): HTMLElement | null {
-    return null
+    const checkboxParent = document.getElementById('product-info')
+    return checkboxParent
   }
 
   protected addCheckbox (checkboxParent: HTMLElement, gameTitle: string, option?: IGameInfoOption): void {
@@ -340,16 +354,6 @@ export class ComponentController {
     const config = this.componentConfig.headerBottomContainer.showBlacklistGameContainer.checkbox
     checkboxImg.dataset.action = config.disabledAction!
     checkboxImg.src = chrome.runtime.getURL(config.disabledSourceName!)
-  }
-
-  protected updateNumberOfGameOnAddGame (): void {
-    this.numberOfGames++
-    this.updateTextOfNumberOfGame()
-  }
-
-  protected updateNumberOfGameOnRemoveGame (): void {
-    this.numberOfGames--
-    this.updateTextOfNumberOfGame()
   }
 
   protected updateTextOfNumberOfGame (): void {
