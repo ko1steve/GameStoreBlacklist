@@ -12,7 +12,6 @@ class GgdealsDealController extends ComponentController {
     if (!pageElement || pageElement.dataset.hasInit === 'true') {
       return
     }
-    pageElement.dataset.hasInit = 'true'
     const container = document.createElement('div')
     container.id = containerConfig.id!
     container.className = 'flexbox'
@@ -21,6 +20,7 @@ class GgdealsDealController extends ComponentController {
     this.createShowBlacklistGameCheckbox(container)
     this.createDownloadButton(container)
     this.createUploadButton(container)
+    pageElement.dataset.hasInit = 'true'
   }
 
   protected getGameListContainer (): HTMLElement | null {

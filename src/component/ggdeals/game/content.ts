@@ -9,7 +9,7 @@ class GgdealsGameController extends ComponentController {
   protected createHeaderBottomContainer (): void {
     const containerConfig = this.componentConfig.headerBottomContainer
     const pageElement = document.getElementById('page')
-    if (!pageElement || document.getElementById(containerConfig.id!)) {
+    if (!pageElement || pageElement.dataset.hasInit === 'true') {
       return
     }
     const container = document.createElement('div')
@@ -20,6 +20,11 @@ class GgdealsGameController extends ComponentController {
     this.createShowBlacklistGameCheckbox(container)
     this.createDownloadButton(container)
     this.createUploadButton(container)
+    pageElement.dataset.hasInit = 'true'
+  }
+
+  protected getPageHeader (): HTMLElement | null {
+    return null
   }
 
   protected getCheckboxParent (): HTMLElement | null {
