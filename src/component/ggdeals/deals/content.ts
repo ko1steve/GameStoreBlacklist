@@ -39,40 +39,19 @@ class GgdealsDealController extends ComponentController {
     return listItemContainer
   }
 
-  protected addCheckBoxToGameListEachChild (gameInfoElement: HTMLElement, gameListContainer: HTMLElement): void {
-    if (gameInfoElement && gameInfoElement.dataset && gameInfoElement.dataset.hasInit === 'true') {
-      return
+  protected modifyGameInfoElement (infoElement: HTMLElement): HTMLElement | null {
+    const ahrefElement = infoElement.getElementsByClassName('full-link')[0]
+    if (!ahrefElement) {
+      return null
     }
-    const ahrefElement = gameInfoElement.getElementsByClassName('full-link')[0]
-    if (ahrefElement) {
-      gameInfoElement.removeChild(ahrefElement)
-    }
-    const rawGameTitle = this.getRawGameTitle(gameInfoElement)
-    const gameTitle = this.getModifiedGameTitle(rawGameTitle)
-
-    const checkboxParent = this.getCheckboxParent(gameInfoElement) as HTMLDivElement
-    if (!checkboxParent) {
-      return
-    }
-    this.addCheckbox(checkboxParent, gameTitle, {
-      hideGame: {
-        infoElement: gameInfoElement,
-        parentList: gameListContainer
-      }
-    })
-    if (this.componentConfig.isGameListPage) {
-      const inBlacklist = this.getGameStatus(gameTitle)
-      if (inBlacklist && !this.showBlacklistGames) {
-        this.hideGame(gameListContainer, gameInfoElement)
-      }
-    }
-    gameInfoElement.dataset.hasInit = 'true'
+    infoElement.removeChild(ahrefElement)
+    return infoElement
   }
 
   protected getRawGameTitle (infoContainer: HTMLElement): string {
-    const gameInfoElement = infoContainer.getElementsByClassName('game-info-wrapper')[0]
-    const wrapperElement = gameInfoElement.getElementsByClassName('game-info-title-wrapper')[0] as HTMLElement
-    return (wrapperElement.children[0] as HTMLElement).innerText
+    return ((infoContainer.getElementsByClassName('game-info-wrapper')[0]
+      ?.getElementsByClassName('game-info-title-wrapper')[0] as HTMLElement
+    )?.children[0] as HTMLElement).innerText
   }
 
   protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement {

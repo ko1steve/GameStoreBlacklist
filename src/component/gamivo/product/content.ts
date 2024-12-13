@@ -15,28 +15,13 @@ class GamivoProductController extends ComponentController {
     return header
   }
 
-  protected getRawGameTitle (infoContainer?: HTMLElement): string {
-    const productInfoContainer = document.getElementsByClassName('product-info')[0]
-    if (!productInfoContainer) {
-      return ''
-    }
-    const productInfoTop = productInfoContainer.getElementsByClassName('product-info__top')[0]
-    if (!productInfoTop) {
-      return ''
-    }
-    const productInfoName = productInfoTop.getElementsByClassName('product-info__name')[0]
-    if (!productInfoName) {
-      return ''
-    }
-    const productTitle = productInfoName.getElementsByTagName('h1')[0]
-    if (!productTitle) {
-      return ''
-    }
-    const productNameElement = productTitle.getElementsByTagName('span')[0]
-    if (!productNameElement) {
-      return ''
-    }
-    return productNameElement.innerText || ''
+  protected getRawGameTitle (infoContainer?: HTMLElement): string | undefined {
+    return document.getElementsByClassName('product-info')[0]
+      ?.getElementsByClassName('product-info__top')[0]
+      ?.getElementsByClassName('product-info__name')[0]
+      ?.getElementsByTagName('h1')[0]
+      ?.getElementsByTagName('span')[0]
+      ?.innerText
   }
 
   protected getCheckboxParent (): HTMLElement | null {

@@ -35,54 +35,18 @@ class GamivoSearchController extends ComponentController {
     return productImageContainer.getElementsByTagName('div')[0] as HTMLDivElement
   }
 
-  protected getRawGameTitle (infoContainer: HTMLElement): string {
-    let child = infoContainer.children[0]
-    if (!child) {
-      return ''
-    }
-    child = child.children[1]
-    if (!child) {
-      return ''
-    }
-    child = child.children[0]
-    if (!child) {
-      return ''
-    }
-    child = child.children[0]
-    if (!child) {
-      return ''
-    }
-    return (child as HTMLSpanElement).innerText
+  protected getRawGameTitle (infoContainer: HTMLElement): string | undefined {
+    return (infoContainer.children[0]?.children[1]?.children[0]?.children[0] as HTMLSpanElement)?.innerText
   }
 
-  protected addCheckBoxToGameListEachChild (oldInfoElement: HTMLElement, gameListContainer: HTMLElement): void {
-    if (oldInfoElement.dataset.hasInit) {
-      gameListContainer.removeChild(oldInfoElement)
-      return
+  protected modifyGameInfoElement (infoElement: HTMLElement, parent: HTMLElement): HTMLElement | null {
+    const newInfoElement = this.getModifiedInfoElement(infoElement)
+    if (!newInfoElement) {
+      return null
     }
-    const newInfoElement = this.getModifiedInfoElement(oldInfoElement)
-    if (!newInfoElement) { return }
-    gameListContainer.removeChild(oldInfoElement)
-    gameListContainer.appendChild(newInfoElement)
-
-    const rawGameTitle = this.getRawGameTitle(newInfoElement)
-    const gameTitle = this.getModifiedGameTitle(rawGameTitle)
-
-    const checkboxParent = this.getCheckboxParent(newInfoElement)
-    if (!checkboxParent) {
-      return
-    }
-    this.addCheckbox(checkboxParent, gameTitle, {
-      hideGame: {
-        infoElement: newInfoElement,
-        parentList: gameListContainer
-      }
-    })
-    const inBlacklist = this.getGameStatus(gameTitle)
-    if (inBlacklist && !this.showBlacklistGames) {
-      this.hideGame(gameListContainer, newInfoElement)
-    }
-    newInfoElement.dataset.hasInit = 'true'
+    parent.removeChild(infoElement)
+    parent.appendChild(newInfoElement)
+    return newInfoElement
   }
 
   private getModifiedInfoElement (infoElement: HTMLElement) {

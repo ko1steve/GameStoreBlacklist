@@ -53,38 +53,11 @@ class GgdealsGameController extends ComponentController {
     return wrapperElement
   }
 
-  protected getRawGameTitle (infoContainer?: HTMLElement): string {
-    const pageElement = document.getElementById('page')
-    if (!pageElement) {
-      return ''
-    }
-    const topAreaContainer = pageElement.getElementsByClassName('relative breadcrumbs-widget pjax-inner-replace')[0]
-    if (!topAreaContainer) {
-      return ''
-    }
-    const catagoryContainer = topAreaContainer.children[0]
-    if (!catagoryContainer) {
-      return ''
-    }
-    const catagoryListElement = catagoryContainer.children[0]
-    if (!catagoryListElement) {
-      return ''
-    }
-    const length = catagoryListElement.children.length
-
-    const gameNameItem = catagoryListElement.children[length - 1]
-    if (!gameNameItem) {
-      return ''
-    }
-    const ahrefElement = gameNameItem.children[0]
-    if (!ahrefElement) {
-      return ''
-    }
-    const spanElemenmt = gameNameItem.children[0]
-    if (!spanElemenmt) {
-      return ''
-    }
-    return (spanElemenmt as HTMLElement).innerText
+  protected getRawGameTitle (infoContainer?: HTMLElement): string | undefined {
+    const catagoryListElement = document.getElementById('page')
+      ?.getElementsByClassName('relative breadcrumbs-widget pjax-inner-replace')[0]?.children[0]?.children[0]
+    const length = catagoryListElement?.children.length!
+    return (catagoryListElement?.children[length - 1]?.children[0]?.children[0] as HTMLElement)?.innerText
   }
 }
 
