@@ -3,6 +3,7 @@ import { TSMap } from 'typescript-map'
 import { MainConfig } from '../mainConfig'
 import { ComponentConfig } from './componentConfig'
 import { IGameInfoOption } from 'src/data/commonData'
+import { CommonTool } from 'src/util/commonTool'
 
 export class ComponentController {
   protected componentId: string
@@ -222,13 +223,14 @@ export class ComponentController {
   }
 
   protected addCheckBoxToGameListEachChild (gameInfoElement: HTMLElement, gameListContainer: HTMLElement): void {
-    if (gameInfoElement && gameInfoElement.dataset && gameInfoElement.dataset.hasInit === 'true') {
+    if (gameInfoElement.dataset && gameInfoElement.dataset.hasInit === 'true') {
       return
     }
-    if (!this.modifyGameInfoElement(gameInfoElement)) {
-      console.log('!modifyGameInfoElement')
+    const modifiedInfoElement = this.modifyGameInfoElement(gameInfoElement, gameListContainer)
+    if (!modifiedInfoElement) {
       return
     }
+    gameInfoElement = modifiedInfoElement
     const rawGameTitle = this.getRawGameTitle(gameInfoElement)
     if (!rawGameTitle) {
       return
@@ -239,7 +241,12 @@ export class ComponentController {
     if (!checkboxParent) {
       return
     }
-    this.addCheckbox(checkboxParent, gameTitle)
+    this.addCheckbox(checkboxParent, gameTitle, {
+      hideGame: {
+        infoElement: gameInfoElement,
+        parentList: gameListContainer
+      }
+    })
 
     if (this.componentConfig.isGameListPage) {
       const inBlacklist = this.getGameStatus(gameTitle)
@@ -250,9 +257,9 @@ export class ComponentController {
     gameInfoElement.dataset.hasInit = 'true'
   }
 
-  protected modifyGameInfoElement (infoElement: HTMLElement): boolean {
+  protected modifyGameInfoElement (infoElement: HTMLElement, parent: HTMLElement): HTMLElement | null {
     // ex. add class, remove children
-    return true
+    return infoElement
   }
 
   protected getGameListContainer (): HTMLElement | null {
@@ -389,7 +396,7 @@ export class ComponentController {
       this.blacklistMap.set(key, list)
     }
     localStorage.setItem(this.mainConfig.localStorage.blacklist.name, JSON.stringify(Object.fromEntries(this.blacklistMap.entries())))
-    this.showLog('Add "' + gameTitle + '" to blacklist. ')
+    CommonTool.showLog('Add "' + gameTitle + '" to blacklist. ')
   }
 
   protected removeGameFromBlacklist (gameTitle: string): void {
@@ -405,7 +412,7 @@ export class ComponentController {
     list.splice(index, 1)
     this.blacklistMap.set(key, list)
     localStorage.setItem(this.mainConfig.localStorage.blacklist.name, JSON.stringify(Object.fromEntries(this.blacklistMap.entries())))
-    this.showLog('Removed "' + gameTitle + '" from blacklist. ')
+    CommonTool.showLog('Removed "' + gameTitle + '" from blacklist. ')
   }
 
   protected trimGameName (): void {
@@ -422,9 +429,5 @@ export class ComponentController {
       })
     }
     localStorage.setItem(this.mainConfig.localStorage.blacklist.name, JSON.stringify(Object.fromEntries(this.blacklistMap.entries())))
-  }
-
-  protected showLog (msg: string): void {
-    console.log('%c[extension] ' + msg, 'color: green font-weight: bold')
   }
 }

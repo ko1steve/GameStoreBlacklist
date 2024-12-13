@@ -39,13 +39,13 @@ class GgdealsDealController extends ComponentController {
     return listItemContainer
   }
 
-  protected modifyGameInfoElement (infoElement: HTMLElement): boolean {
+  protected modifyGameInfoElement (infoElement: HTMLElement): HTMLElement | null {
     const ahrefElement = infoElement.getElementsByClassName('full-link')[0]
     if (!ahrefElement) {
-      return false
+      return null
     }
     infoElement.removeChild(ahrefElement)
-    return true
+    return infoElement
   }
 
   protected getRawGameTitle (infoContainer: HTMLElement): string {
