@@ -186,7 +186,7 @@ export class ComponentController {
 
   protected handlePageContent (): void {
     const rawGameTitle = this.getRawGameTitle()
-    if (rawGameTitle === '') {
+    if (!rawGameTitle) {
       return
     }
     const gameTitle = this.getModifiedGameTitle(rawGameTitle)
@@ -225,8 +225,12 @@ export class ComponentController {
     if (gameInfoElement && gameInfoElement.dataset && gameInfoElement.dataset.hasInit === 'true') {
       return
     }
+    if (!this.modifyGameInfoElement(gameInfoElement)) {
+      console.log('!modifyGameInfoElement')
+      return
+    }
     const rawGameTitle = this.getRawGameTitle(gameInfoElement)
-    if (rawGameTitle === '') {
+    if (!rawGameTitle) {
       return
     }
     const gameTitle = this.getModifiedGameTitle(rawGameTitle)
@@ -246,17 +250,18 @@ export class ComponentController {
     gameInfoElement.dataset.hasInit = 'true'
   }
 
+  protected modifyGameInfoElement (infoElement: HTMLElement): boolean {
+    // ex. add class, remove children
+    return true
+  }
+
   protected getGameListContainer (): HTMLElement | null {
     const container = document.getElementById('gameList')
     return container
   }
 
-  protected getRawGameTitle (infoContainer?: HTMLElement): string {
-    const titleContainer = document.getElementById('title')
-    if (!titleContainer) {
-      return ''
-    }
-    return titleContainer.innerText
+  protected getRawGameTitle (infoContainer?: HTMLElement): string | undefined {
+    return document.getElementById('title')?.innerText
   }
 
   protected getModifiedGameTitle (gameTitle: string): string {

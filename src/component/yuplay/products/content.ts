@@ -29,19 +29,8 @@ class YuplayProductsController extends ComponentController {
     })
   }
 
-  protected getRawGameTitle (infoContainer?: HTMLElement): string {
-    if (!infoContainer) {
-      return ''
-    }
-    const imageContainer = infoContainer.children[0] as HTMLElement
-    if (!imageContainer) {
-      return ''
-    }
-    const titleCOntainer = imageContainer.getElementsByClassName('catalog-image-ratio-container')[0] as HTMLElement
-    if (!titleCOntainer) {
-      return ''
-    }
-    return titleCOntainer.title
+  protected getRawGameTitle (infoContainer?: HTMLElement): string | undefined {
+    return (infoContainer?.children[0]?.getElementsByClassName('catalog-image-ratio-container')[0] as HTMLElement)?.title
   }
 
   protected getCheckboxParent (infoContainer?: HTMLElement): HTMLElement | null {

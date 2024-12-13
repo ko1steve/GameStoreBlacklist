@@ -16,7 +16,8 @@ module.exports = {
     'src/component/ggdeals/deals/content': './src/component/ggdeals/deals/content.ts',
     'src/component/ggdeals/game/content': './src/component/ggdeals/game/content.ts',
     'src/component/yuplay/product/content': './src/component/yuplay/product/content.ts',
-    'src/component/yuplay/products/content': './src/component/yuplay/products/content.ts'
+    'src/component/yuplay/products/content': './src/component/yuplay/products/content.ts',
+    'src/component/humbleBundle/search/content': './src/component/humbleBundle/search/content.ts'
   },
   output: {
     path: Path.join(appDir, 'dist'),

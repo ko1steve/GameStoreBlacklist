@@ -74,6 +74,17 @@
         "https://gg.deals/dlc/*",
         "https://gg.deals/pack/*"
       ]
+    },
+    {
+      "css": [
+        "src/component/humbleBundle/search/style.css"
+      ],
+      "js": [
+        "src/component/humbleBundle/search/content.js"
+      ],
+      "matches": [
+        "https://www.humblebundle.com/store/search*"
+      ]
     }
   ],
   "web_accessible_resources": [
@@ -94,6 +105,7 @@
   "host_permissions": [
     "https://www.yuplay.com/*",
     "https://www.gamivo.com/*",
-    "https://gg.deals/*"
+    "https://gg.deals/*",
+    "https://www.humblebundle.com/*"
   ]
 }

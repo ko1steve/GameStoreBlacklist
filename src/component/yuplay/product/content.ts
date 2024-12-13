@@ -29,16 +29,8 @@ class YuplayProductController extends ComponentController {
     return header
   }
 
-  protected getRawGameTitle (): string {
-    const mainItemContainer = document.getElementById('product-main-information')
-    if (!mainItemContainer) {
-      return ''
-    }
-    const productNameContainer = mainItemContainer.getElementsByClassName('product-name')[0]
-    if (!productNameContainer) {
-      return ''
-    }
-    return productNameContainer.innerHTML
+  protected getRawGameTitle (): string | undefined {
+    return document.getElementById('product-main-information')?.getElementsByClassName('product-name')[0]?.innerHTML
   }
 
   protected getCheckboxParent (infoContainer?: HTMLElement): HTMLElement | null {
