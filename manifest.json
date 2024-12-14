@@ -19,13 +19,24 @@
     },
     {
       "css": [
-        "src/component/yuplay/products/style.css"
+        "src/component/yuplay/search/style.css"
       ],
       "js": [
-        "src/component/yuplay/products/content.js"
+        "src/component/yuplay/search/content.js"
       ],
       "matches": [
         "https://www.yuplay.com/products/*"
+      ]
+    },
+    {
+      "css": [
+        "src/component/gamivo/product/style.css"
+      ],
+      "js": [
+        "src/component/gamivo/product/content.js"
+      ],
+      "matches": [
+        "https://www.gamivo.com/product/*"
       ]
     },
     {
@@ -42,37 +53,26 @@
     },
     {
       "css": [
-        "src/component/gamivo/product/style.css"
+        "src/component/ggdeals/product/style.css"
       ],
       "js": [
-        "src/component/gamivo/product/content.js"
-      ],
-      "matches": [
-        "https://www.gamivo.com/product/*"
-      ]
-    },
-    {
-      "css": [
-        "src/component/ggdeals/deals/style.css"
-      ],
-      "js": [
-        "src/component/ggdeals/deals/content.js"
-      ],
-      "matches": [
-        "https://gg.deals/deals/*"
-      ]
-    },
-    {
-      "css": [
-        "src/component/ggdeals/game/style.css"
-      ],
-      "js": [
-        "src/component/ggdeals/game/content.js"
+        "src/component/ggdeals/product/content.js"
       ],
       "matches": [
         "https://gg.deals/game/*",
         "https://gg.deals/dlc/*",
         "https://gg.deals/pack/*"
+      ]
+    },
+    {
+      "css": [
+        "src/component/ggdeals/search/style.css"
+      ],
+      "js": [
+        "src/component/ggdeals/search/content.js"
+      ],
+      "matches": [
+        "https://gg.deals/deals/*"
       ]
     },
     {

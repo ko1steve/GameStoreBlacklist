@@ -1,10 +1,10 @@
 import { Container } from 'typescript-ioc'
 import { ComponentController } from '../../../core/componentController'
-import { GgdealsGameConfig } from './config'
+import { GgdealsProductConfig } from './config'
 import './style.css'
 
-class GgdealsGameController extends ComponentController {
-  protected componentConfig!: GgdealsGameConfig
+class GgdealsProductController extends ComponentController {
+  protected componentConfig!: GgdealsProductConfig
 
   protected createHeaderBottomContainer (): void {
     const containerConfig = this.componentConfig.headerBottomContainer
@@ -61,5 +61,5 @@ class GgdealsGameController extends ComponentController {
   }
 }
 
-const componentConfig = Container.get(GgdealsGameConfig)
-const controller = new GgdealsGameController(componentConfig)
+const componentConfig = Container.get(GgdealsProductConfig)
+const controller = new GgdealsProductController(componentConfig)
