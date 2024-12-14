@@ -1,10 +1,10 @@
 import { Container } from 'typescript-ioc'
 import { ComponentController } from '../../../core/componentController'
-import { YuplayProductsConfig } from './config'
+import { YuplaySearchConfig } from './config'
 import './style.css'
 
-class YuplayProductsController extends ComponentController {
-  protected componentConfig!: YuplayProductsConfig
+class YuplaySearchController extends ComponentController {
+  protected componentConfig!: YuplaySearchConfig
 
   protected getPageHeader (): HTMLElement | null {
     const header = document.getElementById('navbar-main')
@@ -41,5 +41,5 @@ class YuplayProductsController extends ComponentController {
   }
 }
 
-const componentConfig = Container.get(YuplayProductsConfig)
-const controller = new YuplayProductsController(componentConfig)
+const componentConfig = Container.get(YuplaySearchConfig)
+const controller = new YuplaySearchController(componentConfig)

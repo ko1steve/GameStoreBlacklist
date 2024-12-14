@@ -13,10 +13,10 @@ module.exports = {
   entry: {
     'src/component/gamivo/product/content': './src/component/gamivo/product/content.ts',
     'src/component/gamivo/search/content': './src/component/gamivo/search/content.ts',
-    'src/component/ggdeals/deals/content': './src/component/ggdeals/deals/content.ts',
-    'src/component/ggdeals/game/content': './src/component/ggdeals/game/content.ts',
+    'src/component/ggdeals/product/content': './src/component/ggdeals/product/content.ts',
+    'src/component/ggdeals/search/content': './src/component/ggdeals/search/content.ts',
     'src/component/yuplay/product/content': './src/component/yuplay/product/content.ts',
-    'src/component/yuplay/products/content': './src/component/yuplay/products/content.ts',
+    'src/component/yuplay/search/content': './src/component/yuplay/search/content.ts',
     'src/component/humbleBundle/product/content': './src/component/humbleBundle/product/content.ts',
     'src/component/humbleBundle/search/content': './src/component/humbleBundle/search/content.ts'
   },
