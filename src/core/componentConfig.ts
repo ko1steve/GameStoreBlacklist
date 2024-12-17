@@ -85,6 +85,12 @@ export class ComponentConfig implements IComponentConfig {
     }
   };
 
+  public validateButton: IButtonElement = {
+    id: 'validateButton',
+    className: 'flexboxItem',
+    textContent: 'Validate'
+  };
+
   public texthandle: ITextHandleConfig = {
     startWords: [],
     endWords: [],
