@@ -19,7 +19,15 @@
   "rules": {
     "no-use-before-define": "off",
     "no-unused-vars": "off",
-    "@typescript-eslint/no-require-imports": "error"
+    "@typescript-eslint/no-require-imports": "error",
+    "semi": [
+      "error",
+      "always"
+    ],
+    "@typescript-eslint/semi": [
+      "error",
+      "always"
+    ]
   },
   "globals": {
     "chrome": "readonly"
