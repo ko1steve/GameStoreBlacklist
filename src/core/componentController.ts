@@ -75,6 +75,7 @@ export class ComponentController {
     this.createShowBlacklistGameCheckbox(container);
     this.createDownloadButton(container);
     this.createUploadButton(container);
+    this.createValidateButton(container);
 
     header.dataset.hasInit = 'true';
   }
@@ -182,6 +183,46 @@ export class ComponentController {
       reader.readAsText(file);
     } else {
       alert('Please select a JSON file to upload.');
+    }
+  }
+
+  protected createValidateButton (parent: HTMLElement): void {
+    const button = document.createElement('button');
+    button.id = this.componentConfig.validateButton.id!;
+    button.className = this.componentConfig.validateButton.className!;
+    button.textContent = this.componentConfig.validateButton.textContent!;
+    button.onclick = () => {
+      this.validateData();
+    };
+    parent.appendChild(button);
+  }
+
+  protected validateData (): void {
+    const jsonContent = localStorage.getItem(this.mainConfig.localStorage.blacklist.name);
+    if (jsonContent) {
+      const entries = Object.entries(JSON.parse(jsonContent)) as (string | string[])[][];
+      for (let i = 0; i < entries.length; i++) {
+        const capital = entries[i][0] as string;
+        const gameList = entries[i][1] as string[];
+        for (const j in gameList) {
+          gameList[j] = gameList[j].toLowerCase();
+        }
+        const lowerCapital = capital.toLowerCase();
+        if (capital !== lowerCapital) {
+          const lowerCaseEntry = entries.find(entry => entry[0] === lowerCapital);
+          if (lowerCaseEntry) {
+            (lowerCaseEntry[1] as string[]).push(...gameList);
+          } else {
+            entries.push([lowerCapital, [...gameList]]);
+          }
+          entries.splice(+i, 1);
+          i--;
+        }
+      }
+      const newJsonContent = JSON.stringify(Object.fromEntries(entries));
+      localStorage.setItem(this.mainConfig.localStorage.blacklist.name, newJsonContent);
+      alert('Validation is completed.');
+      window.location.reload();
     }
   }
 
@@ -379,6 +420,7 @@ export class ComponentController {
   }
 
   protected getGameStatus (gameTitle: string): boolean {
+    gameTitle = gameTitle.toLowerCase();
     const key = gameTitle[0];
     if (!this.blacklistMap.has(key)) {
       return false;

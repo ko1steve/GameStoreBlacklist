@@ -25,8 +25,8 @@
 
 .flexbox {
     display: flex;
-    justify-content: center;    
-    align-items: center;  
+    justify-content: center;
+    align-items: center;
 }
 
 .flexboxItem {
@@ -54,6 +54,14 @@
     visibility: hidden;
     width: 0px;
     height: 0px;
+}
+
+#validateButton {
+    border-radius: 5px;
+    background-color:palevioletred;
+    color: aliceblue;
+    font-weight: bolder;
+    padding: 10px 10px 10px 10px;
 }
 
 .promotion {
