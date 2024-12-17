@@ -1,12 +1,12 @@
-import * as Path from 'path'
-import MiniCssExtractPlugin from 'mini-css-extract-plugin'
-import ESLintPlugin from 'eslint-webpack-plugin'
-import TerserWebpackPlugin from 'terser-webpack-plugin'
-import { ProvidePlugin } from 'webpack'
-import CopyWebpackPlugin from 'copy-webpack-plugin'
-import { AssetList } from '../src/assetList'
+import * as Path from 'path';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import ESLintPlugin from 'eslint-webpack-plugin';
+import TerserWebpackPlugin from 'terser-webpack-plugin';
+import { ProvidePlugin } from 'webpack';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
+import { AssetList } from '../src/assetList';
 
-const appDir = Path.dirname(__dirname)
+const appDir = Path.dirname(__dirname);
 
 module.exports = {
   mode: 'none',
@@ -76,7 +76,7 @@ module.exports = {
   target: 'web',
   plugins: [
     new ProvidePlugin({
-      process: 'process/browser',
+      process: 'process/browser'
     }),
     new ESLintPlugin({
       extensions: ['ts', 'tsx']
@@ -92,4 +92,4 @@ module.exports = {
     minimize: true,
     minimizer: [new TerserWebpackPlugin()]
   }
-}
+};

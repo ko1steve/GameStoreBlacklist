@@ -1,4 +1,4 @@
-import { Singleton } from 'typescript-ioc'
+import { Singleton } from 'typescript-ioc';
 
 export interface IMainConfig {
   localStorage: {
@@ -20,5 +20,5 @@ export class MainConfig implements IMainConfig {
     showblacklistGames: {
       name: 'ShowBlacklistdGames'
     }
-  }
+  };
 }

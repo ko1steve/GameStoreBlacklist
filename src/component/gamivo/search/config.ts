@@ -1,4 +1,4 @@
-import { ComponentConfig, ITextHandleConfig } from '../../../core/componentConfig'
+import { ComponentConfig, ITextHandleConfig } from '../../../core/componentConfig';
 
 export class GamivoSearchConfig extends ComponentConfig {
   public texthandle: ITextHandleConfig = {
@@ -14,7 +14,7 @@ export class GamivoSearchConfig extends ComponentConfig {
     endWords: [
       ' EN', ' EU', ' DE', ' FR', ' IT', ' ZH', ' JA', ' ES', ' RU', ' PL', ' CS', ' ROW'
     ]
-  }
+  };
 
-  public isGameListPage: boolean = true
+  public isGameListPage: boolean = true;
 }

@@ -1,4 +1,4 @@
-import { IButtonElement, ICheckboxImageElement, IHTMLElement, ILabelEleemnt } from '../data/commonData'
+import { IButtonElement, ICheckboxImageElement, IHTMLElement, ILabelEleemnt } from '../data/commonData';
 
 export interface IComponentConfig {
   componentId: string
@@ -35,7 +35,7 @@ export interface IUploadButton extends IHTMLElement {
 }
 
 export class ComponentConfig implements IComponentConfig {
-  public componentId = 'component'
+  public componentId = 'component';
 
   public checkboxContainer: ICheckBoxContainer = {
     className: 'checkboxContainer',
@@ -46,7 +46,7 @@ export class ComponentConfig implements IComponentConfig {
       action: 'actionCheckboxEnabled',
       disabledAction: 'actionCheckboxDisabled'
     }
-  }
+  };
 
   public headerBottomContainer: IHeaderContainer = {
     id: 'headerBottom',
@@ -66,13 +66,13 @@ export class ComponentConfig implements IComponentConfig {
         }
       }
     }
-  }
+  };
 
   public downloadButton: IButtonElement = {
     id: 'downloadLocalStorageAsJsonButton',
     className: 'flexboxItem',
     textContent: 'Download local stoage data as JSON'
-  }
+  };
 
   public uploadButton: IUploadButton = {
     label: {
@@ -83,14 +83,14 @@ export class ComponentConfig implements IComponentConfig {
     input: {
       id: 'uploadLocalStorageFromJsonInput'
     }
-  }
+  };
 
   public texthandle: ITextHandleConfig = {
     startWords: [],
     endWords: [],
     cutToEndWords: [],
     excludeTitleWords: []
-  }
+  };
 
-  public isGameListPage: boolean = false
+  public isGameListPage: boolean = false;
 }

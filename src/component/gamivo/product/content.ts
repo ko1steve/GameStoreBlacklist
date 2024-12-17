@@ -1,18 +1,18 @@
-import { Container } from 'typescript-ioc'
-import { ComponentController } from '../../../core/componentController'
-import { GamivoProductConfig } from './config'
-import './style.css'
+import { Container } from 'typescript-ioc';
+import { ComponentController } from '../../../core/componentController';
+import { GamivoProductConfig } from './config';
+import './style.css';
 
 class GamivoProductController extends ComponentController {
-  protected componentConfig!: GamivoProductConfig
+  protected componentConfig!: GamivoProductConfig;
 
   protected getPageHeader (): HTMLElement | null {
-    const header = document.getElementsByClassName('main-container row no-gutters')[0] as HTMLElement
+    const header = document.getElementsByClassName('main-container row no-gutters')[0] as HTMLElement;
     if (!header) {
-      return null
+      return null;
     }
-    header.className += ' flexbox'
-    return header
+    header.className += ' flexbox';
+    return header;
   }
 
   protected getRawGameTitle (infoContainer?: HTMLElement): string | undefined {
@@ -21,13 +21,13 @@ class GamivoProductController extends ComponentController {
       ?.getElementsByClassName('product-info__name')[0]
       ?.getElementsByTagName('h1')[0]
       ?.getElementsByTagName('span')[0]
-      ?.innerText
+      ?.innerText;
   }
 
   protected getCheckboxParent (): HTMLElement | null {
-    return document.getElementsByClassName('product-info')[0] as HTMLDivElement
+    return document.getElementsByClassName('product-info')[0] as HTMLDivElement;
   }
 }
 
-const componentConfig = Container.get(GamivoProductConfig)
-const controller = new GamivoProductController(componentConfig)
+const componentConfig = Container.get(GamivoProductConfig);
+const controller = new GamivoProductController(componentConfig);

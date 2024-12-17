@@ -1,5 +1,5 @@
-import { ComponentConfig } from '../../../core/componentConfig'
+import { ComponentConfig } from '../../../core/componentConfig';
 
 export class YuplaySearchConfig extends ComponentConfig {
-  public isGameListPage: boolean = true
+  public isGameListPage: boolean = true;
 }
