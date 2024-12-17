@@ -1,15 +1,13 @@
 .checkboxImg {
+    position: absolute;
+    top: 12px;
+    left: -50px;
     cursor: pointer;
-    width: 50px;
-    height: 50px;
-    z-index: 2;
-    pointer-events: visible;
+    z-index: 999;
 }
 
-.checkboxContainer {
-    position: absolute;
-    top: 0px;
-    right: 0px;
+.checkboxDiv {
+  z-index: 999;
 }
 
 #showBlacklistGameCheckboxImg {
@@ -17,16 +15,16 @@
 }
 
 #showBlaclistGameCheckboxText {
-    color:aliceblue;
+    color:rgb(255, 255, 255);
     font-weight: bolder;
-    font-size: 25px;
+    font-size: 15px;
     margin-left: 10px;
 }
 
 .flexbox {
     display: flex;
-    justify-content: center;    
-    align-items: center;  
+    justify-content: center;
+    align-items: center;
 }
 
 .flexboxItem {
@@ -34,6 +32,7 @@
 }
 
 #downloadLocalStorageAsJsonButton {
+    border-width: 0;
     border-radius: 5px;
     background-color:lightseagreen;
     color: aliceblue;
@@ -54,4 +53,12 @@
     visibility: hidden;
     width: 0px;
     height: 0px;
+}
+
+#validateButton {
+    border-radius: 5px;
+    background-color:palevioletred;
+    color: aliceblue;
+    font-weight: bolder;
+    padding: 10px 10px 10px 10px;
 }

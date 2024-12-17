@@ -1,15 +1,8 @@
 .checkboxImg {
-    cursor: pointer;
-    width: 50px;
-    height: 50px;
-    z-index: 2;
-    pointer-events: visible;
-}
-
-.checkboxContainer {
     position: absolute;
-    top: 0px;
-    right: 0px;
+    top: 0;
+    left: 0;
+    cursor: pointer;
 }
 
 #showBlacklistGameCheckboxImg {
@@ -25,8 +18,8 @@
 
 .flexbox {
     display: flex;
-    justify-content: center;    
-    align-items: center;  
+    justify-content: center;
+    align-items: center;
 }
 
 .flexboxItem {
@@ -56,18 +49,10 @@
     height: 0px;
 }
 
-.promotion {
-    position: absolute;
-    top: 0;
-    left: 0;
-    font-size: 20px;
-    font-weight: bold;
-    background-color: chocolate;
-    width: fit-content;
-    padding: 5px;
-}
-
-.official-price {
-    text-decoration:line-through;
-    margin-left: 10px;
+#validateButton {
+    border-radius: 5px;
+    background-color:palevioletred;
+    color: aliceblue;
+    font-weight: bolder;
+    padding: 10px 10px 10px 10px;
 }
