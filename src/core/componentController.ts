@@ -429,12 +429,12 @@ export class ComponentController {
   }
 
   protected addGameToBlacklist (gameTitle: string): void {
-    const key = gameTitle[0];
+    const key = gameTitle[0].toLowerCase();
     if (!this.blacklistMap.has(key)) {
       this.blacklistMap.set(key, [gameTitle]);
     } else {
       const list = this.blacklistMap.get(key)!;
-      list.push(gameTitle);
+      list.push(gameTitle.toLowerCase());
       this.blacklistMap.set(key, list);
     }
     localStorage.setItem(this.mainConfig.localStorage.blacklist.name, JSON.stringify(Object.fromEntries(this.blacklistMap.entries())));
