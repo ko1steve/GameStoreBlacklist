@@ -20,12 +20,9 @@
     "no-use-before-define": "off",
     "no-unused-vars": "off",
     "@typescript-eslint/no-require-imports": "error",
-    "semi": [
-      "error",
-      "always"
-    ],
+    "semi": "off",
     "@typescript-eslint/semi": [
-      "error",
+      "warn",
       "always"
     ]
   },
