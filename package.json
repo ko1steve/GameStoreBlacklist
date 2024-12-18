@@ -1,12 +1,12 @@
 {
-  "name": "yuplayfilter",
-  "version": "1.5.0",
+  "name": "GameStroeBlacklist",
+  "version": "1.6.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "release-dev": "cross-env NODE_ENV=production ts-node node_modules/webpack/bin/webpack.js --config config/webpack.dev.ts --progress",
-    "eslint" : "npx eslint . --ext .ts,.tsx --fix"
+    "release-dev": "npx eslint . --ext .ts,.tsx --fix && cross-env NODE_ENV=production ts-node node_modules/webpack/bin/webpack.js --config config/webpack.dev.ts --progress",
+    "eslint": "npx eslint . --ext .ts,.tsx --fix"
   },
   "dependencies": {
     "process": "^0.11.10"
