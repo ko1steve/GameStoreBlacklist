@@ -25,8 +25,11 @@ class YuplayProductController extends ComponentController {
     if (!header) {
       return null;
     }
-    header.className += ' flexbox';
     return header;
+  }
+
+  protected modifyHeader (header: HTMLElement): void {
+    header.className += ' flexbox';
   }
 
   protected getRawGameTitle (): string | undefined {

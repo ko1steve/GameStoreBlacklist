@@ -20,6 +20,7 @@ export class ComponentController {
     this.componentConfig = componentConfig;
     this.blacklistMap = new TSMap<string, string[]>();
     this.initailzie();
+    this.addEventListeners();
   }
 
   public initailzie (): void {
@@ -36,8 +37,16 @@ export class ComponentController {
     setTimeout(() => this.initailzie(), 500);
   }
 
+  protected addEventListeners () {
+    const listener = (event: UIEvent) => {
+      CommonTool.showLog('resize');
+      removeEventListener('resize', listener);
+      setTimeout(() => addEventListener('resize', listener), 200);
+    };
+    addEventListener('resize', listener);
+  }
+
   protected initBlacklist (): void {
-    this.hasInit = true;
     const jsonContent = localStorage.getItem(this.mainConfig.localStorage.blacklist.name);
     if (!jsonContent) {
       this.blacklistMap = new TSMap<string, string[]>();
@@ -66,6 +75,8 @@ export class ComponentController {
     if (!header || header.dataset?.hasInit === 'true') {
       return;
     }
+    this.modifyHeader(header);
+
     const config = this.componentConfig.headerBottomContainer;
     const container = document.createElement('div');
     container.id = config.id!;
@@ -85,8 +96,11 @@ export class ComponentController {
     if (!header) {
       return null;
     }
-    // modify header (ex. add class, modify style)
     return header;
+  }
+
+  protected modifyHeader (header: HTMLElement): void {
+    // modify header (ex. add class, modify style)
   }
 
   protected createShowBlacklistGameCheckbox (parent: HTMLElement): void {
@@ -411,6 +425,9 @@ export class ComponentController {
 
   protected updateTextOfNumberOfGame (): void {
     const text = document.getElementById(this.componentConfig.headerBottomContainer.showBlacklistGameContainer.checkbox.text!.id!) as HTMLTextAreaElement;
+    if (!text) {
+      return;
+    }
     const textContent = this.componentConfig.headerBottomContainer.showBlacklistGameContainer.checkbox.text!.innerText.replace('{numberOfGames}', this.numberOfGames.toString());
     text.innerText = textContent;
   }

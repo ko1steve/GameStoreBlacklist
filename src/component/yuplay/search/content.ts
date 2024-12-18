@@ -11,8 +11,11 @@ class YuplaySearchController extends ComponentController {
     if (!header) {
       return null;
     }
-    header.className += ' flexbox';
     return header;
+  }
+
+  protected modifyHeader (header: HTMLElement): void {
+    header.className += ' flexbox';
   }
 
   protected handleListPageContent (): void {
