@@ -20,6 +20,8 @@ class GgdealsSearchController extends ComponentController {
     this.createShowBlacklistGameCheckbox(container);
     this.createDownloadButton(container);
     this.createUploadButton(container);
+    this.createValidateButton(container);
+
     pageElement.dataset.hasInit = 'true';
   }
 
@@ -32,7 +34,7 @@ class GgdealsSearchController extends ComponentController {
     if (!listContainer) {
       return null;
     }
-    const listItemContainer = listContainer.children[0] as HTMLDivElement;
+    const listItemContainer = listContainer.getElementsByClassName('list-items')[0] as HTMLDivElement;
     if (!listItemContainer) {
       return null;
     }
@@ -49,13 +51,13 @@ class GgdealsSearchController extends ComponentController {
   }
 
   protected getRawGameTitle (infoContainer: HTMLElement): string {
-    return ((infoContainer.getElementsByClassName('game-info-wrapper')[0]
+    return (infoContainer.getElementsByClassName('game-info-wrapper')[0]
       ?.getElementsByClassName('game-info-title-wrapper')[0] as HTMLElement
-    )?.children[0] as HTMLElement).innerText;
+    )?.getElementsByTagName('a')[0].innerHTML;
   }
 
   protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement {
-    return infoContainer.getElementsByClassName('feature-info')[0] as HTMLElement;
+    return infoContainer as HTMLElement;
   }
 }
 
