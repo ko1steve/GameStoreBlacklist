@@ -13,6 +13,7 @@ export class ComponentController {
   protected showBlacklistGames = true;
   protected hasInit = false;
   protected numberOfGames = 0;
+  protected countGameListElementInit = 0;
 
   constructor (componentConfig: ComponentConfig) {
     this.componentId = componentConfig.componentId;
@@ -266,7 +267,10 @@ export class ComponentController {
     gameListChildren.forEach(gameInfoElement => {
       this.addCheckBoxToGameListEachChild(gameInfoElement, gameListContainer);
     });
-    gameListContainer.dataset.hasInit = 'true';
+    if (this.countGameListElementInit === gameListChildren.length) {
+      gameListContainer.dataset.hasInit = 'true';
+    }
+    this.countGameListElementInit = 0;
   }
 
   protected isGameListFirstChildExist (children: HTMLElement[]): boolean {
@@ -279,6 +283,7 @@ export class ComponentController {
 
   protected addCheckBoxToGameListEachChild (gameInfoElement: HTMLElement, gameListContainer: HTMLElement): void {
     if (gameInfoElement.dataset && gameInfoElement.dataset.hasInit === 'true') {
+      this.countGameListElementInit++;
       return;
     }
     const modifiedInfoElement = this.modifyGameInfoElement(gameInfoElement, gameListContainer);
@@ -310,6 +315,7 @@ export class ComponentController {
       }
     }
     gameInfoElement.dataset.hasInit = 'true';
+    this.countGameListElementInit++;
   }
 
   protected modifyGameInfoElement (infoElement: HTMLElement, parent: HTMLElement): HTMLElement | null {
