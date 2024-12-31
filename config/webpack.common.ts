@@ -11,14 +11,14 @@ const appDir = Path.dirname(__dirname);
 module.exports = {
   mode: 'none',
   entry: {
-    'src/component/gamivo/product/content': './src/component/gamivo/product/content.ts',
-    'src/component/gamivo/search/content': './src/component/gamivo/search/content.ts',
-    'src/component/ggdeals/product/content': './src/component/ggdeals/product/content.ts',
-    'src/component/ggdeals/search/content': './src/component/ggdeals/search/content.ts',
-    'src/component/yuplay/product/content': './src/component/yuplay/product/content.ts',
-    'src/component/yuplay/search/content': './src/component/yuplay/search/content.ts',
-    'src/component/humbleBundle/product/content': './src/component/humbleBundle/product/content.ts',
-    'src/component/humbleBundle/search/content': './src/component/humbleBundle/search/content.ts'
+    'src/component/web/gamivo/product/content': './src/component/web/gamivo/product/content.ts',
+    'src/component/web/gamivo/search/content': './src/component/web/gamivo/search/content.ts',
+    'src/component/web/ggdeals/product/content': './src/component/web/ggdeals/product/content.ts',
+    'src/component/web/ggdeals/search/content': './src/component/web/ggdeals/search/content.ts',
+    'src/component/web/yuplay/product/content': './src/component/web/yuplay/product/content.ts',
+    'src/component/web/yuplay/search/content': './src/component/web/yuplay/search/content.ts',
+    'src/component/web/humbleBundle/product/content': './src/component/web/humbleBundle/product/content.ts',
+    'src/component/web/humbleBundle/search/content': './src/component/web/humbleBundle/search/content.ts'
   },
   output: {
     path: Path.join(appDir, 'dist'),
@@ -82,7 +82,15 @@ module.exports = {
       extensions: ['ts', 'tsx']
     }),
     new MiniCssExtractPlugin({
-      filename: ({ chunk }) => chunk!.name!.replace('content', 'style').concat('.css')
+      filename: ({ chunk }) => {
+        console.log('[webpack-debug] css.chunk.name=' + chunk!.name);
+        const regexp = /content$/;
+        const replace = 'style.css';
+        if (chunk!.name!.match(regexp)) {
+          return chunk!.name!.replace(regexp, replace);
+        }
+        return '[name].css';
+      }
     }),
     new CopyWebpackPlugin({
       patterns: AssetList

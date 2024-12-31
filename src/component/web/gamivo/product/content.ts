@@ -1,5 +1,5 @@
 import { Container } from 'typescript-ioc';
-import { ComponentController } from '../../../core/componentController';
+import { ComponentController } from '../../../../core/componentController';
 import { GamivoProductConfig } from './config';
 import './style.css';
 
