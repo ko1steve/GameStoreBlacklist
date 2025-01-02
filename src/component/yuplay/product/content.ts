@@ -6,9 +6,9 @@ import './style.css';
 class YuplayProductController extends ComponentController {
   protected componentConfig!: YuplayProductConfig;
 
-  public initailzie (): void {
+  public async initailzie (): Promise<void> {
     if (!this.hasInit) {
-      this.initBlacklist();
+      await this.initBlacklist();
     }
     this.createHeaderBottomContainer();
     this.handlePageContent();
