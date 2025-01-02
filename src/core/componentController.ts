@@ -20,13 +20,14 @@ export class ComponentController {
     this.mainConfig = Container.get(MainConfig);
     this.componentConfig = componentConfig;
     this.blacklistMap = new TSMap<string, string[]>();
-    this.initailzie();
-    this.addEventListeners();
+    this.initailzie().then(() => {
+      this.addEventListeners();
+    });
   }
 
-  public initailzie (): void {
+  public async initailzie (): Promise<void> {
     if (!this.hasInit) {
-      this.initBlacklist();
+      await this.initBlacklist();
     }
     this.createHeaderBottomContainer();
     if (!this.componentConfig.isGameListPage) {
@@ -47,20 +48,22 @@ export class ComponentController {
     addEventListener('resize', listener);
   }
 
-  protected initBlacklist (): void {
-    const jsonContent = localStorage.getItem(this.mainConfig.localStorage.blacklist.name);
+  protected async initBlacklist (): Promise<void> {
+    let storageData = await chrome.storage.local.get([this.mainConfig.storageNames.blacklist]);
+    const jsonContent = storageData[this.mainConfig.storageNames.blacklist];
     if (!jsonContent) {
       this.blacklistMap = new TSMap<string, string[]>();
     } else {
       this.blacklistMap = new TSMap<string, string[]>(Object.entries(JSON.parse(jsonContent)));
     }
     this.initNumberOfGame();
-    const showBlacklistGamesInStorage = localStorage.getItem(this.mainConfig.localStorage.showblacklistGames.name);
-    if (showBlacklistGamesInStorage == null) {
+    storageData = await chrome.storage.local.get([this.mainConfig.storageNames.showblacklistGames]);
+    const showBlacklistGames: boolean = storageData[this.mainConfig.storageNames.showblacklistGames];
+    if (showBlacklistGames == null) {
+      await chrome.storage.local.set({ [this.mainConfig.storageNames.showblacklistGames]: true });
       this.showBlacklistGames = true;
-      localStorage.setItem(this.mainConfig.localStorage.showblacklistGames.name, 'true');
     } else {
-      this.showBlacklistGames = showBlacklistGamesInStorage === 'true';
+      this.showBlacklistGames = showBlacklistGames;
     }
   }
 
@@ -119,13 +122,13 @@ export class ComponentController {
     } else {
       this.setShowBlacklistGameCheckboxDisabled(checkboxImg);
     }
-    checkboxImg.onclick = () => {
+    checkboxImg.onclick = async () => {
       if (checkboxImg.dataset.action === chexkboxConfig.disabledAction!) {
+        await chrome.storage.local.set({ [this.mainConfig.storageNames.showblacklistGames]: true });
         this.setShowBlacklistGameCheckboxEnabled(checkboxImg);
-        localStorage.setItem(this.mainConfig.localStorage.showblacklistGames.name, 'true');
       } else {
+        await chrome.storage.local.set({ [this.mainConfig.storageNames.showblacklistGames]: false });
         this.setShowBlacklistGameCheckboxDisabled(checkboxImg);
-        localStorage.setItem(this.mainConfig.localStorage.showblacklistGames.name, 'false');
       }
       location.reload();
     };
@@ -148,8 +151,9 @@ export class ComponentController {
     parent.appendChild(button);
   }
 
-  protected downloadLocalStorageDataAsJson (): void {
-    const blacklistContent = localStorage.getItem(this.mainConfig.localStorage.blacklist.name);
+  protected async downloadLocalStorageDataAsJson (): Promise<void> {
+    const storageData = await chrome.storage.local.get([this.mainConfig.storageNames.blacklist]);
+    const blacklistContent = storageData[this.mainConfig.storageNames.blacklist];
     if (blacklistContent) {
       const blob = new Blob([blacklistContent], { type: 'application/json' });
       const a = document.createElement('a');
@@ -187,10 +191,10 @@ export class ComponentController {
     if (fileInput.files && fileInput.files.length > 0) {
       const file = fileInput.files[0];
       const reader = new FileReader();
-      reader.onload = (event) => {
+      reader.onload = async (event) => {
         if (event.target) {
           const jsonContent = event.target.result as string;
-          localStorage.setItem(this.mainConfig.localStorage.blacklist.name, jsonContent);
+          await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: jsonContent });
           alert('Finished.');
           location.reload();
         }
@@ -212,8 +216,9 @@ export class ComponentController {
     parent.appendChild(button);
   }
 
-  protected validateData (): void {
-    const jsonContent = localStorage.getItem(this.mainConfig.localStorage.blacklist.name);
+  protected async validateData (): Promise<void> {
+    const storageData = await chrome.storage.local.get([this.mainConfig.storageNames.blacklist]);
+    const jsonContent = storageData[this.mainConfig.storageNames.blacklist];
     if (jsonContent) {
       const entries = Object.entries(JSON.parse(jsonContent)) as (string | string[])[][];
       for (let i = 0; i < entries.length; i++) {
@@ -235,7 +240,7 @@ export class ComponentController {
         }
       }
       const newJsonContent = JSON.stringify(Object.fromEntries(entries));
-      localStorage.setItem(this.mainConfig.localStorage.blacklist.name, newJsonContent);
+      await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: newJsonContent });
       alert('Validation is completed.');
       window.location.reload();
     }
@@ -451,7 +456,7 @@ export class ComponentController {
     return this.blacklistMap.get(key)!.includes(gameTitle);
   }
 
-  protected addGameToBlacklist (gameTitle: string): void {
+  protected async addGameToBlacklist (gameTitle: string): Promise<void> {
     const key = gameTitle[0].toLowerCase();
     if (!this.blacklistMap.has(key)) {
       this.blacklistMap.set(key, [gameTitle]);
@@ -460,11 +465,11 @@ export class ComponentController {
       list.push(gameTitle.toLowerCase());
       this.blacklistMap.set(key, list);
     }
-    localStorage.setItem(this.mainConfig.localStorage.blacklist.name, JSON.stringify(Object.fromEntries(this.blacklistMap.entries())));
+    await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: JSON.stringify(Object.fromEntries(this.blacklistMap.entries())) });
     CommonTool.showLog('Add "' + gameTitle + '" to blacklist. ');
   }
 
-  protected removeGameFromBlacklist (gameTitle: string): void {
+  protected async removeGameFromBlacklist (gameTitle: string): Promise<void> {
     const key = gameTitle[0];
     if (!this.blacklistMap.has(key)) {
       return;
@@ -476,12 +481,13 @@ export class ComponentController {
     }
     list.splice(index, 1);
     this.blacklistMap.set(key, list);
-    localStorage.setItem(this.mainConfig.localStorage.blacklist.name, JSON.stringify(Object.fromEntries(this.blacklistMap.entries())));
+    await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: JSON.stringify(Object.fromEntries(this.blacklistMap.entries())) });
     CommonTool.showLog('Removed "' + gameTitle + '" from blacklist. ');
   }
 
-  protected trimGameName (): void {
-    const jsonContent = localStorage.getItem(this.mainConfig.localStorage.blacklist.name);
+  protected async trimGameName (): Promise<void> {
+    const storageData = await chrome.storage.local.get([this.mainConfig.storageNames.blacklist]);
+    const jsonContent = storageData[this.mainConfig.storageNames.blacklist] as string;
     if (!jsonContent) {
       return;
     } else {
@@ -493,6 +499,6 @@ export class ComponentController {
         blacklistMap.set(k, gameArr);
       });
     }
-    localStorage.setItem(this.mainConfig.localStorage.blacklist.name, JSON.stringify(Object.fromEntries(this.blacklistMap.entries())));
+    await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: JSON.stringify(Object.fromEntries(this.blacklistMap.entries())) });
   }
 }
