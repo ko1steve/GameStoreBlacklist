@@ -3,9 +3,6 @@ import { IButtonElement, ICheckboxImageElement, IHTMLElement, ILabelEleemnt } fr
 export interface IComponentConfig {
   componentId: string
   checkboxContainer: ICheckBoxContainer
-  headerBottomContainer: IHeaderContainer
-  downloadButton: IButtonElement
-  uploadButton: IUploadButton
   texthandle: ITextHandleConfig
   isGameListPage: boolean
 }
@@ -46,49 +43,6 @@ export class ComponentConfig implements IComponentConfig {
       action: 'actionCheckboxEnabled',
       disabledAction: 'actionCheckboxDisabled'
     }
-  };
-
-  public headerBottomContainer: IHeaderContainer = {
-    id: 'headerBottom',
-    className: 'flexbox',
-    showBlacklistGameContainer: {
-      id: 'showBlacklistGameCheckboxContainer',
-      className: 'flexbox flexboxItem',
-      checkbox: {
-        id: 'showBlacklistGameCheckboxImg',
-        sourceName: 'image/checkbox_tick_enabled.png',
-        disabledSourceName: 'image/checkbox_tick_disabled.png',
-        action: 'actionShowBlacklistGameCheckboxEnabled',
-        disabledAction: 'actionShowBlacklistGameCheckboxDisabled',
-        text: {
-          id: 'showBlaclistGameCheckboxText',
-          innerText: 'Also show in-blacklist games ({numberOfGames} games)'
-        }
-      }
-    }
-  };
-
-  public downloadButton: IButtonElement = {
-    id: 'downloadLocalStorageAsJsonButton',
-    className: 'flexboxItem',
-    textContent: 'Download local stoage data as JSON'
-  };
-
-  public uploadButton: IUploadButton = {
-    label: {
-      id: 'uploadLocalStorageFromJsonLabel',
-      className: 'flexboxItem',
-      textContent: 'Upload JSON to overwrite local storage data'
-    },
-    input: {
-      id: 'uploadLocalStorageFromJsonInput'
-    }
-  };
-
-  public validateButton: IButtonElement = {
-    id: 'validateButton',
-    className: 'flexboxItem',
-    textContent: 'Validate'
   };
 
   public texthandle: ITextHandleConfig = {

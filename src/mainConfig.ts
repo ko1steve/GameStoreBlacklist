@@ -1,24 +1,18 @@
 import { Singleton } from 'typescript-ioc';
 
 export interface IMainConfig {
-  localStorage: {
-    blacklist: ILocalStorage,
-    showblacklistGames: ILocalStorage
+  storageNames: {
+    blacklist: string,
+    showblacklistGames: string
+    debug: string
   }
-}
-
-export interface ILocalStorage {
-  name: string
 }
 
 @Singleton
 export class MainConfig implements IMainConfig {
-  public localStorage = {
-    blacklist: {
-      name: 'Blacklist'
-    },
-    showblacklistGames: {
-      name: 'ShowBlacklistdGames'
-    }
+  public storageNames = {
+    blacklist: 'Blacklist',
+    showblacklistGames: 'ShowBlacklistdGames',
+    debug: 'Debug'
   };
 }
