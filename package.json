@@ -1,6 +1,6 @@
 {
-  "name": "GameStroeBlacklist",
-  "version": "1.6.1",
+  "name": "game-stroe-blacklist",
+  "version": "1.7.0",
   "description": "",
   "main": "index.js",
   "scripts": {
