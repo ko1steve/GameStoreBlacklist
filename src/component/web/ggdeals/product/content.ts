@@ -6,23 +6,6 @@ import './style.css';
 class GgdealsProductController extends ComponentController {
   protected componentConfig!: GgdealsProductConfig;
 
-  protected createHeaderBottomContainer (): void {
-    const containerConfig = this.componentConfig.headerBottomContainer;
-    const pageElement = document.getElementById('page');
-    if (!pageElement || pageElement.dataset.hasInit === 'true') {
-      return;
-    }
-    const container = document.createElement('div');
-    container.id = containerConfig.id!;
-    container.className = 'flexbox';
-    pageElement.insertBefore(container, pageElement.firstChild);
-
-    this.createShowBlacklistGameCheckbox(container);
-    this.createDownloadButton(container);
-    this.createUploadButton(container);
-    pageElement.dataset.hasInit = 'true';
-  }
-
   protected getPageHeader (): HTMLElement | null {
     return null;
   }

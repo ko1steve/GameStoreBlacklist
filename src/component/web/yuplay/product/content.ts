@@ -6,17 +6,12 @@ import './style.css';
 class YuplayProductController extends ComponentController {
   protected componentConfig!: YuplayProductConfig;
 
-  public async initailzie (): Promise<void> {
-    if (!this.hasInit) {
-      await this.initBlacklist();
-    }
-    this.createHeaderBottomContainer();
+  protected initailzie (): void {
     this.handlePageContent();
     this.handleSpecifiedListItems('recommended-catalog');
     this.handleSpecifiedListItems('most-wanted-catalog');
     this.handleSpecifiedListItems('midweek-madness-catalog');
     this.handleSpecifiedListItems('just-arrived-catalog');
-    this.hasInit = true;
     setTimeout(() => this.initailzie(), 500);
   }
 
@@ -91,14 +86,14 @@ class YuplayProductController extends ComponentController {
     }
     const gameTitle = this.getModifiedGameTitle(rawGameTitle);
 
-    this.addCheckbox(imageContainer, gameTitle, {
+    const inBlacklist = this.getGameStatus(gameTitle);
+    this.addCheckbox(imageContainer, gameTitle, inBlacklist, {
       hideGame: {
         infoElement: gameInfoElement,
         parentList: gameListContainer
       }
     });
-    const inBlacklist = this.getGameStatus(gameTitle);
-    if (inBlacklist && !this.showBlacklistGames) {
+    if (inBlacklist && !this.dataModel.showBlacklistGame) {
       this.hideGame(gameListContainer, gameInfoElement);
     }
     gameInfoElement.dataset.hasInit = 'true';

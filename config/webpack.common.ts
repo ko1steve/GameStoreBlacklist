@@ -4,6 +4,7 @@ import ESLintPlugin from 'eslint-webpack-plugin';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
 import { ProvidePlugin } from 'webpack';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
+import HTMLWebpackPlugin from 'html-webpack-plugin';
 import { AssetList } from '../src/assetList';
 
 const appDir = Path.dirname(__dirname);
@@ -11,6 +12,7 @@ const appDir = Path.dirname(__dirname);
 module.exports = {
   mode: 'none',
   entry: {
+    'src/component/popup/popup': './src/component/popup/popup.ts',
     'src/component/web/gamivo/product/content': './src/component/web/gamivo/product/content.ts',
     'src/component/web/gamivo/search/content': './src/component/web/gamivo/search/content.ts',
     'src/component/web/ggdeals/product/content': './src/component/web/ggdeals/product/content.ts',
@@ -22,7 +24,8 @@ module.exports = {
   },
   output: {
     path: Path.join(appDir, 'dist'),
-    filename: '[name].js'
+    filename: '[name].js',
+    clean: true
   },
   module: {
     rules: [
@@ -32,7 +35,7 @@ module.exports = {
         exclude: /node_modules/
       },
       {
-        test: /\.css$/i,
+        test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader']
       },
       {
@@ -60,6 +63,10 @@ module.exports = {
           esModule: false
         },
         type: 'javascript/auto'
+      },
+      {
+        test: /\.html$/,
+        use: ['html-loader']
       }
     ]
   },
@@ -71,6 +78,9 @@ module.exports = {
     ],
     alias: {
       src: Path.resolve(appDir, 'src/')
+    },
+    fallback: {
+      chrome: false
     }
   },
   target: 'web',
@@ -94,10 +104,16 @@ module.exports = {
     }),
     new CopyWebpackPlugin({
       patterns: AssetList
+    }),
+    new HTMLWebpackPlugin({
+      template: './src/component/popup/popup.html',
+      filename: './src/component/popup/popup.html',
+      chunks: ['src/component/popup/popup'],
+      inject: 'head'
     })
   ],
   optimization: {
-    minimize: true,
-    minimizer: [new TerserWebpackPlugin()]
+    // minimize: true,
+    // minimizer: [new TerserWebpackPlugin()]
   }
 };

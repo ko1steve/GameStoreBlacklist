@@ -6,25 +6,6 @@ import './style.css';
 class GgdealsSearchController extends ComponentController {
   protected componentConfig!: GgdealSearchConfig;
 
-  protected createHeaderBottomContainer (): void {
-    const containerConfig = this.componentConfig.headerBottomContainer;
-    const pageElement = document.getElementById('page');
-    if (!pageElement || pageElement.dataset.hasInit === 'true') {
-      return;
-    }
-    const container = document.createElement('div');
-    container.id = containerConfig.id!;
-    container.className = 'flexbox';
-    pageElement.insertBefore(container, pageElement.firstChild);
-
-    this.createShowBlacklistGameCheckbox(container);
-    this.createDownloadButton(container);
-    this.createUploadButton(container);
-    this.createValidateButton(container);
-
-    pageElement.dataset.hasInit = 'true';
-  }
-
   protected getGameListContainer (): HTMLElement | null {
     const dealsList = document.getElementById('deals-list');
     if (!dealsList) {
