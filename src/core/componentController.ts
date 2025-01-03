@@ -1,5 +1,4 @@
 import { Container, Inject } from 'typescript-ioc';
-import { TSMap } from 'typescript-map';
 import { MainConfig } from '../mainConfig';
 import { ComponentConfig } from './componentConfig';
 import { IGameInfoOption } from 'src/data/commonData';
@@ -199,7 +198,7 @@ export class ComponentController {
       };
       checkboxParent.dataset.hasInit = 'true';
       if (inBlacklist) {
-        console.log('[extension] In Blacklist : ' + gameTitle);
+        CommonTool.showLog('In Blacklist : ' + gameTitle);
         this.setCheckboxEnabled(checkboxImg);
       }
     }

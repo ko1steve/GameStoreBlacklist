@@ -59,7 +59,6 @@ export class DataModel {
     } else {
       this._blacklistMap = new TSMap<string, string[]>(Object.entries(JSON.parse(jsonContent)));
     }
-    console.log(this._blacklistMap);
     this.updateNumberOfGame();
     storageData = await chrome.storage.local.get([this.mainConfig.storageNames.showblacklistGames]);
     const showBlacklistGames: boolean = storageData[this.mainConfig.storageNames.showblacklistGames];
