@@ -23,13 +23,15 @@ export class PopupController {
     this.dataModel = Container.get(DataModel);
     this.mainConfig = Container.get(MainConfig);
     this.componentConfig = componentConfig;
-    this.initMode().then(() => {
-      this.initElement();
-      this.addEventListeners();
-    });
+    this.addEventListeners();
   }
 
-  protected async initMode (): Promise<void> {
+  protected addEventListeners (): void {
+    this.dataModel.updateShowBlacklistGameSignal.add(this.initailzie.bind(this));
+    this.dataModel.updateNumberOfGameSignal.add(this.updateTextOfNumberOfGame.bind(this));
+  }
+
+  protected async initailzie (): Promise<void> {
     const storageData = await chrome.storage.local.get([this.mainConfig.storageNames.debug]);
     const debug = storageData[this.mainConfig.storageNames.debug];
     if (debug == null) {
@@ -38,6 +40,7 @@ export class PopupController {
     } else {
       this.dataModel.debug = storageData[this.mainConfig.storageNames.debug];
     }
+    this.initElement();
   }
 
   public async setDebug (value: boolean) {
@@ -75,7 +78,7 @@ export class PopupController {
     checkbox.id = chexkboxConfig.id!;
     checkbox.type = 'checkbox';
     checkbox.checked = this.dataModel.showBlacklistGame;
-    checkbox.onclick = () => {
+    checkbox.onchange = () => {
       chrome.storage.local.set({ [this.mainConfig.storageNames.showblacklistGames]: checkbox.checked }).then(() => {
         this.dataModel.showBlacklistGame = checkbox.checked;
         chrome.tabs.query({ active: true, currentWindow: true }).then((currentTab) => {
@@ -148,7 +151,7 @@ export class PopupController {
         if (event.target) {
           const jsonContent = event.target.result as string;
           await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: jsonContent });
-          location.reload();
+          chrome.tabs.reload();
         }
       };
       reader.readAsText(file);
@@ -191,12 +194,8 @@ export class PopupController {
       }
       const newJsonContent = JSON.stringify(Object.fromEntries(entries));
       await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: newJsonContent });
-      window.location.reload();
+      chrome.tabs.reload();
     }
-  }
-
-  protected addEventListeners (): void {
-    this.dataModel.updateNumberOfGameSignal.add(this.updateTextOfNumberOfGame.bind(this));
   }
 
   protected updateTextOfNumberOfGame (): void {
