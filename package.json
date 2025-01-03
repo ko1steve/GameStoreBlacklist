@@ -8,9 +8,6 @@
     "release-dev": "npx eslint . --ext .ts,.tsx --fix && cross-env NODE_ENV=production ts-node node_modules/webpack/bin/webpack.js --config config/webpack.dev.ts --progress",
     "eslint": "npx eslint . --ext .ts,.tsx --fix"
   },
-  "dependencies": {
-    "process": "^0.11.10"
-  },
   "devDependencies": {
     "@types/bootstrap": "^5.2.10",
     "@types/chrome": "^0.0.283",
@@ -38,12 +35,15 @@
     "eslint-plugin-typescript": "^0.14.0",
     "eslint-webpack-plugin": "^4.0.1",
     "file-loader": "^6.2.0",
+    "html-loader": "^5.1.0",
     "html-webpack-plugin": "^5.6.0",
     "image-webpack-loader": "^8.1.0",
     "json5-loader": "^4.0.1",
     "mini-css-extract-plugin": "^2.9.2",
+    "mini-signals": "^2.0.0",
     "null-loader": "^4.0.1",
     "prettier": "^3.2.5",
+    "process": "^0.11.10",
     "style-loader": "^3.3.4",
     "terser-webpack-plugin": "^5.3.10",
     "ts-loader": "^9.5.1",

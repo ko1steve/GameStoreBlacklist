@@ -4,6 +4,7 @@ export interface IMainConfig {
   storageNames: {
     blacklist: string,
     showblacklistGames: string
+    debug: string
   }
 }
 
@@ -11,6 +12,7 @@ export interface IMainConfig {
 export class MainConfig implements IMainConfig {
   public storageNames = {
     blacklist: 'Blacklist',
-    showblacklistGames: 'ShowBlacklistdGames'
+    showblacklistGames: 'ShowBlacklistdGames',
+    debug: 'Debug'
   };
 }

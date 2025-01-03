@@ -1,98 +1,48 @@
-import { Container } from 'typescript-ioc';
+import { Container, Inject } from 'typescript-ioc';
 import { TSMap } from 'typescript-map';
 import { MainConfig } from '../mainConfig';
 import { ComponentConfig } from './componentConfig';
 import { IGameInfoOption } from 'src/data/commonData';
 import { CommonTool } from 'src/util/commonTool';
+import { DataModel } from 'src/model/dataModel';
 
 export class ComponentController {
+  @Inject
+  protected dataModel: DataModel;
+
   protected componentId: string;
   protected mainConfig: MainConfig;
   protected componentConfig: ComponentConfig;
-  protected blacklistMap: TSMap<string, string[]>;
-  protected showBlacklistGames = true;
-  protected hasInit = false;
   protected numberOfGames = 0;
   protected countGameListElementInit = 0;
 
   constructor (componentConfig: ComponentConfig) {
     this.componentId = componentConfig.componentId;
     this.mainConfig = Container.get(MainConfig);
+    this.dataModel = Container.get(DataModel);
     this.componentConfig = componentConfig;
-    this.blacklistMap = new TSMap<string, string[]>();
-    this.initailzie().then(() => {
-      this.addEventListeners();
-    });
+    this.addEventListeners();
   }
 
-  public async initailzie (): Promise<void> {
-    if (!this.hasInit) {
-      await this.initBlacklist();
-    }
-    this.createHeaderBottomContainer();
+  protected addEventListeners () {
+    this.dataModel.updateShowBlacklistGameSignal.add(this.initailzie.bind(this));
+  }
+
+  protected initailzie (): void {
     if (!this.componentConfig.isGameListPage) {
       this.handlePageContent();
     } else {
       this.handleListPageContent();
     }
-    this.hasInit = true;
     setTimeout(() => this.initailzie(), 500);
   }
 
-  protected addEventListeners () {
+  protected addResizeEventListener (): void {
     const listener = (event: UIEvent) => {
-      CommonTool.showLog('resize');
       removeEventListener('resize', listener);
       setTimeout(() => addEventListener('resize', listener), 200);
     };
     addEventListener('resize', listener);
-  }
-
-  protected async initBlacklist (): Promise<void> {
-    let storageData = await chrome.storage.local.get([this.mainConfig.storageNames.blacklist]);
-    const jsonContent = storageData[this.mainConfig.storageNames.blacklist];
-    if (!jsonContent) {
-      this.blacklistMap = new TSMap<string, string[]>();
-    } else {
-      this.blacklistMap = new TSMap<string, string[]>(Object.entries(JSON.parse(jsonContent)));
-    }
-    this.initNumberOfGame();
-    storageData = await chrome.storage.local.get([this.mainConfig.storageNames.showblacklistGames]);
-    const showBlacklistGames: boolean = storageData[this.mainConfig.storageNames.showblacklistGames];
-    if (showBlacklistGames == null) {
-      await chrome.storage.local.set({ [this.mainConfig.storageNames.showblacklistGames]: true });
-      this.showBlacklistGames = true;
-    } else {
-      this.showBlacklistGames = showBlacklistGames;
-    }
-  }
-
-  protected initNumberOfGame (): void {
-    this.numberOfGames = 0;
-    this.blacklistMap.forEach(list => {
-      this.numberOfGames += list.length;
-    });
-  }
-
-  protected createHeaderBottomContainer (): void {
-    const header = this.getPageHeader();
-    if (!header || header.dataset?.hasInit === 'true') {
-      return;
-    }
-    this.modifyHeader(header);
-
-    const config = this.componentConfig.headerBottomContainer;
-    const container = document.createElement('div');
-    container.id = config.id!;
-    container.className = config.className!;
-    header.appendChild(container);
-
-    this.createShowBlacklistGameCheckbox(container);
-    this.createDownloadButton(container);
-    this.createUploadButton(container);
-    this.createValidateButton(container);
-
-    header.dataset.hasInit = 'true';
   }
 
   protected getPageHeader (): HTMLElement | null {
@@ -107,145 +57,6 @@ export class ComponentController {
     // modify header (ex. add class, modify style)
   }
 
-  protected createShowBlacklistGameCheckbox (parent: HTMLElement): void {
-    const containerConfig = this.componentConfig.headerBottomContainer.showBlacklistGameContainer;
-    const container = document.createElement('div');
-    container.id = containerConfig.id!;
-    container.className = containerConfig.className!;
-    parent.appendChild(container);
-
-    const chexkboxConfig = containerConfig.checkbox;
-    const checkboxImg = document.createElement('img');
-    checkboxImg.id = chexkboxConfig.id!;
-    if (this.showBlacklistGames) {
-      this.setShowBlacklistGameCheckboxEnabled(checkboxImg);
-    } else {
-      this.setShowBlacklistGameCheckboxDisabled(checkboxImg);
-    }
-    checkboxImg.onclick = async () => {
-      if (checkboxImg.dataset.action === chexkboxConfig.disabledAction!) {
-        await chrome.storage.local.set({ [this.mainConfig.storageNames.showblacklistGames]: true });
-        this.setShowBlacklistGameCheckboxEnabled(checkboxImg);
-      } else {
-        await chrome.storage.local.set({ [this.mainConfig.storageNames.showblacklistGames]: false });
-        this.setShowBlacklistGameCheckboxDisabled(checkboxImg);
-      }
-      location.reload();
-    };
-    container.appendChild(checkboxImg);
-
-    const text = document.createElement('text');
-    text.id = chexkboxConfig.text!.id!;
-    text.innerText = chexkboxConfig.text!.innerText.replace('{numberOfGames}', this.numberOfGames.toString());
-    container.appendChild(text);
-  }
-
-  protected createDownloadButton (parent: HTMLElement): void {
-    const button = document.createElement('button');
-    button.id = this.componentConfig.downloadButton.id!;
-    button.className = this.componentConfig.downloadButton.className!;
-    button.textContent = this.componentConfig.downloadButton.textContent!;
-    button.onclick = () => {
-      this.downloadLocalStorageDataAsJson();
-    };
-    parent.appendChild(button);
-  }
-
-  protected async downloadLocalStorageDataAsJson (): Promise<void> {
-    const storageData = await chrome.storage.local.get([this.mainConfig.storageNames.blacklist]);
-    const blacklistContent = storageData[this.mainConfig.storageNames.blacklist];
-    if (blacklistContent) {
-      const blob = new Blob([blacklistContent], { type: 'application/json' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'blacklist.json';
-      a.click();
-    }
-  }
-
-  protected createUploadButton (parent: HTMLElement): void {
-    const label = document.createElement('label');
-    label.htmlFor = this.componentConfig.uploadButton.input.id!;
-    label.id = this.componentConfig.uploadButton.label.id!;
-    label.className = this.componentConfig.uploadButton.label.className!;
-    label.textContent = this.componentConfig.uploadButton.label.textContent;
-    parent.appendChild(label);
-
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.id = this.componentConfig.uploadButton.input.id!;
-    input.accept = '.json';
-    input.onchange = () => {
-      if (confirm('Are you sure to upload the JSON ?')) {
-        this.uploadLocalStorageDataFromJson();
-      } else {
-        input.files = null;
-        input.value = '';
-      }
-    };
-    parent.appendChild(input);
-  }
-
-  protected uploadLocalStorageDataFromJson (): void {
-    const fileInput: HTMLInputElement = document.getElementById(this.componentConfig.uploadButton.input.id!) as HTMLInputElement;
-    if (fileInput.files && fileInput.files.length > 0) {
-      const file = fileInput.files[0];
-      const reader = new FileReader();
-      reader.onload = async (event) => {
-        if (event.target) {
-          const jsonContent = event.target.result as string;
-          await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: jsonContent });
-          alert('Finished.');
-          location.reload();
-        }
-      };
-      reader.readAsText(file);
-    } else {
-      alert('Please select a JSON file to upload.');
-    }
-  }
-
-  protected createValidateButton (parent: HTMLElement): void {
-    const button = document.createElement('button');
-    button.id = this.componentConfig.validateButton.id!;
-    button.className = this.componentConfig.validateButton.className!;
-    button.textContent = this.componentConfig.validateButton.textContent!;
-    button.onclick = () => {
-      this.validateData();
-    };
-    parent.appendChild(button);
-  }
-
-  protected async validateData (): Promise<void> {
-    const storageData = await chrome.storage.local.get([this.mainConfig.storageNames.blacklist]);
-    const jsonContent = storageData[this.mainConfig.storageNames.blacklist];
-    if (jsonContent) {
-      const entries = Object.entries(JSON.parse(jsonContent)) as (string | string[])[][];
-      for (let i = 0; i < entries.length; i++) {
-        const capital = entries[i][0] as string;
-        const gameList = entries[i][1] as string[];
-        for (const j in gameList) {
-          gameList[j] = gameList[j].toLowerCase();
-        }
-        const lowerCapital = capital.toLowerCase();
-        if (capital !== lowerCapital) {
-          const lowerCaseEntry = entries.find(entry => entry[0] === lowerCapital);
-          if (lowerCaseEntry) {
-            (lowerCaseEntry[1] as string[]).push(...gameList);
-          } else {
-            entries.push([lowerCapital, [...gameList]]);
-          }
-          entries.splice(+i, 1);
-          i--;
-        }
-      }
-      const newJsonContent = JSON.stringify(Object.fromEntries(entries));
-      await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: newJsonContent });
-      alert('Validation is completed.');
-      window.location.reload();
-    }
-  }
-
   protected handlePageContent (): void {
     const rawGameTitle = this.getRawGameTitle();
     if (!rawGameTitle) {
@@ -257,7 +68,8 @@ export class ComponentController {
     if (!checkboxParent) {
       return;
     }
-    this.addCheckbox(checkboxParent, gameTitle);
+    const inBlacklist = this.getGameStatus(gameTitle);
+    this.addCheckbox(checkboxParent, gameTitle, inBlacklist);
   }
 
   protected handleListPageContent (): void {
@@ -306,7 +118,8 @@ export class ComponentController {
     if (!checkboxParent) {
       return;
     }
-    this.addCheckbox(checkboxParent, gameTitle, {
+    const inBlacklist = this.getGameStatus(gameTitle);
+    this.addCheckbox(checkboxParent, gameTitle, inBlacklist, {
       hideGame: {
         infoElement: gameInfoElement,
         parentList: gameListContainer
@@ -314,8 +127,7 @@ export class ComponentController {
     });
 
     if (this.componentConfig.isGameListPage) {
-      const inBlacklist = this.getGameStatus(gameTitle);
-      if (inBlacklist && !this.showBlacklistGames) {
+      if (inBlacklist && !this.dataModel.showBlacklistGame) {
         this.hideGame(gameListContainer, gameInfoElement);
       }
     }
@@ -367,30 +179,25 @@ export class ComponentController {
     return checkboxParent;
   }
 
-  protected addCheckbox (checkboxParent: HTMLElement, gameTitle: string, option?: IGameInfoOption): void {
+  protected addCheckbox (checkboxParent: HTMLElement, gameTitle: string, inBlacklist: boolean, option?: IGameInfoOption): void {
     let checkboxImg = checkboxParent.getElementsByClassName(this.componentConfig.checkboxContainer.checkbox.className!)[0] as HTMLImageElement;
     if (!checkboxImg) {
       checkboxImg = this.createCheckbox(checkboxParent);
       checkboxImg.onclick = () => {
         if (checkboxImg.dataset.action === this.componentConfig.checkboxContainer.checkbox.disabledAction) {
-          this.initBlacklist();
           this.addGameToBlacklist(gameTitle);
-          this.initNumberOfGame();
-          this.updateTextOfNumberOfGame();
+          this.dataModel.updateNumberOfGame();
           this.setCheckboxEnabled(checkboxImg);
-          if (!this.showBlacklistGames && option?.hideGame) {
+          if (!this.dataModel.showBlacklistGame && option?.hideGame) {
             this.hideGame(option.hideGame.parentList, option.hideGame.infoElement);
           }
         } else {
-          this.initBlacklist();
           this.removeGameFromBlacklist(gameTitle);
-          this.initNumberOfGame();
-          this.updateTextOfNumberOfGame();
+          this.dataModel.updateNumberOfGame();
           this.setCheckboxDisabled(checkboxImg);
         }
       };
       checkboxParent.dataset.hasInit = 'true';
-      const inBlacklist = this.getGameStatus(gameTitle);
       if (inBlacklist) {
         console.log('[extension] In Blacklist : ' + gameTitle);
         this.setCheckboxEnabled(checkboxImg);
@@ -422,27 +229,6 @@ export class ComponentController {
     checkboxImg.src = chrome.runtime.getURL(config.disabledSourceName!);
   }
 
-  protected setShowBlacklistGameCheckboxEnabled (checkboxImg: HTMLImageElement): void {
-    const config = this.componentConfig.headerBottomContainer.showBlacklistGameContainer.checkbox;
-    checkboxImg.dataset.action = config.action!;
-    checkboxImg.src = chrome.runtime.getURL(config.sourceName!);
-  }
-
-  protected setShowBlacklistGameCheckboxDisabled (checkboxImg: HTMLImageElement): void {
-    const config = this.componentConfig.headerBottomContainer.showBlacklistGameContainer.checkbox;
-    checkboxImg.dataset.action = config.disabledAction!;
-    checkboxImg.src = chrome.runtime.getURL(config.disabledSourceName!);
-  }
-
-  protected updateTextOfNumberOfGame (): void {
-    const text = document.getElementById(this.componentConfig.headerBottomContainer.showBlacklistGameContainer.checkbox.text!.id!) as HTMLTextAreaElement;
-    if (!text) {
-      return;
-    }
-    const textContent = this.componentConfig.headerBottomContainer.showBlacklistGameContainer.checkbox.text!.innerText.replace('{numberOfGames}', this.numberOfGames.toString());
-    text.innerText = textContent;
-  }
-
   protected hideGame (gameListContainer: HTMLElement, gameContainer: HTMLElement): void {
     gameListContainer.removeChild(gameContainer);
   }
@@ -450,38 +236,38 @@ export class ComponentController {
   protected getGameStatus (gameTitle: string): boolean {
     gameTitle = gameTitle.toLowerCase();
     const key = gameTitle[0];
-    if (!this.blacklistMap.has(key)) {
+    if (!this.dataModel.blacklistMap.has(key)) {
       return false;
     }
-    return this.blacklistMap.get(key)!.includes(gameTitle);
+    return this.dataModel.blacklistMap.get(key)!.includes(gameTitle);
   }
 
   protected async addGameToBlacklist (gameTitle: string): Promise<void> {
     const key = gameTitle[0].toLowerCase();
-    if (!this.blacklistMap.has(key)) {
-      this.blacklistMap.set(key, [gameTitle]);
+    if (!this.dataModel.blacklistMap.has(key)) {
+      this.dataModel.blacklistMap.set(key, [gameTitle]);
     } else {
-      const list = this.blacklistMap.get(key)!;
+      const list = this.dataModel.blacklistMap.get(key)!;
       list.push(gameTitle.toLowerCase());
-      this.blacklistMap.set(key, list);
+      this.dataModel.blacklistMap.set(key, list);
     }
-    await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: JSON.stringify(Object.fromEntries(this.blacklistMap.entries())) });
+    await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: JSON.stringify(Object.fromEntries(this.dataModel.blacklistMap.entries())) });
     CommonTool.showLog('Add "' + gameTitle + '" to blacklist. ');
   }
 
   protected async removeGameFromBlacklist (gameTitle: string): Promise<void> {
     const key = gameTitle[0];
-    if (!this.blacklistMap.has(key)) {
+    if (!this.dataModel.blacklistMap.has(key)) {
       return;
     }
-    const list = this.blacklistMap.get(key)!;
+    const list = this.dataModel.blacklistMap.get(key)!;
     const index = list.findIndex(e => e === gameTitle);
     if (index < 0) {
       return;
     }
     list.splice(index, 1);
-    this.blacklistMap.set(key, list);
-    await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: JSON.stringify(Object.fromEntries(this.blacklistMap.entries())) });
+    this.dataModel.blacklistMap.set(key, list);
+    await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: JSON.stringify(Object.fromEntries(this.dataModel.blacklistMap.entries())) });
     CommonTool.showLog('Removed "' + gameTitle + '" from blacklist. ');
   }
 
@@ -499,6 +285,6 @@ export class ComponentController {
         blacklistMap.set(k, gameArr);
       });
     }
-    await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: JSON.stringify(Object.fromEntries(this.blacklistMap.entries())) });
+    await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: JSON.stringify(Object.fromEntries(this.dataModel.blacklistMap.entries())) });
   }
 }

@@ -1,19 +1,22 @@
 {
   "name": "GameStoreBlacklist",
-  "action": {},
   "manifest_version": 3,
   "version": "1.6.1",
   "description": "",
+  "action": {
+    "default_popup": "src/component/popup/popup.html",
+    "default_icon": "image/icon.png"
+  },
   "permissions": [
     "storage"
   ],
   "content_scripts": [
     {
       "css": [
-        "src/component/yuplay/product/style.css"
+        "src/component/web/yuplay/product/style.css"
       ],
       "js": [
-        "src/component/yuplay/product/content.js"
+        "src/component/web/yuplay/product/content.js"
       ],
       "matches": [
         "https://www.yuplay.com/",
@@ -22,10 +25,10 @@
     },
     {
       "css": [
-        "src/component/yuplay/search/style.css"
+        "src/component/web/yuplay/search/style.css"
       ],
       "js": [
-        "src/component/yuplay/search/content.js"
+        "src/component/web/yuplay/search/content.js"
       ],
       "matches": [
         "https://www.yuplay.com/products/*"
@@ -33,10 +36,10 @@
     },
     {
       "css": [
-        "src/component/gamivo/product/style.css"
+        "src/component/web/gamivo/product/style.css"
       ],
       "js": [
-        "src/component/gamivo/product/content.js"
+        "src/component/web/gamivo/product/content.js"
       ],
       "matches": [
         "https://www.gamivo.com/product/*"
@@ -44,10 +47,10 @@
     },
     {
       "css": [
-        "src/component/gamivo/search/style.css"
+        "src/component/web/gamivo/search/style.css"
       ],
       "js": [
-        "src/component/gamivo/search/content.js"
+        "src/component/web/gamivo/search/content.js"
       ],
       "matches": [
         "https://www.gamivo.com/store/games/steam*",
@@ -56,10 +59,10 @@
     },
     {
       "css": [
-        "src/component/ggdeals/product/style.css"
+        "src/component/web/ggdeals/product/style.css"
       ],
       "js": [
-        "src/component/ggdeals/product/content.js"
+        "src/component/web/ggdeals/product/content.js"
       ],
       "matches": [
         "https://gg.deals/game/*",
@@ -69,10 +72,10 @@
     },
     {
       "css": [
-        "src/component/ggdeals/search/style.css"
+        "src/component/web/ggdeals/search/style.css"
       ],
       "js": [
-        "src/component/ggdeals/search/content.js"
+        "src/component/web/ggdeals/search/content.js"
       ],
       "matches": [
         "https://gg.deals/deals/*"
@@ -80,10 +83,10 @@
     },
     {
       "css": [
-        "src/component/humblebundle/product/style.css"
+        "src/component/web/humblebundle/product/style.css"
       ],
       "js": [
-        "src/component/humblebundle/product/content.js"
+        "src/component/web/humblebundle/product/content.js"
       ],
       "matches": [
         "https://www.humblebundle.com/store/*"
@@ -91,10 +94,10 @@
     },
     {
       "css": [
-        "src/component/humblebundle/search/style.css"
+        "src/component/web/humblebundle/search/style.css"
       ],
       "js": [
-        "src/component/humblebundle/search/content.js"
+        "src/component/web/humblebundle/search/content.js"
       ],
       "matches": [
         "https://www.humblebundle.com/store/search?*"
