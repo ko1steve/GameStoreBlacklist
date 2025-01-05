@@ -1,5 +1,7 @@
 import { MiniSignal } from 'mini-signals';
 import { MainConfig } from 'src/mainConfig';
+import { CommonTool } from 'src/util/commonTool';
+import { GlobalEventNames, GlobalEventDispatcher } from 'src/util/globalEventDispatcher';
 import { Container, Singleton } from 'typescript-ioc';
 import { TSMap } from 'typescript-map';
 
@@ -16,7 +18,7 @@ export class DataModel {
     this._showBlacklistGame = value;
   }
 
-  public updateShowBlacklistGameSignal: MiniSignal;
+  public onInitializeBlacklistCompleteSignal: MiniSignal;
 
   private _prevNumberOfGame: number;
   private _numberOfGame: number;
@@ -36,31 +38,61 @@ export class DataModel {
     return this._debug;
   }
 
-  public set debug (value: boolean) {
-    this._debug = value;
-  }
+  public onDebugModeChangeSignal: MiniSignal;
 
   constructor () {
     this.mainConfig = Container.get(MainConfig);
     this._blacklistMap = new TSMap<string, string[]>();
-    this.updateShowBlacklistGameSignal = new MiniSignal();
+    this.onInitializeBlacklistCompleteSignal = new MiniSignal();
     this.updateNumberOfGameSignal = new MiniSignal();
+    this.onDebugModeChangeSignal = new MiniSignal();
     this._prevNumberOfGame = 0;
     this._numberOfGame = 0;
     this._debug = false;
-    this.initBlacklist();
+    this.initialize().then(() => {
+      this.addListener();
+    });
+  }
+
+  protected addListener (): void {
+    GlobalEventDispatcher.addListener(GlobalEventNames.DEBUG_MODE_ON, this.onDebugModeOn.bind(this));
+    GlobalEventDispatcher.addListener(GlobalEventNames.DEBUG_MODE_OFF, this.onDebugModeOff.bind(this));
+  }
+
+  private onDebugModeOn (): void {
+    CommonTool.showLog('Debug mode turns on.');
+    chrome.storage.local.set({ [this.mainConfig.storageNames.debug]: true }).then(() => {
+      this.onDebugModeChangeSignal.dispatch();
+    });
+  }
+
+  private onDebugModeOff (): void {
+    CommonTool.showLog('Debug mode turns off.');
+    chrome.storage.local.set({ [this.mainConfig.storageNames.debug]: false }).then(() => {
+      this.onDebugModeChangeSignal.dispatch();
+    });
+  }
+
+  protected async initialize (): Promise<void> {
+    await this.initBlacklist();
+    await this.initShowBlacklistGame();
+    await this.initDebugMode();
+    this.updateNumberOfGame();
+    this.onInitializeBlacklistCompleteSignal.dispatch();
   }
 
   protected async initBlacklist (): Promise<void> {
-    let storageData = await chrome.storage.local.get([this.mainConfig.storageNames.blacklist]);
+    const storageData = await chrome.storage.local.get([this.mainConfig.storageNames.blacklist]);
     const jsonContent = storageData[this.mainConfig.storageNames.blacklist];
     if (!jsonContent) {
       this._blacklistMap = new TSMap<string, string[]>();
     } else {
       this._blacklistMap = new TSMap<string, string[]>(Object.entries(JSON.parse(jsonContent)));
     }
-    this.updateNumberOfGame();
-    storageData = await chrome.storage.local.get([this.mainConfig.storageNames.showblacklistGames]);
+  }
+
+  protected async initShowBlacklistGame (): Promise<void> {
+    const storageData = await chrome.storage.local.get([this.mainConfig.storageNames.showblacklistGames]);
     const showBlacklistGames: boolean = storageData[this.mainConfig.storageNames.showblacklistGames];
     if (showBlacklistGames == null) {
       await chrome.storage.local.set({ [this.mainConfig.storageNames.showblacklistGames]: true });
@@ -68,7 +100,17 @@ export class DataModel {
     } else {
       this._showBlacklistGame = showBlacklistGames;
     }
-    this.updateShowBlacklistGameSignal.dispatch(this._showBlacklistGame);
+  }
+
+  protected async initDebugMode (): Promise<void> {
+    const storageData = await chrome.storage.local.get([this.mainConfig.storageNames.debug]);
+    const debug: boolean = storageData[this.mainConfig.storageNames.debug];
+    if (debug == null) {
+      await chrome.storage.local.set({ [this.mainConfig.storageNames.debug]: false });
+      this._debug = false;
+    } else {
+      this._debug = debug;
+    }
   }
 
   public updateNumberOfGame (): void {
