@@ -5,12 +5,6 @@ import { IPopupConfig, PopupConfig } from './config';
 import './popup.css';
 import { CommonTool } from 'src/util/commonTool';
 
-declare global {
-  interface Window {
-    PopupController: PopupController;
-  }
-}
-
 export class PopupController {
   @Inject
   protected dataModel: DataModel;
@@ -27,32 +21,16 @@ export class PopupController {
   }
 
   protected addEventListeners (): void {
-    this.dataModel.updateShowBlacklistGameSignal.add(this.initailzie.bind(this));
+    this.dataModel.onInitializeBlacklistCompleteSignal.add(this.initailzie.bind(this));
     this.dataModel.updateNumberOfGameSignal.add(this.updateTextOfNumberOfGame.bind(this));
+    this.dataModel.onDebugModeChangeSignal.add(this.onDebugModeChange.bind(this));
   }
 
-  protected async initailzie (): Promise<void> {
-    const storageData = await chrome.storage.local.get([this.mainConfig.storageNames.debug]);
-    const debug = storageData[this.mainConfig.storageNames.debug];
-    if (debug == null) {
-      await chrome.storage.local.set({ [this.mainConfig.storageNames.debug]: false });
-      this.dataModel.debug = false;
-    } else {
-      this.dataModel.debug = storageData[this.mainConfig.storageNames.debug];
-    }
-    this.initElement();
+  protected onDebugModeChange (): void {
+    location.reload();
   }
 
-  public async setDebug (value: boolean) {
-    const storageData = await chrome.storage.local.get([this.mainConfig.storageNames.debug]);
-    const isDebug: boolean = storageData[this.mainConfig.storageNames.debug];
-    if (isDebug == null || isDebug !== value) {
-      await chrome.storage.local.set({ [this.mainConfig.storageNames.debug]: value });
-      chrome.tabs.reload();
-    }
-  }
-
-  protected initElement (): void {
+  protected initailzie (): void {
     const container = document.createElement('div');
     container.id = 'mainContainer';
     document.body.appendChild(container);

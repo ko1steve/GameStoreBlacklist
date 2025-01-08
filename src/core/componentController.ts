@@ -24,7 +24,7 @@ export class ComponentController {
   }
 
   protected addEventListeners () {
-    this.dataModel.updateShowBlacklistGameSignal.add(this.initailzie.bind(this));
+    this.dataModel.onInitializeBlacklistCompleteSignal.add(this.initailzie.bind(this));
   }
 
   protected initailzie (): void {
