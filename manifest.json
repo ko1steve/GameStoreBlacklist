@@ -1,7 +1,7 @@
 {
   "name": "GameStoreBlacklist",
   "manifest_version": 3,
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "",
   "action": {
     "default_popup": "src/component/popup/popup.html",
