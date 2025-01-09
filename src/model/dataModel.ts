@@ -61,14 +61,14 @@ export class DataModel {
 
   private onDebugModeOn (): void {
     CommonTool.showLog('Debug mode turns on.');
-    chrome.storage.local.set({ [this.mainConfig.storageNames.debug]: true }).then(() => {
+    chrome.storage.sync.set({ [this.mainConfig.storageNames.debug]: true }).then(() => {
       this.onDebugModeChangeSignal.dispatch();
     });
   }
 
   private onDebugModeOff (): void {
     CommonTool.showLog('Debug mode turns off.');
-    chrome.storage.local.set({ [this.mainConfig.storageNames.debug]: false }).then(() => {
+    chrome.storage.sync.set({ [this.mainConfig.storageNames.debug]: false }).then(() => {
       this.onDebugModeChangeSignal.dispatch();
     });
   }
@@ -82,7 +82,7 @@ export class DataModel {
   }
 
   protected async initBlacklist (): Promise<void> {
-    const storageData = await chrome.storage.local.get([this.mainConfig.storageNames.blacklist]);
+    const storageData = await chrome.storage.sync.get([this.mainConfig.storageNames.blacklist]);
     const jsonContent = storageData[this.mainConfig.storageNames.blacklist];
     if (!jsonContent) {
       this._blacklistMap = new TSMap<string, string[]>();
@@ -92,10 +92,10 @@ export class DataModel {
   }
 
   protected async initShowBlacklistGame (): Promise<void> {
-    const storageData = await chrome.storage.local.get([this.mainConfig.storageNames.showblacklistGames]);
+    const storageData = await chrome.storage.sync.get([this.mainConfig.storageNames.showblacklistGames]);
     const showBlacklistGames: boolean = storageData[this.mainConfig.storageNames.showblacklistGames];
     if (showBlacklistGames == null) {
-      await chrome.storage.local.set({ [this.mainConfig.storageNames.showblacklistGames]: true });
+      await chrome.storage.sync.set({ [this.mainConfig.storageNames.showblacklistGames]: true });
       this._showBlacklistGame = true;
     } else {
       this._showBlacklistGame = showBlacklistGames;
@@ -103,10 +103,10 @@ export class DataModel {
   }
 
   protected async initDebugMode (): Promise<void> {
-    const storageData = await chrome.storage.local.get([this.mainConfig.storageNames.debug]);
+    const storageData = await chrome.storage.sync.get([this.mainConfig.storageNames.debug]);
     const debug: boolean = storageData[this.mainConfig.storageNames.debug];
     if (debug == null) {
-      await chrome.storage.local.set({ [this.mainConfig.storageNames.debug]: false });
+      await chrome.storage.sync.set({ [this.mainConfig.storageNames.debug]: false });
       this._debug = false;
     } else {
       this._debug = debug;
