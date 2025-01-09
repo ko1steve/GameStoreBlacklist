@@ -250,7 +250,7 @@ export class ComponentController {
       list.push(gameTitle.toLowerCase());
       this.dataModel.blacklistMap.set(key, list);
     }
-    await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: JSON.stringify(Object.fromEntries(this.dataModel.blacklistMap.entries())) });
+    await chrome.storage.sync.set({ [this.mainConfig.storageNames.blacklist]: JSON.stringify(Object.fromEntries(this.dataModel.blacklistMap.entries())) });
     CommonTool.showLog('Add "' + gameTitle + '" to blacklist. ');
   }
 
@@ -266,12 +266,12 @@ export class ComponentController {
     }
     list.splice(index, 1);
     this.dataModel.blacklistMap.set(key, list);
-    await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: JSON.stringify(Object.fromEntries(this.dataModel.blacklistMap.entries())) });
+    await chrome.storage.sync.set({ [this.mainConfig.storageNames.blacklist]: JSON.stringify(Object.fromEntries(this.dataModel.blacklistMap.entries())) });
     CommonTool.showLog('Removed "' + gameTitle + '" from blacklist. ');
   }
 
   protected async trimGameName (): Promise<void> {
-    const storageData = await chrome.storage.local.get([this.mainConfig.storageNames.blacklist]);
+    const storageData = await chrome.storage.sync.get([this.mainConfig.storageNames.blacklist]);
     const jsonContent = storageData[this.mainConfig.storageNames.blacklist] as string;
     if (!jsonContent) {
       return;
@@ -284,6 +284,6 @@ export class ComponentController {
         blacklistMap.set(k, gameArr);
       });
     }
-    await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: JSON.stringify(Object.fromEntries(this.dataModel.blacklistMap.entries())) });
+    await chrome.storage.sync.set({ [this.mainConfig.storageNames.blacklist]: JSON.stringify(Object.fromEntries(this.dataModel.blacklistMap.entries())) });
   }
 }
