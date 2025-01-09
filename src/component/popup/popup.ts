@@ -57,7 +57,7 @@ export class PopupController {
     checkbox.type = 'checkbox';
     checkbox.checked = this.dataModel.showBlacklistGame;
     checkbox.onchange = () => {
-      chrome.storage.sync.set({ [this.mainConfig.storageNames.showblacklistGames]: checkbox.checked }).then(() => {
+      chrome.storage.local.set({ [this.mainConfig.storageNames.showblacklistGames]: checkbox.checked }).then(() => {
         this.dataModel.showBlacklistGame = checkbox.checked;
         chrome.tabs.query({ active: true, currentWindow: true }).then((currentTab) => {
           if (!currentTab || !currentTab[0].url) {
@@ -91,7 +91,7 @@ export class PopupController {
   }
 
   protected async downloadLocalStorageDataAsJson (): Promise<void> {
-    const storageData = await chrome.storage.sync.get([this.mainConfig.storageNames.blacklist]);
+    const storageData = await chrome.storage.local.get([this.mainConfig.storageNames.blacklist]);
     const blacklistContent = storageData[this.mainConfig.storageNames.blacklist];
     if (blacklistContent) {
       const blob = new Blob([blacklistContent], { type: 'application/json' });
@@ -128,7 +128,7 @@ export class PopupController {
       reader.onload = async (event) => {
         if (event.target) {
           const jsonContent = event.target.result as string;
-          await chrome.storage.sync.set({ [this.mainConfig.storageNames.blacklist]: jsonContent });
+          await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: jsonContent });
           chrome.tabs.reload();
         }
       };
@@ -148,7 +148,7 @@ export class PopupController {
   }
 
   protected async validateData (): Promise<void> {
-    const storageData = await chrome.storage.sync.get([this.mainConfig.storageNames.blacklist]);
+    const storageData = await chrome.storage.local.get([this.mainConfig.storageNames.blacklist]);
     const jsonContent = storageData[this.mainConfig.storageNames.blacklist];
     if (jsonContent) {
       const entries = Object.entries(JSON.parse(jsonContent)) as (string | string[])[][];
@@ -171,7 +171,7 @@ export class PopupController {
         }
       }
       const newJsonContent = JSON.stringify(Object.fromEntries(entries));
-      await chrome.storage.sync.set({ [this.mainConfig.storageNames.blacklist]: newJsonContent });
+      await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: newJsonContent });
       chrome.tabs.reload();
     }
   }
