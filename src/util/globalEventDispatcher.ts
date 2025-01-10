@@ -29,7 +29,7 @@ export class GlobalEventDispatcher {
     }
   }
 
-  public static dispatch (eventName: string, eventData: any) {
+  public static dispatch (eventName: string, eventData?: any) {
     const event: IGlobalEvent = {
       name: eventName,
       data: eventData
