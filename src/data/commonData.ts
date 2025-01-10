@@ -3,10 +3,6 @@ export interface IHTMLElement {
   className?: string
 }
 
-export interface IImageElement extends IHTMLElement {
-  sourceName: string
-}
-
 export interface ITextElement extends IHTMLElement {
   innerText: string
 }
@@ -32,9 +28,4 @@ export interface IGameInfoOption {
     infoElement: HTMLElement
     parentList: HTMLElement
   }
-}
-
-export interface IAssetData {
-  from: string
-  to: string
 }
