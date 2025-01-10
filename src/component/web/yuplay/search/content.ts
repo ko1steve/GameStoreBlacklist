@@ -6,18 +6,6 @@ import './style.css';
 class YuplaySearchController extends ComponentController {
   protected componentConfig!: YuplaySearchConfig;
 
-  protected getPageHeader (): HTMLElement | null {
-    const header = document.getElementById('navbar-main');
-    if (!header) {
-      return null;
-    }
-    return header;
-  }
-
-  protected modifyHeader (header: HTMLElement): void {
-    header.className += ' flexbox';
-  }
-
   protected handleListPageContent (): void {
     const gameListContainer = document.getElementsByClassName('catalog')[0] as HTMLElement;
     if (!gameListContainer || !gameListContainer.dataset || gameListContainer.dataset.hasInit === 'true') {

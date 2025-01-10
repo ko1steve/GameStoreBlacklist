@@ -6,18 +6,6 @@ import './style.css';
 class HumbleBundleSearchController extends ComponentController {
   protected componentConfig!: HumbleBundleSearchConfig;
 
-  protected getPageHeader (): HTMLElement | null {
-    const header = document.getElementsByClassName('navbar-content')[0] as HTMLElement;
-    if (!header) {
-      return null;
-    }
-    return header;
-  }
-
-  protected modifyHeader (header: HTMLElement): void {
-    header.className += ' flexbox';
-  }
-
   protected getGameListContainer (): HTMLElement | null {
     return document.getElementsByClassName('entities-list')[0] as HTMLDivElement;
   }

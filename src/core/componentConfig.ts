@@ -18,17 +18,8 @@ export interface ICheckBoxContainer extends IHTMLElement {
   checkbox: ICheckboxImageElement
 }
 
-export interface IHeaderContainer extends IHTMLElement {
-  showBlacklistGameContainer: IShowBlacklistGameCheckbox
-}
-
 export interface IShowBlacklistGameCheckbox extends IHTMLElement {
   checkbox: ICheckboxImageElement
-}
-
-export interface IUploadButton extends IHTMLElement {
-  label: ILabelEleemnt
-  input: IHTMLElement
 }
 
 export class ComponentConfig implements IComponentConfig {

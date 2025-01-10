@@ -12,7 +12,6 @@ export class ComponentController {
   protected componentId: string;
   protected mainConfig: MainConfig;
   protected componentConfig: ComponentConfig;
-  protected numberOfGames = 0;
   protected countGameListElementInit = 0;
 
   constructor (componentConfig: ComponentConfig) {
@@ -34,26 +33,6 @@ export class ComponentController {
       this.handleListPageContent();
     }
     setTimeout(() => this.initailzie(), 500);
-  }
-
-  protected addResizeEventListener (): void {
-    const listener = (event: UIEvent) => {
-      removeEventListener('resize', listener);
-      setTimeout(() => addEventListener('resize', listener), 200);
-    };
-    addEventListener('resize', listener);
-  }
-
-  protected getPageHeader (): HTMLElement | null {
-    const header = document.getElementById('header-id');
-    if (!header) {
-      return null;
-    }
-    return header;
-  }
-
-  protected modifyHeader (header: HTMLElement): void {
-    // modify header (ex. add class, modify style)
   }
 
   protected handlePageContent (): void {
@@ -268,22 +247,5 @@ export class ComponentController {
     this.dataModel.blacklistMap.set(key, list);
     await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: JSON.stringify(Object.fromEntries(this.dataModel.blacklistMap.entries())) });
     CommonTool.showLog('Removed "' + gameTitle + '" from blacklist. ');
-  }
-
-  protected async trimGameName (): Promise<void> {
-    const storageData = await chrome.storage.local.get([this.mainConfig.storageNames.blacklist]);
-    const jsonContent = storageData[this.mainConfig.storageNames.blacklist] as string;
-    if (!jsonContent) {
-      return;
-    } else {
-      const blacklistMap = new Map<string, string[]>(Object.entries(JSON.parse(jsonContent)));
-      blacklistMap.forEach((gameArr, k) => {
-        gameArr.forEach((gameTitle, i) => {
-          gameArr[i] = gameTitle.trim();
-        });
-        blacklistMap.set(k, gameArr);
-      });
-    }
-    await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: JSON.stringify(Object.fromEntries(this.dataModel.blacklistMap.entries())) });
   }
 }

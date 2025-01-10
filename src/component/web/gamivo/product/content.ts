@@ -6,18 +6,6 @@ import './style.css';
 class GamivoProductController extends ComponentController {
   protected componentConfig!: GamivoProductConfig;
 
-  protected getPageHeader (): HTMLElement | null {
-    const header = document.getElementsByClassName('main-container row no-gutters')[0] as HTMLElement;
-    if (!header) {
-      return null;
-    }
-    return header;
-  }
-
-  protected modifyHeader (header: HTMLElement): void {
-    header.className += ' flexbox';
-  }
-
   protected getRawGameTitle (infoContainer?: HTMLElement): string | undefined {
     return document.getElementsByClassName('product-info')[0]
       ?.getElementsByTagName('h1')[0]
