@@ -6,10 +6,6 @@ import './style.css';
 class GgdealsProductController extends ComponentController {
   protected componentConfig!: GgdealsProductConfig;
 
-  protected getPageHeader (): HTMLElement | null {
-    return null;
-  }
-
   protected getCheckboxParent (): HTMLElement | null {
     const gameCardElement = document.getElementById('game-card');
     if (!gameCardElement) {

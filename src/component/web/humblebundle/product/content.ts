@@ -6,18 +6,6 @@ import './style.css';
 class HumbleBundleProductController extends ComponentController {
   protected componentConfig!: HumbleBundleProductConfig;
 
-  protected getPageHeader (): HTMLElement | null {
-    const header = document.getElementsByClassName('navbar-content')[0] as HTMLElement;
-    if (!header) {
-      return null;
-    }
-    return header;
-  }
-
-  protected modifyHeader (header: HTMLElement): void {
-    header.className += ' flexbox';
-  }
-
   protected getRawGameTitle (infoContainer?: HTMLElement): string {
     return (document.getElementsByClassName('showcase-large')[0]
       ?.getElementsByClassName('human_name-view')[0] as HTMLHeadingElement)

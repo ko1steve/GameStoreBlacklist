@@ -6,18 +6,6 @@ import './style.css';
 class GamivoSearchController extends ComponentController {
   protected componentConfig!: GamivoSearchConfig;
 
-  protected getPageHeader (): HTMLElement | null {
-    const header = document.getElementsByClassName('main-container row no-gutters')[0] as HTMLElement;
-    if (!header) {
-      return null;
-    }
-    return header;
-  }
-
-  protected modifyHeader (header: HTMLElement): void {
-    header.className += ' flexbox';
-  }
-
   protected isGameListFirstChildExist (children: HTMLElement[]): boolean {
     return children != null && children[0] != null && children[0].children[0].children[0] != null;
   }
