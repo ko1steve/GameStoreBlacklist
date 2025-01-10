@@ -1,8 +1,8 @@
+import './popup.css';
 import { MainConfig } from 'src/mainConfig';
 import { DataModel } from 'src/model/dataModel';
 import { Container, Inject } from 'typescript-ioc';
 import { IPopupConfig, PopupConfig } from './config';
-import './popup.css';
 import { CommonTool } from 'src/util/commonTool';
 
 export class PopupController {
