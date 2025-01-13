@@ -64,7 +64,7 @@ export class PopupController {
             return;
           }
           const manifest = chrome.runtime.getManifest();
-          const matchTab = manifest.content_scripts?.some(scriptConfig => scriptConfig.matches?.find(e => CommonUtil.compareStr(e, currentTab[0].url!)));
+          const matchTab = manifest.content_scripts?.some(scriptConfig => scriptConfig.matches?.find(e => CommonUtil.matchWildcardPattern(e, currentTab[0].url!)));
           if (matchTab) {
             chrome.tabs.reload();
           }
