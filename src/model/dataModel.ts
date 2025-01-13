@@ -1,4 +1,5 @@
 import { MiniSignal } from 'mini-signals';
+import Pako from 'pako';
 import { MainConfig } from 'src/mainConfig';
 import { CommonUtil } from 'src/util/commonUtil';
 import { DataStorage } from 'src/util/dataStorage';
@@ -80,9 +81,23 @@ export class DataModel {
   }
 
   protected async initBlacklist (): Promise<void> {
-    const jsonContent = await DataStorage.getItem(this.mainConfig.storageNames.blacklist);
+    const blacklistData: string | any[] = await DataStorage.getItem(this.mainConfig.storageNames.blacklist);
+    let jsonContent: string;
+    if (blacklistData instanceof Array) {
+      jsonContent = Pako.inflate(Uint8Array.from(blacklistData), { to: 'string' });
+      console.log(1);
+      console.log(jsonContent);
+    } else {
+      /** under version 1.7.1 */
+      jsonContent = blacklistData;
+      console.log(2);
+      console.log(jsonContent);
+      await DataStorage.setItem(this.mainConfig.storageNames.blacklist, Array.from(Pako.deflate(jsonContent)));
+    }
     if (!jsonContent) {
       this._blacklistMap = new TSMap<string, string[]>();
+      const jsonContent = JSON.stringify(Object.fromEntries(this._blacklistMap.entries()));
+      await DataStorage.setItem(this.mainConfig.storageNames.blacklist, Array.from(Pako.deflate(jsonContent)));
     } else {
       this._blacklistMap = new TSMap<string, string[]>(Object.entries(JSON.parse(jsonContent)));
     }
@@ -130,7 +145,7 @@ export class DataModel {
         this._blacklistMap.set(key, list);
       }
       const jsonContent = JSON.stringify(Object.fromEntries(this._blacklistMap.entries()));
-      DataStorage.setItem(this.mainConfig.storageNames.blacklist, jsonContent).then(() => {
+      DataStorage.setItem(this.mainConfig.storageNames.blacklist, Array.from(Pako.deflate(jsonContent))).then(() => {
         CommonUtil.showLog('Add "' + gameTitle + '" to blacklist. ');
         resolve();
       });
@@ -151,7 +166,7 @@ export class DataModel {
       list.splice(index, 1);
       this._blacklistMap.set(key, list);
       const jsonContent = JSON.stringify(Object.fromEntries(this._blacklistMap.entries()));
-      DataStorage.setItem(this.mainConfig.storageNames.blacklist, jsonContent).then(() => {
+      DataStorage.setItem(this.mainConfig.storageNames.blacklist, Array.from(Pako.deflate(jsonContent))).then(() => {
         CommonUtil.showLog('Removed "' + gameTitle + '" from blacklist. ');
         resolve();
       });
@@ -188,7 +203,7 @@ export class DataModel {
       }
     }
     const newJsonContent = JSON.stringify(Object.fromEntries(entries));
-    await DataStorage.setItem(this.mainConfig.storageNames.blacklist, newJsonContent);
+    await DataStorage.setItem(this.mainConfig.storageNames.blacklist, Array.from(Pako.deflate(newJsonContent)));
     chrome.tabs.reload();
   }
 }

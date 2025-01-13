@@ -1,5 +1,7 @@
+export type StorageType = null | string | number | boolean | Array<any> | Object;
+
 export class DataStorage {
-  public static setItem (key: string, value: any): Promise<void> {
+  public static setItem (key: string, value: StorageType): Promise<void> {
     return chrome.storage.local.set({ [key]: value });
   }
 

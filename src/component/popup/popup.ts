@@ -1,4 +1,5 @@
 import './popup.css';
+import Pako from 'pako';
 import { MainConfig } from 'src/mainConfig';
 import { DataModel } from 'src/model/dataModel';
 import { Container, Inject } from 'typescript-ioc';
@@ -92,12 +93,12 @@ export class PopupController {
   }
 
   protected async downloadLocalStorageDataAsJson (): Promise<void> {
-    const blacklistContent = await DataStorage.getItem(this.mainConfig.storageNames.blacklist);
-    if (blacklistContent) {
-      const blob = new Blob([blacklistContent], { type: 'application/json' });
+    const compressedData: number[] = await DataStorage.getItem(this.mainConfig.storageNames.blacklist);
+    if (compressedData) {
+      const blob = new Blob([Uint8Array.from(compressedData)], { type: 'text/plain' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = 'blacklist.json';
+      a.download = 'blacklist.txt';
       a.click();
     }
   }
@@ -128,7 +129,7 @@ export class PopupController {
       reader.onload = async (event) => {
         if (event.target) {
           const jsonContent = event.target.result as string;
-          await DataStorage.setItem(this.mainConfig.storageNames.blacklist, jsonContent);
+          await DataStorage.setItem(this.mainConfig.storageNames.blacklist, Array.from(Pako.deflate(jsonContent)));
           chrome.tabs.reload();
         }
       };
