@@ -2,7 +2,7 @@ import { Container, Inject } from 'typescript-ioc';
 import { MainConfig } from '../mainConfig';
 import { ComponentConfig } from './componentConfig';
 import { IGameInfoOption } from 'src/data/commonData';
-import { CommonTool } from 'src/util/commonTool';
+import { CommonUtil } from 'src/util/commonUtil';
 import { DataModel } from 'src/model/dataModel';
 
 export class ComponentController {
@@ -177,7 +177,7 @@ export class ComponentController {
       };
       checkboxParent.dataset.hasInit = 'true';
       if (inBlacklist) {
-        CommonTool.showLog('In Blacklist : ' + gameTitle);
+        CommonUtil.showLog('In Blacklist : ' + gameTitle);
         this.setCheckboxEnabled(checkboxImg);
       }
     }
