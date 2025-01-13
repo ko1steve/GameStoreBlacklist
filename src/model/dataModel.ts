@@ -29,9 +29,6 @@ export class DataModel {
   public updateNumberOfGameSignal: MiniSignal;
 
   private _blacklistMap: TSMap<string, string[]>;
-  public get blacklistMap (): TSMap<string, string[]> {
-    return this._blacklistMap;
-  }
 
   private _debug: boolean;
   public get debug (): boolean {
@@ -122,5 +119,43 @@ export class DataModel {
     if (this._numberOfGame !== this._prevNumberOfGame) {
       this.updateNumberOfGameSignal.dispatch(this._numberOfGame);
     }
+  }
+
+  public async addGameToBlacklist (gameTitle: string): Promise<void> {
+    const key = gameTitle[0].toLowerCase();
+    if (!this._blacklistMap.has(key)) {
+      this._blacklistMap.set(key, [gameTitle]);
+    } else {
+      const list = this._blacklistMap.get(key)!;
+      list.push(gameTitle.toLowerCase());
+      this._blacklistMap.set(key, list);
+    }
+    await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: JSON.stringify(Object.fromEntries(this._blacklistMap.entries())) });
+    CommonTool.showLog('Add "' + gameTitle + '" to blacklist. ');
+  }
+
+  public async removeGameFromBlacklist (gameTitle: string): Promise<void> {
+    const key = gameTitle[0];
+    if (!this._blacklistMap.has(key)) {
+      return;
+    }
+    const list = this._blacklistMap.get(key)!;
+    const index = list.findIndex(e => e === gameTitle);
+    if (index < 0) {
+      return;
+    }
+    list.splice(index, 1);
+    this._blacklistMap.set(key, list);
+    await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: JSON.stringify(Object.fromEntries(this._blacklistMap.entries())) });
+    CommonTool.showLog('Removed "' + gameTitle + '" from blacklist. ');
+  }
+
+  public getGameStatus (gameTitle: string): boolean {
+    gameTitle = gameTitle.toLowerCase();
+    const key = gameTitle[0];
+    if (!this._blacklistMap.has(key)) {
+      return false;
+    }
+    return this._blacklistMap.get(key)!.includes(gameTitle);
   }
 }
