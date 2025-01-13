@@ -3,7 +3,7 @@ import { MainConfig } from 'src/mainConfig';
 import { DataModel } from 'src/model/dataModel';
 import { Container, Inject } from 'typescript-ioc';
 import { IPopupConfig, PopupConfig } from './config';
-import { CommonTool } from 'src/util/commonTool';
+import { CommonUtil } from 'src/util/commonUtil';
 
 export class PopupController {
   @Inject
@@ -64,7 +64,7 @@ export class PopupController {
             return;
           }
           const manifest = chrome.runtime.getManifest();
-          const matchTab = manifest.content_scripts?.some(scriptConfig => scriptConfig.matches?.find(e => CommonTool.compareStr(e, currentTab[0].url!)));
+          const matchTab = manifest.content_scripts?.some(scriptConfig => scriptConfig.matches?.find(e => CommonUtil.compareStr(e, currentTab[0].url!)));
           if (matchTab) {
             chrome.tabs.reload();
           }

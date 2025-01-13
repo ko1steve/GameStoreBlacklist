@@ -1,6 +1,6 @@
 import { MiniSignal } from 'mini-signals';
 import { MainConfig } from 'src/mainConfig';
-import { CommonTool } from 'src/util/commonTool';
+import { CommonUtil } from 'src/util/commonUtil';
 import { GlobalEventNames, GlobalEventDispatcher } from 'src/util/globalEventDispatcher';
 import { Container, Singleton } from 'typescript-ioc';
 import { TSMap } from 'typescript-map';
@@ -57,14 +57,14 @@ export class DataModel {
   }
 
   private onDebugModeOn (): void {
-    CommonTool.showLog('Debug mode turns on.');
+    CommonUtil.showLog('Debug mode turns on.');
     chrome.storage.local.set({ [this.mainConfig.storageNames.debug]: true }).then(() => {
       this.onDebugModeChangeSignal.dispatch();
     });
   }
 
   private onDebugModeOff (): void {
-    CommonTool.showLog('Debug mode turns off.');
+    CommonUtil.showLog('Debug mode turns off.');
     chrome.storage.local.set({ [this.mainConfig.storageNames.debug]: false }).then(() => {
       this.onDebugModeChangeSignal.dispatch();
     });
@@ -131,7 +131,7 @@ export class DataModel {
       this._blacklistMap.set(key, list);
     }
     await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: JSON.stringify(Object.fromEntries(this._blacklistMap.entries())) });
-    CommonTool.showLog('Add "' + gameTitle + '" to blacklist. ');
+    CommonUtil.showLog('Add "' + gameTitle + '" to blacklist. ');
   }
 
   public async removeGameFromBlacklist (gameTitle: string): Promise<void> {
@@ -147,7 +147,7 @@ export class DataModel {
     list.splice(index, 1);
     this._blacklistMap.set(key, list);
     await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: JSON.stringify(Object.fromEntries(this._blacklistMap.entries())) });
-    CommonTool.showLog('Removed "' + gameTitle + '" from blacklist. ');
+    CommonUtil.showLog('Removed "' + gameTitle + '" from blacklist. ');
   }
 
   public getGameStatus (gameTitle: string): boolean {
