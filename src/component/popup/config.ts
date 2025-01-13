@@ -6,7 +6,7 @@ export interface IPopupConfig {
   showBlacklistGameContainer: IShowBlacklistGameCheckbox;
   downloadButton: IButtonElement;
   uploadButton: IUploadButton;
-  validateButton: IButtonElement;
+  normalizeButton: IButtonElement;
 }
 
 export interface IUploadButton extends IHTMLElement {
@@ -30,25 +30,25 @@ export class PopupConfig implements IPopupConfig {
   };
 
   public downloadButton: IButtonElement = {
-    id: 'downloadLocalStorageAsJsonButton',
+    id: 'downloadButton',
     className: 'settings',
-    textContent: 'Download local stoage data as JSON'
+    textContent: 'Download blacklist data'
   };
 
   public uploadButton: IUploadButton = {
     label: {
-      id: 'uploadLocalStorageFromJsonLabel',
+      id: 'uploadButtonLabel',
       className: 'settings',
-      textContent: 'Upload JSON to overwrite local storage data'
+      textContent: 'Upload blacklist data'
     },
     input: {
-      id: 'uploadLocalStorageFromJsonInput'
+      id: 'uploadButtonInput'
     }
   };
 
-  public validateButton: IButtonElement = {
-    id: 'validateButton',
+  public normalizeButton: IButtonElement = {
+    id: 'normalizeButton',
     className: 'settings',
-    textContent: 'Validate'
+    textContent: 'Normalize blacklist data'
   };
 }
