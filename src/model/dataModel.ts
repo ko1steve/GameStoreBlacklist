@@ -1,7 +1,8 @@
 import { MiniSignal } from 'mini-signals';
+import Pako from 'pako';
 import { MainConfig } from 'src/mainConfig';
 import { CommonUtil } from 'src/util/commonUtil';
-import { DataStorage } from 'src/util/dataStorage';
+import { DataStorage, StorageType } from 'src/util/dataStorage';
 import { GlobalEventNames, GlobalEventDispatcher } from 'src/util/globalEventDispatcher';
 import { Container, Singleton } from 'typescript-ioc';
 import { TSMap } from 'typescript-map';
@@ -80,9 +81,20 @@ export class DataModel {
   }
 
   protected async initBlacklist (): Promise<void> {
-    const jsonContent = await DataStorage.getItem(this.mainConfig.storageNames.blacklist);
+    const blacklistData: StorageType | undefined = await DataStorage.getItem(this.mainConfig.storageNames.blacklist);
+    let jsonContent: string | undefined;
+    if (blacklistData instanceof Array) {
+      /** version 1.8 and above */
+      jsonContent = Pako.inflate(Uint8Array.from(blacklistData), { to: 'string' });
+    } else if (typeof blacklistData === 'string') {
+      /** version 1.7.1 and below */
+      jsonContent = blacklistData;
+      await DataStorage.setItem(this.mainConfig.storageNames.blacklist, Array.from(Pako.deflate(jsonContent)));
+    }
     if (!jsonContent) {
       this._blacklistMap = new TSMap<string, string[]>();
+      const jsonContent = JSON.stringify(Object.fromEntries(this._blacklistMap.entries()));
+      await DataStorage.setItem(this.mainConfig.storageNames.blacklist, Array.from(Pako.deflate(jsonContent)));
     } else {
       this._blacklistMap = new TSMap<string, string[]>(Object.entries(JSON.parse(jsonContent)));
     }
@@ -94,7 +106,7 @@ export class DataModel {
       await DataStorage.setItem(this.mainConfig.storageNames.showblacklistGames, true);
       this._showBlacklistGame = true;
     } else {
-      this._showBlacklistGame = showBlacklistGames;
+      this._showBlacklistGame = showBlacklistGames as boolean;
     }
   }
 
@@ -104,7 +116,7 @@ export class DataModel {
       await DataStorage.setItem(this.mainConfig.storageNames.debug, false);
       this._debug = false;
     } else {
-      this._debug = debug;
+      this._debug = debug as boolean;
     }
   }
 
@@ -130,7 +142,7 @@ export class DataModel {
         this._blacklistMap.set(key, list);
       }
       const jsonContent = JSON.stringify(Object.fromEntries(this._blacklistMap.entries()));
-      DataStorage.setItem(this.mainConfig.storageNames.blacklist, jsonContent).then(() => {
+      DataStorage.setItem(this.mainConfig.storageNames.blacklist, Array.from(Pako.deflate(jsonContent))).then(() => {
         CommonUtil.showLog('Add "' + gameTitle + '" to blacklist. ');
         resolve();
       });
@@ -151,7 +163,7 @@ export class DataModel {
       list.splice(index, 1);
       this._blacklistMap.set(key, list);
       const jsonContent = JSON.stringify(Object.fromEntries(this._blacklistMap.entries()));
-      DataStorage.setItem(this.mainConfig.storageNames.blacklist, jsonContent).then(() => {
+      DataStorage.setItem(this.mainConfig.storageNames.blacklist, Array.from(Pako.deflate(jsonContent))).then(() => {
         CommonUtil.showLog('Removed "' + gameTitle + '" from blacklist. ');
         resolve();
       });
@@ -188,7 +200,7 @@ export class DataModel {
       }
     }
     const newJsonContent = JSON.stringify(Object.fromEntries(entries));
-    await DataStorage.setItem(this.mainConfig.storageNames.blacklist, newJsonContent);
+    await DataStorage.setItem(this.mainConfig.storageNames.blacklist, Array.from(Pako.deflate(newJsonContent)));
     chrome.tabs.reload();
   }
 }
