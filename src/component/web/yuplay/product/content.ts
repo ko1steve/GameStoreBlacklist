@@ -74,7 +74,7 @@ class YuplayProductController extends ComponentController {
     }
     const gameTitle = this.getModifiedGameTitle(rawGameTitle);
 
-    const inBlacklist = this.getGameStatus(gameTitle);
+    const inBlacklist = this.dataModel.getGameStatus(gameTitle);
     this.addCheckbox(imageContainer, gameTitle, inBlacklist, {
       hideGame: {
         infoElement: gameInfoElement,

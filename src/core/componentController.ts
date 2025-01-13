@@ -46,7 +46,7 @@ export class ComponentController {
     if (!checkboxParent) {
       return;
     }
-    const inBlacklist = this.getGameStatus(gameTitle);
+    const inBlacklist = this.dataModel.getGameStatus(gameTitle);
     this.addCheckbox(checkboxParent, gameTitle, inBlacklist);
   }
 
@@ -96,7 +96,7 @@ export class ComponentController {
     if (!checkboxParent) {
       return;
     }
-    const inBlacklist = this.getGameStatus(gameTitle);
+    const inBlacklist = this.dataModel.getGameStatus(gameTitle);
     this.addCheckbox(checkboxParent, gameTitle, inBlacklist, {
       hideGame: {
         infoElement: gameInfoElement,
@@ -163,14 +163,14 @@ export class ComponentController {
       checkboxImg = this.createCheckbox(checkboxParent);
       checkboxImg.onclick = () => {
         if (checkboxImg.dataset.action === this.componentConfig.checkboxContainer.checkbox.disabledAction) {
-          this.addGameToBlacklist(gameTitle);
+          this.dataModel.addGameToBlacklist(gameTitle);
           this.dataModel.updateNumberOfGame();
           this.setCheckboxEnabled(checkboxImg);
           if (!this.dataModel.showBlacklistGame && option?.hideGame) {
             this.hideGame(option.hideGame.parentList, option.hideGame.infoElement);
           }
         } else {
-          this.removeGameFromBlacklist(gameTitle);
+          this.dataModel.removeGameFromBlacklist(gameTitle);
           this.dataModel.updateNumberOfGame();
           this.setCheckboxDisabled(checkboxImg);
         }
@@ -209,43 +209,5 @@ export class ComponentController {
 
   protected hideGame (gameListContainer: HTMLElement, gameContainer: HTMLElement): void {
     gameListContainer.removeChild(gameContainer);
-  }
-
-  protected getGameStatus (gameTitle: string): boolean {
-    gameTitle = gameTitle.toLowerCase();
-    const key = gameTitle[0];
-    if (!this.dataModel.blacklistMap.has(key)) {
-      return false;
-    }
-    return this.dataModel.blacklistMap.get(key)!.includes(gameTitle);
-  }
-
-  protected async addGameToBlacklist (gameTitle: string): Promise<void> {
-    const key = gameTitle[0].toLowerCase();
-    if (!this.dataModel.blacklistMap.has(key)) {
-      this.dataModel.blacklistMap.set(key, [gameTitle]);
-    } else {
-      const list = this.dataModel.blacklistMap.get(key)!;
-      list.push(gameTitle.toLowerCase());
-      this.dataModel.blacklistMap.set(key, list);
-    }
-    await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: JSON.stringify(Object.fromEntries(this.dataModel.blacklistMap.entries())) });
-    CommonTool.showLog('Add "' + gameTitle + '" to blacklist. ');
-  }
-
-  protected async removeGameFromBlacklist (gameTitle: string): Promise<void> {
-    const key = gameTitle[0];
-    if (!this.dataModel.blacklistMap.has(key)) {
-      return;
-    }
-    const list = this.dataModel.blacklistMap.get(key)!;
-    const index = list.findIndex(e => e === gameTitle);
-    if (index < 0) {
-      return;
-    }
-    list.splice(index, 1);
-    this.dataModel.blacklistMap.set(key, list);
-    await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: JSON.stringify(Object.fromEntries(this.dataModel.blacklistMap.entries())) });
-    CommonTool.showLog('Removed "' + gameTitle + '" from blacklist. ');
   }
 }
