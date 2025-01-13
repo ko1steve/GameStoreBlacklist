@@ -17,6 +17,13 @@ body {
   align-items: center;
 }
 
+.flexbox-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: flex-start;
+}
+
 .flexbox-left {
   display: flex;
   justify-content: left;
@@ -27,35 +34,36 @@ body {
   margin: 10px 10px 10px 10px;
 }
 
-#downloadLocalStorageAsJsonButton {
+#downloadButton {
   font-weight: 400;
+  position: relative;
 }
 
-#uploadLocalStorageFromJsonLabel {
+#uploadButtonLabel {
   border-style: solid;
   border-width: 1px;
   border-color: black;
   border-radius: 2px;
   background-color: rgb(240, 240, 240);
   font-weight: 400;
+  font-size: 13px;
   padding: 2px 7px 2px 7px;
   cursor: pointer;
+  position: relative;
 }
 
-#uploadLocalStorageFromJsonLabel:hover {
+#uploadButtonLabel:hover {
   background-color: rgb(220, 220, 220);
 }
 
-#uploadLocalStorageFromJsonInput {
+#uploadButtonInput {
   visibility: hidden;
   width: 0px;
   height: 0px;
+  position: relative;
 }
 
-#validateButton {
-  border-radius: 5px;
-  background-color: palevioletred;
-  color: aliceblue;
-  font-weight: bolder;
-  padding: 10px 10px 10px 10px;
+#normalizeButton {
+  font-weight: 400;
+  position: relative;
 }

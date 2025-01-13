@@ -35,14 +35,15 @@ export class PopupController {
   protected initailzie (): void {
     const container = document.createElement('div');
     container.id = 'mainContainer';
+    container.className = 'flexbox-column';
     document.body.appendChild(container);
 
     this.createShowBlacklistGameCheckbox(container);
-    this.createDownloadButton(container);
-    this.createUploadButton(container);
 
     if (this.dataModel.debug) {
-      this.createValidateButton(container);
+      this.createDownloadButton(container);
+      this.createUploadButton(container);
+      this.createNormalizeButton(container);
     }
   }
 
@@ -137,11 +138,11 @@ export class PopupController {
     }
   }
 
-  protected createValidateButton (parent: HTMLElement): void {
+  protected createNormalizeButton (parent: HTMLElement): void {
     const button = document.createElement('button');
-    button.id = this.componentConfig.validateButton.id!;
-    button.className = this.componentConfig.validateButton.className!;
-    button.textContent = this.componentConfig.validateButton.textContent!;
+    button.id = this.componentConfig.normalizeButton.id!;
+    button.className = this.componentConfig.normalizeButton.className!;
+    button.textContent = this.componentConfig.normalizeButton.textContent!;
     button.onclick = () => {
       this.dataModel.normalizationBlacklistData();
     };
