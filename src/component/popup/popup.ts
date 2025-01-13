@@ -4,6 +4,7 @@ import { DataModel } from 'src/model/dataModel';
 import { Container, Inject } from 'typescript-ioc';
 import { IPopupConfig, PopupConfig } from './config';
 import { CommonUtil } from 'src/util/commonUtil';
+import { DataStorage } from 'src/util/dataStorage';
 
 export class PopupController {
   @Inject
@@ -57,7 +58,7 @@ export class PopupController {
     checkbox.type = 'checkbox';
     checkbox.checked = this.dataModel.showBlacklistGame;
     checkbox.onchange = () => {
-      chrome.storage.local.set({ [this.mainConfig.storageNames.showblacklistGames]: checkbox.checked }).then(() => {
+      DataStorage.setItem(this.mainConfig.storageNames.showblacklistGames, checkbox.checked).then(() => {
         this.dataModel.showBlacklistGame = checkbox.checked;
         chrome.tabs.query({ active: true, currentWindow: true }).then((currentTab) => {
           if (!currentTab || !currentTab[0].url) {
@@ -91,8 +92,7 @@ export class PopupController {
   }
 
   protected async downloadLocalStorageDataAsJson (): Promise<void> {
-    const storageData = await chrome.storage.local.get([this.mainConfig.storageNames.blacklist]);
-    const blacklistContent = storageData[this.mainConfig.storageNames.blacklist];
+    const blacklistContent = await DataStorage.getItem(this.mainConfig.storageNames.blacklist);
     if (blacklistContent) {
       const blob = new Blob([blacklistContent], { type: 'application/json' });
       const a = document.createElement('a');
@@ -128,7 +128,7 @@ export class PopupController {
       reader.onload = async (event) => {
         if (event.target) {
           const jsonContent = event.target.result as string;
-          await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: jsonContent });
+          await DataStorage.setItem(this.mainConfig.storageNames.blacklist, jsonContent);
           chrome.tabs.reload();
         }
       };
@@ -142,38 +142,9 @@ export class PopupController {
     button.className = this.componentConfig.validateButton.className!;
     button.textContent = this.componentConfig.validateButton.textContent!;
     button.onclick = () => {
-      this.validateData();
+      this.dataModel.normalizationBlacklistData();
     };
     parent.appendChild(button);
-  }
-
-  protected async validateData (): Promise<void> {
-    const storageData = await chrome.storage.local.get([this.mainConfig.storageNames.blacklist]);
-    const jsonContent = storageData[this.mainConfig.storageNames.blacklist];
-    if (jsonContent) {
-      const entries = Object.entries(JSON.parse(jsonContent)) as (string | string[])[][];
-      for (let i = 0; i < entries.length; i++) {
-        const capital = entries[i][0] as string;
-        const gameList = entries[i][1] as string[];
-        for (const j in gameList) {
-          gameList[j] = gameList[j].toLowerCase();
-        }
-        const lowerCapital = capital.toLowerCase();
-        if (capital !== lowerCapital) {
-          const lowerCaseEntry = entries.find(entry => entry[0] === lowerCapital);
-          if (lowerCaseEntry) {
-            (lowerCaseEntry[1] as string[]).push(...gameList);
-          } else {
-            entries.push([lowerCapital, [...gameList]]);
-          }
-          entries.splice(+i, 1);
-          i--;
-        }
-      }
-      const newJsonContent = JSON.stringify(Object.fromEntries(entries));
-      await chrome.storage.local.set({ [this.mainConfig.storageNames.blacklist]: newJsonContent });
-      chrome.tabs.reload();
-    }
   }
 
   protected updateTextOfNumberOfGame (): void {
