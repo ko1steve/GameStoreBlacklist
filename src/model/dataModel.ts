@@ -1,6 +1,8 @@
 import { MiniSignal } from 'mini-signals';
+import Pako from 'pako';
 import { MainConfig } from 'src/mainConfig';
-import { CommonTool } from 'src/util/commonTool';
+import { CommonUtil } from 'src/util/commonUtil';
+import { DataStorage, StorageType } from 'src/util/dataStorage';
 import { GlobalEventNames, GlobalEventDispatcher } from 'src/util/globalEventDispatcher';
 import { Container, Singleton } from 'typescript-ioc';
 import { TSMap } from 'typescript-map';
@@ -29,9 +31,6 @@ export class DataModel {
   public updateNumberOfGameSignal: MiniSignal;
 
   private _blacklistMap: TSMap<string, string[]>;
-  public get blacklistMap (): TSMap<string, string[]> {
-    return this._blacklistMap;
-  }
 
   private _debug: boolean;
   public get debug (): boolean {
@@ -60,15 +59,15 @@ export class DataModel {
   }
 
   private onDebugModeOn (): void {
-    CommonTool.showLog('Debug mode turns on.');
-    chrome.storage.local.set({ [this.mainConfig.storageNames.debug]: true }).then(() => {
+    CommonUtil.showLog('Debug mode turns on.');
+    DataStorage.setItem(this.mainConfig.storageNames.debug, true).then(() => {
       this.onDebugModeChangeSignal.dispatch();
     });
   }
 
   private onDebugModeOff (): void {
-    CommonTool.showLog('Debug mode turns off.');
-    chrome.storage.local.set({ [this.mainConfig.storageNames.debug]: false }).then(() => {
+    CommonUtil.showLog('Debug mode turns off.');
+    DataStorage.setItem(this.mainConfig.storageNames.debug, false).then(() => {
       this.onDebugModeChangeSignal.dispatch();
     });
   }
@@ -82,34 +81,42 @@ export class DataModel {
   }
 
   protected async initBlacklist (): Promise<void> {
-    const storageData = await chrome.storage.local.get([this.mainConfig.storageNames.blacklist]);
-    const jsonContent = storageData[this.mainConfig.storageNames.blacklist];
+    const blacklistData: StorageType | undefined = await DataStorage.getItem(this.mainConfig.storageNames.blacklist);
+    let jsonContent: string | undefined;
+    if (blacklistData instanceof Array) {
+      /** version 1.8 and above */
+      jsonContent = Pako.inflate(Uint8Array.from(blacklistData), { to: 'string' });
+    } else if (typeof blacklistData === 'string') {
+      /** version 1.7.1 and below */
+      jsonContent = blacklistData;
+      await DataStorage.setItem(this.mainConfig.storageNames.blacklist, Array.from(Pako.deflate(jsonContent)));
+    }
     if (!jsonContent) {
       this._blacklistMap = new TSMap<string, string[]>();
+      const jsonContent = JSON.stringify(Object.fromEntries(this._blacklistMap.entries()));
+      await DataStorage.setItem(this.mainConfig.storageNames.blacklist, Array.from(Pako.deflate(jsonContent)));
     } else {
       this._blacklistMap = new TSMap<string, string[]>(Object.entries(JSON.parse(jsonContent)));
     }
   }
 
   protected async initShowBlacklistGame (): Promise<void> {
-    const storageData = await chrome.storage.local.get([this.mainConfig.storageNames.showblacklistGames]);
-    const showBlacklistGames: boolean = storageData[this.mainConfig.storageNames.showblacklistGames];
+    const showBlacklistGames = await DataStorage.getItem(this.mainConfig.storageNames.showblacklistGames);
     if (showBlacklistGames == null) {
-      await chrome.storage.local.set({ [this.mainConfig.storageNames.showblacklistGames]: true });
+      await DataStorage.setItem(this.mainConfig.storageNames.showblacklistGames, true);
       this._showBlacklistGame = true;
     } else {
-      this._showBlacklistGame = showBlacklistGames;
+      this._showBlacklistGame = showBlacklistGames as boolean;
     }
   }
 
   protected async initDebugMode (): Promise<void> {
-    const storageData = await chrome.storage.local.get([this.mainConfig.storageNames.debug]);
-    const debug: boolean = storageData[this.mainConfig.storageNames.debug];
+    const debug = await DataStorage.getItem(this.mainConfig.storageNames.debug);
     if (debug == null) {
-      await chrome.storage.local.set({ [this.mainConfig.storageNames.debug]: false });
+      await DataStorage.setItem(this.mainConfig.storageNames.debug, false);
       this._debug = false;
     } else {
-      this._debug = debug;
+      this._debug = debug as boolean;
     }
   }
 
@@ -122,5 +129,78 @@ export class DataModel {
     if (this._numberOfGame !== this._prevNumberOfGame) {
       this.updateNumberOfGameSignal.dispatch(this._numberOfGame);
     }
+  }
+
+  public async addGameToBlacklist (gameTitle: string): Promise<void> {
+    return new Promise<void>(resolve => {
+      const key = gameTitle[0].toLowerCase();
+      if (!this._blacklistMap.has(key)) {
+        this._blacklistMap.set(key, [gameTitle]);
+      } else {
+        const list = this._blacklistMap.get(key)!;
+        list.push(gameTitle.toLowerCase());
+        this._blacklistMap.set(key, list);
+      }
+      const jsonContent = JSON.stringify(Object.fromEntries(this._blacklistMap.entries()));
+      DataStorage.setItem(this.mainConfig.storageNames.blacklist, Array.from(Pako.deflate(jsonContent))).then(() => {
+        CommonUtil.showLog('Add "' + gameTitle + '" to blacklist. ');
+        resolve();
+      });
+    });
+  }
+
+  public async removeGameFromBlacklist (gameTitle: string): Promise<void> {
+    return new Promise<void>(resolve => {
+      const key = gameTitle[0];
+      if (!this._blacklistMap.has(key)) {
+        return;
+      }
+      const list = this._blacklistMap.get(key)!;
+      const index = list.findIndex(e => e === gameTitle);
+      if (index < 0) {
+        return;
+      }
+      list.splice(index, 1);
+      this._blacklistMap.set(key, list);
+      const jsonContent = JSON.stringify(Object.fromEntries(this._blacklistMap.entries()));
+      DataStorage.setItem(this.mainConfig.storageNames.blacklist, Array.from(Pako.deflate(jsonContent))).then(() => {
+        CommonUtil.showLog('Removed "' + gameTitle + '" from blacklist. ');
+        resolve();
+      });
+    });
+  }
+
+  public getGameStatus (gameTitle: string): boolean {
+    gameTitle = gameTitle.toLowerCase();
+    const key = gameTitle[0];
+    if (!this._blacklistMap.has(key)) {
+      return false;
+    }
+    return this._blacklistMap.get(key)!.includes(gameTitle);
+  }
+
+  public async normalizationBlacklistData (): Promise<void> {
+    const entries = this._blacklistMap.entries();
+    for (let i = 0; i < entries.length; i++) {
+      const capital = entries[i][0] as string;
+      const gameList = entries[i][1] as string[];
+      for (const j in gameList) {
+        gameList[j] = gameList[j].toLowerCase();
+      }
+      const lowerCapital = capital.toLowerCase();
+      if (capital !== lowerCapital) {
+        const lowerCaseEntry = entries.find(entry => entry[0] === lowerCapital);
+        if (lowerCaseEntry) {
+          (lowerCaseEntry[1] as string[]).push(...gameList);
+        } else {
+          entries.push([lowerCapital, [...gameList]]);
+        }
+        entries.splice(+i, 1);
+        i--;
+      }
+    }
+    const newJsonContent = JSON.stringify(Object.fromEntries(entries));
+    await DataStorage.setItem(this.mainConfig.storageNames.blacklist, Array.from(Pako.deflate(newJsonContent)));
+    chrome.tabs.reload();
   }
 }

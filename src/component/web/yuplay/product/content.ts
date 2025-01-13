@@ -15,18 +15,6 @@ class YuplayProductController extends ComponentController {
     setTimeout(() => this.initailzie(), 500);
   }
 
-  protected getPageHeader (): HTMLElement | null {
-    const header = document.getElementById('navbar-main');
-    if (!header) {
-      return null;
-    }
-    return header;
-  }
-
-  protected modifyHeader (header: HTMLElement): void {
-    header.className += ' flexbox';
-  }
-
   protected getRawGameTitle (): string | undefined {
     return document.getElementById('product-main-information')?.getElementsByClassName('product-name')[0]?.innerHTML;
   }
@@ -86,7 +74,7 @@ class YuplayProductController extends ComponentController {
     }
     const gameTitle = this.getModifiedGameTitle(rawGameTitle);
 
-    const inBlacklist = this.getGameStatus(gameTitle);
+    const inBlacklist = this.dataModel.getGameStatus(gameTitle);
     this.addCheckbox(imageContainer, gameTitle, inBlacklist, {
       hideGame: {
         infoElement: gameInfoElement,
