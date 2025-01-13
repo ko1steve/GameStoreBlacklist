@@ -2,7 +2,7 @@ import { MiniSignal } from 'mini-signals';
 import Pako from 'pako';
 import { MainConfig } from 'src/mainConfig';
 import { CommonUtil } from 'src/util/commonUtil';
-import { DataStorage } from 'src/util/dataStorage';
+import { DataStorage, StorageType } from 'src/util/dataStorage';
 import { GlobalEventNames, GlobalEventDispatcher } from 'src/util/globalEventDispatcher';
 import { Container, Singleton } from 'typescript-ioc';
 import { TSMap } from 'typescript-map';
@@ -81,17 +81,14 @@ export class DataModel {
   }
 
   protected async initBlacklist (): Promise<void> {
-    const blacklistData: string | any[] = await DataStorage.getItem(this.mainConfig.storageNames.blacklist);
-    let jsonContent: string;
+    const blacklistData: StorageType | undefined = await DataStorage.getItem(this.mainConfig.storageNames.blacklist);
+    let jsonContent: string | undefined;
     if (blacklistData instanceof Array) {
+      /** version 1.8 and above */
       jsonContent = Pako.inflate(Uint8Array.from(blacklistData), { to: 'string' });
-      console.log(1);
-      console.log(jsonContent);
-    } else {
-      /** under version 1.7.1 */
+    } else if (typeof blacklistData === 'string') {
+      /** version 1.7.1 and below */
       jsonContent = blacklistData;
-      console.log(2);
-      console.log(jsonContent);
       await DataStorage.setItem(this.mainConfig.storageNames.blacklist, Array.from(Pako.deflate(jsonContent)));
     }
     if (!jsonContent) {
@@ -109,7 +106,7 @@ export class DataModel {
       await DataStorage.setItem(this.mainConfig.storageNames.showblacklistGames, true);
       this._showBlacklistGame = true;
     } else {
-      this._showBlacklistGame = showBlacklistGames;
+      this._showBlacklistGame = showBlacklistGames as boolean;
     }
   }
 
@@ -119,7 +116,7 @@ export class DataModel {
       await DataStorage.setItem(this.mainConfig.storageNames.debug, false);
       this._debug = false;
     } else {
-      this._debug = debug;
+      this._debug = debug as boolean;
     }
   }
 

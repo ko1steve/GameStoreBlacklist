@@ -5,7 +5,7 @@ import { DataModel } from 'src/model/dataModel';
 import { Container, Inject } from 'typescript-ioc';
 import { IPopupConfig, PopupConfig } from './config';
 import { CommonUtil } from 'src/util/commonUtil';
-import { DataStorage } from 'src/util/dataStorage';
+import { DataStorage, StorageType } from 'src/util/dataStorage';
 
 export class PopupController {
   @Inject
@@ -87,15 +87,15 @@ export class PopupController {
     button.className = this.componentConfig.downloadButton.className!;
     button.textContent = this.componentConfig.downloadButton.textContent!;
     button.onclick = () => {
-      this.downloadLocalStorageDataAsJson();
+      this.downloadBlacklistData();
     };
     parent.appendChild(button);
   }
 
-  protected async downloadLocalStorageDataAsJson (): Promise<void> {
-    const compressedData: number[] = await DataStorage.getItem(this.mainConfig.storageNames.blacklist);
+  protected async downloadBlacklistData (): Promise<void> {
+    const compressedData: StorageType | undefined = await DataStorage.getItem(this.mainConfig.storageNames.blacklist);
     if (compressedData) {
-      const blob = new Blob([Uint8Array.from(compressedData)], { type: 'text/plain' });
+      const blob = new Blob([Uint8Array.from(compressedData as number[])], { type: 'text/plain' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
       a.download = 'blacklist.txt';
@@ -116,12 +116,12 @@ export class PopupController {
     input.id = this.componentConfig.uploadButton.input.id!;
     input.accept = '.json';
     input.onchange = () => {
-      this.uploadLocalStorageDataFromJson();
+      this.uploadBlacklistData();
     };
     parent.appendChild(input);
   }
 
-  protected uploadLocalStorageDataFromJson (): void {
+  protected uploadBlacklistData (): void {
     const fileInput: HTMLInputElement = document.getElementById(this.componentConfig.uploadButton.input.id!) as HTMLInputElement;
     if (fileInput.files && fileInput.files.length > 0) {
       const file = fileInput.files[0];
