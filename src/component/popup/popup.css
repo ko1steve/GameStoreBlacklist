@@ -1,7 +1,5 @@
 body {
   width: 288px;
-  height: 100px;
-  max-height: 128px;
   overflow: auto;
 }
 
