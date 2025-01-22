@@ -6,6 +6,8 @@ import { Container, Inject } from 'typescript-ioc';
 import { IPopupConfig, PopupConfig } from './config';
 import { CommonUtil } from 'src/util/commonUtil';
 import { DataStorage, StorageType } from 'src/util/dataStorage';
+import { MessageDispatcher } from 'src/util/messageDispatcher';
+import { MessageType } from 'src/data/messageData';
 
 export class PopupController {
   @Inject
@@ -156,6 +158,14 @@ export class PopupController {
     }
     const textContent = this.componentConfig.showBlacklistGameContainer.checkbox.text!.innerText.replace('{numberOfGames}', this.dataModel.numberOfGame.toString());
     text.innerText = textContent;
+  }
+
+  protected showLog (param: any, ...optionalParams: any[]): void {
+    if (optionalParams && optionalParams.length > 0) {
+      MessageDispatcher.sendMessage({ name: MessageType.SHOW_LOG, data: { param, optionalParams } });
+    } else {
+      MessageDispatcher.sendMessage({ name: MessageType.SHOW_LOG, data: { param } });
+    }
   }
 }
 

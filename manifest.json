@@ -8,7 +8,9 @@
     "default_icon": "image/icon.png"
   },
   "permissions": [
-    "storage"
+    "storage",
+    "activeTab",
+    "scripting"
   ],
   "content_scripts": [
     {
