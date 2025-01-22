@@ -1,33 +1,38 @@
 import './popup.css';
 import Pako from 'pako';
 import { MainConfig } from 'src/mainConfig';
-import { DataModel } from 'src/model/dataModel';
 import { Container, Inject } from 'typescript-ioc';
 import { IPopupConfig, PopupConfig } from './config';
 import { CommonUtil } from 'src/util/commonUtil';
 import { DataStorage, StorageType } from 'src/util/dataStorage';
 import { MessageDispatcher } from 'src/util/messageDispatcher';
 import { MessageType } from 'src/data/messageData';
+import { PopupDataModel } from './model/popupDataModel';
 
 export class PopupController {
   @Inject
-  protected dataModel: DataModel;
+  protected popupDataModel: PopupDataModel;
 
   protected mainConfig: MainConfig;
 
   protected componentConfig: IPopupConfig;
 
+  /**
+   * Creates an instance of PopupController. Invoked when popup is opened.
+   * @param {IPopupConfig} componentConfig
+   * @memberof PopupController
+   */
   constructor (componentConfig: IPopupConfig) {
-    this.dataModel = Container.get(DataModel);
+    this.popupDataModel = Container.get(PopupDataModel);
     this.mainConfig = Container.get(MainConfig);
     this.componentConfig = componentConfig;
     this.addEventListeners();
   }
 
   protected addEventListeners (): void {
-    this.dataModel.onInitializeBlacklistCompleteSignal.add(this.initailzie.bind(this));
-    this.dataModel.updateNumberOfGameSignal.add(this.updateTextOfNumberOfGame.bind(this));
-    this.dataModel.onDebugModeChangeSignal.add(this.onDebugModeChange.bind(this));
+    this.popupDataModel.onInitializeBlacklistCompleteSignal.add(this.initailzie.bind(this));
+    this.popupDataModel.updateNumberOfGameSignal.add(this.updateTextOfNumberOfGame.bind(this));
+    this.popupDataModel.onDebugModeChangeSignal.add(this.onDebugModeChange.bind(this));
   }
 
   protected onDebugModeChange (): void {
@@ -42,7 +47,7 @@ export class PopupController {
 
     this.createShowBlacklistGameCheckbox(container);
 
-    if (this.dataModel.debug) {
+    if (this.popupDataModel.debug) {
       this.createDownloadButton(container);
       this.createUploadButton(container);
       this.createNormalizeButton(container);
@@ -60,10 +65,10 @@ export class PopupController {
     const checkbox = document.createElement('input');
     checkbox.id = chexkboxConfig.id!;
     checkbox.type = 'checkbox';
-    checkbox.checked = this.dataModel.showBlacklistGame;
+    checkbox.checked = this.popupDataModel.showBlacklistGame;
     checkbox.onchange = () => {
       DataStorage.setItem(this.mainConfig.storageNames.showblacklistGames, checkbox.checked).then(() => {
-        this.dataModel.showBlacklistGame = checkbox.checked;
+        this.popupDataModel.showBlacklistGame = checkbox.checked;
         chrome.tabs.query({ active: true, currentWindow: true }).then((currentTab) => {
           if (!currentTab || !currentTab[0].url) {
             return;
@@ -80,7 +85,7 @@ export class PopupController {
 
     const text = document.createElement('text');
     text.id = chexkboxConfig.text!.id!;
-    text.innerText = chexkboxConfig.text!.innerText.replace('{numberOfGames}', this.dataModel.numberOfGame.toString());
+    text.innerText = chexkboxConfig.text!.innerText.replace('{numberOfGames}', this.popupDataModel.numberOfGame.toString());
     container.appendChild(text);
   }
 
@@ -146,7 +151,7 @@ export class PopupController {
     button.className = this.componentConfig.normalizeButton.className!;
     button.textContent = this.componentConfig.normalizeButton.textContent!;
     button.onclick = () => {
-      this.dataModel.normalizationBlacklistData();
+      this.popupDataModel.normalizationBlacklistData();
     };
     parent.appendChild(button);
   }
@@ -156,7 +161,7 @@ export class PopupController {
     if (!text) {
       return;
     }
-    const textContent = this.componentConfig.showBlacklistGameContainer.checkbox.text!.innerText.replace('{numberOfGames}', this.dataModel.numberOfGame.toString());
+    const textContent = this.componentConfig.showBlacklistGameContainer.checkbox.text!.innerText.replace('{numberOfGames}', this.popupDataModel.numberOfGame.toString());
     text.innerText = textContent;
   }
 
