@@ -4,6 +4,8 @@ import { ComponentConfig } from './componentConfig';
 import { IGameInfoOption } from 'src/data/commonData';
 import { CommonUtil } from 'src/util/commonUtil';
 import { DataModel } from 'src/model/dataModel';
+import { MessageDispatcher } from 'src/util/messageDispatcher';
+import { IShowLogMessage, MessageType } from 'src/data/messageData';
 
 export class ComponentController {
   @Inject
@@ -20,10 +22,24 @@ export class ComponentController {
     this.dataModel = Container.get(DataModel);
     this.componentConfig = componentConfig;
     this.addEventListeners();
+    this.addMessageListener();
   }
 
   protected addEventListeners () {
     this.dataModel.onInitializeBlacklistCompleteSignal.add(this.initailzie.bind(this));
+  }
+
+  protected addMessageListener (): void {
+    MessageDispatcher.addListener(MessageType.SHOW_LOG, (message, sender, sendCallback) => {
+      console.log(MessageType.SHOW_LOG);
+      message = message as IShowLogMessage;
+      if (message.data.optionalParams && message.data.optionalParams.length > 0) {
+        CommonUtil.showPopupLog(message.data.param, message.data.optionalParams);
+      } else {
+        CommonUtil.showPopupLog(message.data.param);
+      }
+      sendCallback();
+    });
   }
 
   protected initailzie (): void {
