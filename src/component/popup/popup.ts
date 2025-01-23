@@ -42,6 +42,7 @@ export class PopupController {
     if (initData.debug) {
       this.createDownloadButton(container);
       this.createUploadButton(container);
+      this.createNormalizeButton(container);
     }
   }
 
@@ -134,6 +135,17 @@ export class PopupController {
       };
       reader.readAsText(file);
     }
+  }
+
+  protected createNormalizeButton (parent: HTMLElement): void {
+    const button = document.createElement('button');
+    button.id = this.componentConfig.normalizeButton.id!;
+    button.className = this.componentConfig.normalizeButton.className!;
+    button.textContent = this.componentConfig.normalizeButton.textContent!;
+    button.onclick = (): void => {
+      this.popupDataModel.normalizationBlacklistData();
+    };
+    parent.appendChild(button);
   }
 
   protected matchWildcardPattern (pattern: string, str: string): boolean {
