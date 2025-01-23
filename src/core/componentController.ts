@@ -21,17 +21,16 @@ export class ComponentController {
     this.mainConfig = Container.get(MainConfig);
     this.dataModel = Container.get(DataModel);
     this.componentConfig = componentConfig;
-    this.addEventListeners();
+    this.addSignalListener();
     this.addMessageListener();
   }
 
-  protected addEventListeners () {
+  protected addSignalListener (): void {
     this.dataModel.onInitializeBlacklistCompleteSignal.add(this.initailzie.bind(this));
   }
 
   protected addMessageListener (): void {
     MessageDispatcher.addListener(MessageType.SHOW_LOG, (message, sender, sendCallback) => {
-      console.log(MessageType.SHOW_LOG);
       message = message as IShowLogMessage;
       if (message.data.optionalParams && message.data.optionalParams.length > 0) {
         CommonUtil.showPopupLog(message.data.param, message.data.optionalParams);
@@ -177,7 +176,7 @@ export class ComponentController {
     let checkboxImg = checkboxParent.getElementsByClassName(this.componentConfig.checkboxContainer.checkbox.className!)[0] as HTMLImageElement;
     if (!checkboxImg) {
       checkboxImg = this.createCheckbox(checkboxParent);
-      checkboxImg.onclick = () => {
+      checkboxImg.onclick = (): void => {
         if (checkboxImg.dataset.action === this.componentConfig.checkboxContainer.checkbox.disabledAction) {
           this.dataModel.addGameToBlacklist(gameTitle);
           this.dataModel.updateNumberOfGame();

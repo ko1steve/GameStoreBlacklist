@@ -92,7 +92,7 @@ module.exports = {
       extensions: ['ts', 'tsx']
     }),
     new MiniCssExtractPlugin({
-      filename: ({ chunk }) => {
+      filename: ({ chunk }): string => {
         console.log('[webpack-debug] css.chunk.name=' + chunk!.name);
         const regexp = /content$/;
         const replace = 'style.css';

@@ -66,7 +66,7 @@ export class PopupController {
     checkbox.id = chexkboxConfig.id!;
     checkbox.type = 'checkbox';
     checkbox.checked = this.popupDataModel.showBlacklistGame;
-    checkbox.onchange = () => {
+    checkbox.onchange = (): void => {
       DataStorage.setItem(this.mainConfig.storageNames.showblacklistGames, checkbox.checked).then(() => {
         this.popupDataModel.showBlacklistGame = checkbox.checked;
         chrome.tabs.query({ active: true, currentWindow: true }).then((currentTab) => {
@@ -94,7 +94,7 @@ export class PopupController {
     button.id = this.componentConfig.downloadButton.id!;
     button.className = this.componentConfig.downloadButton.className!;
     button.textContent = this.componentConfig.downloadButton.textContent!;
-    button.onclick = () => {
+    button.onclick = (): void => {
       this.downloadBlacklistData();
     };
     parent.appendChild(button);
@@ -123,7 +123,7 @@ export class PopupController {
     input.type = 'file';
     input.id = this.componentConfig.uploadButton.input.id!;
     input.accept = '.json';
-    input.onchange = () => {
+    input.onchange = (): void => {
       this.uploadBlacklistData();
     };
     parent.appendChild(input);
@@ -134,7 +134,7 @@ export class PopupController {
     if (fileInput.files && fileInput.files.length > 0) {
       const file = fileInput.files[0];
       const reader = new FileReader();
-      reader.onload = async (event) => {
+      reader.onload = async (event): Promise<void> => {
         if (event.target) {
           const jsonContent = event.target.result as string;
           await DataStorage.setItem(this.mainConfig.storageNames.blacklist, Array.from(Pako.deflate(jsonContent)));
@@ -150,7 +150,7 @@ export class PopupController {
     button.id = this.componentConfig.normalizeButton.id!;
     button.className = this.componentConfig.normalizeButton.className!;
     button.textContent = this.componentConfig.normalizeButton.textContent!;
-    button.onclick = () => {
+    button.onclick = (): void => {
       this.popupDataModel.normalizationBlacklistData();
     };
     parent.appendChild(button);
