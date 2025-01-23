@@ -47,6 +47,13 @@ export class ComponentController {
         debug: this.dataModel.debug
       } as IReqeustPopupInitDataResponse);
     });
+    MessageDispatcher.addListener(MessageType.FIX_DATA_CASE_SENSITIVE, (message, sender, sendCallback) => {
+      this.dataModel.fixDataCaseSensitive().then(() => {
+        location.reload();
+        sendCallback();
+      });
+      return true;
+    });
   }
 
   protected initailzie (): void {

@@ -6,7 +6,7 @@ export interface IPopupConfig {
   showBlacklistGameContainer: IShowBlacklistGameCheckbox;
   downloadButton: IButtonElement;
   uploadButton: IUploadButton;
-  normalizeButton: IButtonElement;
+  fixDataButton: IButtonElement;
 }
 
 export interface IUploadButton extends IHTMLElement {
@@ -46,9 +46,9 @@ export class PopupConfig implements IPopupConfig {
     }
   };
 
-  public normalizeButton: IButtonElement = {
-    id: 'normalizeButton',
+  public fixDataButton: IButtonElement = {
+    id: 'fixDataButton',
     className: 'settings',
-    textContent: 'Normalize blacklist data'
+    textContent: 'Fix case sensitive of blacklist data '
   };
 }

@@ -198,4 +198,28 @@ export class DataModel {
     chunks.push(compressedDataArr.slice(start, end));
     return this.chunkDataArr(compressedDataArr, chunkSize, end, chunks);
   }
+
+  public async fixDataCaseSensitive (): Promise<void> {
+    const entries = this.blacklistMap.entries();
+    for (let i = 0; i < entries.length; i++) {
+      const capital = entries[i][0] as string;
+      const gameList = entries[i][1] as string[];
+      for (const j in gameList) {
+        gameList[j] = gameList[j].toLowerCase();
+      }
+      const lowerCapital = capital.toLowerCase();
+      if (capital !== lowerCapital) {
+        const lowerCaseEntry = entries.find(entry => entry[0] === lowerCapital);
+        if (lowerCaseEntry) {
+          (lowerCaseEntry[1] as string[]).push(...gameList);
+        } else {
+          entries.push([lowerCapital, [...gameList]]);
+        }
+        entries.splice(+i, 1);
+        i--;
+      }
+    }
+    const newJsonContent = JSON.stringify(Object.fromEntries(entries));
+    await DataStorage.setItem(this.mainConfig.storageNames.blacklist, Array.from(Pako.deflate(newJsonContent)));
+  }
 }

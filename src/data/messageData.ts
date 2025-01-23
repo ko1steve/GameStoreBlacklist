@@ -1,17 +1,17 @@
 export enum MessageType {
   REQUEST_POPUP_INIT_DATA = 'REQUEST_POPUP_INIT_DATA',
-  NORMALIZATION_BLACKLIST_DATA = 'NORMALIZATION_BLACKLIST_DATA',
+  FIX_DATA_CASE_SENSITIVE = 'FIX_DATA_CASE_SENSITIVE',
   SHOW_LOG = 'SHOW_LOG'
 }
 
-export type Message = IRequestPopupInitDataMessage | INormallizationBlacklistDataMessage | IShowLogMessage;
+export type Message = IRequestPopupInitDataMessage | IFixDataCaseSensitiveMessage | IShowLogMessage;
 
 export interface IRequestPopupInitDataMessage {
   name: MessageType.REQUEST_POPUP_INIT_DATA;
 }
 
-export interface INormallizationBlacklistDataMessage {
-  name: MessageType.NORMALIZATION_BLACKLIST_DATA;
+export interface IFixDataCaseSensitiveMessage {
+  name: MessageType.FIX_DATA_CASE_SENSITIVE;
 }
 
 export interface IShowLogMessage {

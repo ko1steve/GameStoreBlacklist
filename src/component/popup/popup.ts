@@ -42,7 +42,7 @@ export class PopupController {
     if (initData.debug) {
       this.createDownloadButton(container);
       this.createUploadButton(container);
-      this.createNormalizeButton(container);
+      this.createFixDataButton(container);
     }
   }
 
@@ -137,13 +137,13 @@ export class PopupController {
     }
   }
 
-  protected createNormalizeButton (parent: HTMLElement): void {
+  protected createFixDataButton (parent: HTMLElement): void {
     const button = document.createElement('button');
-    button.id = this.componentConfig.normalizeButton.id!;
-    button.className = this.componentConfig.normalizeButton.className!;
-    button.textContent = this.componentConfig.normalizeButton.textContent!;
+    button.id = this.componentConfig.fixDataButton.id!;
+    button.className = this.componentConfig.fixDataButton.className!;
+    button.textContent = this.componentConfig.fixDataButton.textContent!;
     button.onclick = (): void => {
-      this.popupDataModel.normalizationBlacklistData();
+      this.popupDataModel.fixDataCaseSensitive();
     };
     parent.appendChild(button);
   }
