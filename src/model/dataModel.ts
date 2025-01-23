@@ -44,7 +44,6 @@ export class DataModel {
   }
 
   protected async initialize (): Promise<void> {
-    await chrome.storage.sync.clear();
     await this.initBlacklist();
     await this.initShowBlacklistGame();
     await this.initDebugMode();
