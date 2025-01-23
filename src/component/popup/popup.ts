@@ -3,11 +3,9 @@ import Pako from 'pako';
 import { MainConfig } from 'src/mainConfig';
 import { Container, Inject } from 'typescript-ioc';
 import { IPopupConfig, PopupConfig } from './config';
-import { CommonUtil } from 'src/util/commonUtil';
 import { DataStorage, StorageType } from 'src/util/dataStorage';
-import { MessageDispatcher } from 'src/util/messageDispatcher';
-import { MessageType } from 'src/data/messageData';
 import { PopupDataModel } from './model/popupDataModel';
+import { IPopupInitData } from './data/popupCommonData';
 
 export class PopupController {
   @Inject
@@ -26,35 +24,29 @@ export class PopupController {
     this.popupDataModel = Container.get(PopupDataModel);
     this.mainConfig = Container.get(MainConfig);
     this.componentConfig = componentConfig;
-    this.addEventListeners();
+    this.addSignalListener();
   }
 
-  protected addEventListeners (): void {
+  protected addSignalListener (): void {
     this.popupDataModel.onInitializeBlacklistCompleteSignal.add(this.initailzie.bind(this));
-    this.popupDataModel.updateNumberOfGameSignal.add(this.updateTextOfNumberOfGame.bind(this));
-    this.popupDataModel.onDebugModeChangeSignal.add(this.onDebugModeChange.bind(this));
   }
 
-  protected onDebugModeChange (): void {
-    location.reload();
-  }
-
-  protected initailzie (): void {
+  protected initailzie (initData: IPopupInitData): void {
     const container = document.createElement('div');
     container.id = 'mainContainer';
     container.className = 'flexbox-column';
     document.body.appendChild(container);
 
-    this.createShowBlacklistGameCheckbox(container);
+    this.createShowBlacklistGameCheckbox(container, initData);
 
-    if (this.popupDataModel.debug) {
+    if (initData.debug) {
       this.createDownloadButton(container);
       this.createUploadButton(container);
       this.createNormalizeButton(container);
     }
   }
 
-  protected createShowBlacklistGameCheckbox (parent: HTMLElement): void {
+  protected createShowBlacklistGameCheckbox (parent: HTMLElement, initData: IPopupInitData): void {
     const containerConfig = this.componentConfig.showBlacklistGameContainer;
     const container = document.createElement('div');
     container.id = containerConfig.id!;
@@ -65,7 +57,7 @@ export class PopupController {
     const checkbox = document.createElement('input');
     checkbox.id = chexkboxConfig.id!;
     checkbox.type = 'checkbox';
-    checkbox.checked = this.popupDataModel.showBlacklistGame;
+    checkbox.checked = initData.showBlacklistGame;
     checkbox.onchange = (): void => {
       DataStorage.setItem(this.mainConfig.storageNames.showblacklistGames, checkbox.checked).then(() => {
         this.popupDataModel.showBlacklistGame = checkbox.checked;
@@ -74,7 +66,7 @@ export class PopupController {
             return;
           }
           const manifest = chrome.runtime.getManifest();
-          const matchTab = manifest.content_scripts?.some(scriptConfig => scriptConfig.matches?.find(e => CommonUtil.matchWildcardPattern(e, currentTab[0].url!)));
+          const matchTab = manifest.content_scripts?.some(scriptConfig => scriptConfig.matches?.find(e => this.matchWildcardPattern(e, currentTab[0].url!)));
           if (matchTab) {
             chrome.tabs.reload();
           }
@@ -85,7 +77,7 @@ export class PopupController {
 
     const text = document.createElement('text');
     text.id = chexkboxConfig.text!.id!;
-    text.innerText = chexkboxConfig.text!.innerText.replace('{numberOfGames}', this.popupDataModel.numberOfGame.toString());
+    text.innerText = chexkboxConfig.text!.innerText.replace('{numberOfGames}', initData.numberOfGame.toString());
     container.appendChild(text);
   }
 
@@ -156,21 +148,10 @@ export class PopupController {
     parent.appendChild(button);
   }
 
-  protected updateTextOfNumberOfGame (): void {
-    const text = document.getElementById(this.componentConfig.showBlacklistGameContainer.checkbox.text!.id!) as HTMLTextAreaElement;
-    if (!text) {
-      return;
-    }
-    const textContent = this.componentConfig.showBlacklistGameContainer.checkbox.text!.innerText.replace('{numberOfGames}', this.popupDataModel.numberOfGame.toString());
-    text.innerText = textContent;
-  }
-
-  protected showLog (param: any, ...optionalParams: any[]): void {
-    if (optionalParams && optionalParams.length > 0) {
-      MessageDispatcher.sendMessage({ name: MessageType.SHOW_LOG, data: { param, optionalParams } });
-    } else {
-      MessageDispatcher.sendMessage({ name: MessageType.SHOW_LOG, data: { param } });
-    }
+  protected matchWildcardPattern (pattern: string, str: string): boolean {
+    const source = '^' + pattern.replaceAll('.', '\\.').replaceAll('?', '\\?').replaceAll('*', '.*') + '$';
+    const regExp = new RegExp(source);
+    return regExp.test(str);
   }
 }
 

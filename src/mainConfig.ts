@@ -3,10 +3,12 @@ import { Singleton } from 'typescript-ioc';
 export interface IMainConfig {
   storageNames: IStorageNames;
   storageDefault: IStorageDefault;
+  blacklistChunkSize: number;
 }
 
 export interface IStorageNames {
   blacklist: string;
+  blacklistChunks: string;
   showblacklistGames: string;
   debug: string;
 }
@@ -20,6 +22,7 @@ export interface IStorageDefault {
 export class MainConfig implements IMainConfig {
   public storageNames: IStorageNames = {
     blacklist: 'Blacklist',
+    blacklistChunks: 'BlacklistChunks',
     showblacklistGames: 'ShowBlacklistdGames',
     debug: 'Debug'
   };
@@ -28,4 +31,6 @@ export class MainConfig implements IMainConfig {
     showblacklistGames: true,
     debug: false
   };
+
+  public blacklistChunkSize: number = 4000;
 }

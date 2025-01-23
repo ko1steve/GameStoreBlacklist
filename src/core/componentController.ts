@@ -6,6 +6,7 @@ import { CommonUtil } from 'src/util/commonUtil';
 import { DataModel } from 'src/model/dataModel';
 import { MessageDispatcher } from 'src/util/messageDispatcher';
 import { IShowLogMessage, MessageType } from 'src/data/messageData';
+import { IReqeustPopupInitDataResponse } from 'src/component/popup/data/popupMessageData';
 
 export class ComponentController {
   @Inject
@@ -38,6 +39,13 @@ export class ComponentController {
         CommonUtil.showPopupLog(message.data.param);
       }
       sendCallback();
+    });
+    MessageDispatcher.addListener(MessageType.REQUEST_POPUP_INIT_DATA, (message, sender, sendCallback) => {
+      sendCallback({
+        numberOfGame: this.dataModel.numberOfGame,
+        showBlacklistGame: this.dataModel.showBlacklistGame,
+        debug: this.dataModel.debug
+      } as IReqeustPopupInitDataResponse);
     });
   }
 
@@ -179,14 +187,12 @@ export class ComponentController {
       checkboxImg.onclick = (): void => {
         if (checkboxImg.dataset.action === this.componentConfig.checkboxContainer.checkbox.disabledAction) {
           this.dataModel.addGameToBlacklist(gameTitle);
-          this.dataModel.updateNumberOfGame();
           this.setCheckboxEnabled(checkboxImg);
           if (!this.dataModel.showBlacklistGame && option?.hideGame) {
             this.hideGame(option.hideGame.parentList, option.hideGame.infoElement);
           }
         } else {
           this.dataModel.removeGameFromBlacklist(gameTitle);
-          this.dataModel.updateNumberOfGame();
           this.setCheckboxDisabled(checkboxImg);
         }
       };

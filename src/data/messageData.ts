@@ -1,24 +1,13 @@
 export enum MessageType {
-  SHOW_LOG = 'SHOW_LOG',
+  REQUEST_POPUP_INIT_DATA = 'REQUEST_POPUP_INIT_DATA',
   NORMALIZATION_BLACKLIST_DATA = 'NORMALIZATION_BLACKLIST_DATA',
-  SHOW_BLACKLIST_GAMES = 'SHOW_BLACKLIST_GAMES',
-  UPDATE_BLACKLIST = 'UPDATE_BLACKLIST'
+  SHOW_LOG = 'SHOW_LOG'
 }
 
-export type Message = IShowBlacklistGameMessage | IUpdateBlacklistMessage | INormallizationBlacklistDataMessage | IShowLogMessage;
+export type Message = IRequestPopupInitDataMessage | INormallizationBlacklistDataMessage | IShowLogMessage;
 
-export interface IShowBlacklistGameMessage {
-  name: MessageType.SHOW_BLACKLIST_GAMES;
-  data: {
-    show: boolean
-  };
-}
-
-export interface IUpdateBlacklistMessage {
-  name: MessageType.UPDATE_BLACKLIST;
-  data: {
-    jsonContent: string
-  };
+export interface IRequestPopupInitDataMessage {
+  name: MessageType.REQUEST_POPUP_INIT_DATA;
 }
 
 export interface INormallizationBlacklistDataMessage {

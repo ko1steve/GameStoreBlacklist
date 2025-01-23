@@ -1,6 +1,6 @@
 import { TSMap } from 'typescript-map';
 
-export enum GlobalEventNames {
+export enum GlobalEventType {
   DEBUG_MODE_ON = 'DEBUG_MODE_ON',
   DEBUG_MODE_OFF = 'DEBUG_MODE_OFF'
 }
