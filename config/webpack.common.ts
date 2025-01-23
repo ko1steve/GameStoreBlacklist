@@ -113,7 +113,23 @@ module.exports = {
     })
   ],
   optimization: {
-    // minimize: true,
-    // minimizer: [new TerserWebpackPlugin()]
+    minimize: true,
+    minimizer: [new TerserWebpackPlugin({
+      terserOptions: {
+        keep_fnames: true,
+        format: {
+          comments: false
+        },
+        compress: {
+          keep_fargs: true,
+          keep_classnames: true,
+          keep_fnames: true
+        },
+        mangle: {
+          reserved: ['chrome', 'document', 'window']
+        }
+      },
+      extractComments: false
+    })]
   }
 };
