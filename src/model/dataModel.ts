@@ -101,12 +101,13 @@ export class DataModel {
 
   public async addGameToBlacklist (gameTitle: string): Promise<void> {
     return new Promise<void>(resolve => {
-      const key = gameTitle[0].toLowerCase();
+      const lowerCaseTitle = gameTitle.toLowerCase();
+      const key = lowerCaseTitle[0];
       if (!this.blacklistMap.has(key)) {
-        this.blacklistMap.set(key, [gameTitle]);
+        this.blacklistMap.set(key, [lowerCaseTitle]);
       } else {
         const list = this.blacklistMap.get(key)!;
-        list.push(gameTitle.toLowerCase());
+        list.push(lowerCaseTitle);
         this.blacklistMap.set(key, list);
       }
       this.updateBlacklistDataToStorage().then(() => {
@@ -119,12 +120,13 @@ export class DataModel {
 
   public async removeGameFromBlacklist (gameTitle: string): Promise<void> {
     return new Promise<void>(resolve => {
-      const key = gameTitle[0];
+      const lowerCaseTitle = gameTitle.toLowerCase();
+      const key = lowerCaseTitle[0];
       if (!this.blacklistMap.has(key)) {
         return;
       }
       const list = this.blacklistMap.get(key)!;
-      const index = list.findIndex(e => e === gameTitle);
+      const index = list.findIndex(e => e === lowerCaseTitle);
       if (index < 0) {
         return;
       }
