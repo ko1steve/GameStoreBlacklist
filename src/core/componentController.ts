@@ -7,6 +7,7 @@ import { DataModel } from 'src/model/dataModel';
 import { MessageDispatcher } from 'src/util/messageDispatcher';
 import { IShowLogMessage, MessageType } from 'src/data/messageData';
 import { IReqeustPopupInitDataResponse } from 'src/component/popup/data/popupMessageData';
+import { GlobalEventDispatcher, GlobalEventType } from 'src/util/globalEventDispatcher';
 
 export class ComponentController {
   @Inject
@@ -24,6 +25,7 @@ export class ComponentController {
     this.componentConfig = componentConfig;
     this.addSignalListener();
     this.addMessageListener();
+    this.addGlobalEventListener();
   }
 
   protected addSignalListener (): void {
@@ -53,6 +55,23 @@ export class ComponentController {
         sendCallback();
       });
       return true;
+    });
+  }
+
+  protected addGlobalEventListener (): void {
+    GlobalEventDispatcher.addListener(GlobalEventType.DEBUG_MODE_ON, this.turnOnDebugMode.bind(this));
+    GlobalEventDispatcher.addListener(GlobalEventType.DEBUG_MODE_OFF, this.turnOffDebugMode.bind(this));
+  }
+
+  protected turnOnDebugMode (): void {
+    this.dataModel.updateDebugMode(true).then(() => {
+      //
+    });
+  }
+
+  protected turnOffDebugMode (): void {
+    this.dataModel.updateDebugMode(false).then(() => {
+      location.reload();
     });
   }
 
