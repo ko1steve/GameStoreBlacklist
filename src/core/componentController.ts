@@ -89,19 +89,19 @@ export class ComponentController {
 
   protected turnOnDebugMode (): void {
     this.dataModel.updateDebugMode(true).then(() => {
-      CommonUtil.showLog('Debug Mode turns on');
+      CommonUtil.showLog('Debug Mode turns on.');
     });
   }
 
   protected turnOffDebugMode (): void {
     this.dataModel.updateDebugMode(false).then(() => {
-      CommonUtil.showLog('Debug Mode turns off');
+      CommonUtil.showLog('Debug Mode turns off.');
     });
   }
 
   protected clearSyncData (): void {
     this.dataModel.clearData('sync').then(() => {
-      CommonUtil.showLog('Sync data is clear');
+      CommonUtil.showLog('Sync data is clear.');
       location.reload();
     });
   }

@@ -39,7 +39,7 @@ export class DataModel {
     this.blacklistMap = new TSMap<string, string[]>();
     this.onInitializeBlacklistCompleteSignal = new MiniSignal();
     this.dataVersion = DataVersion.V_180_ABOVE;
-    this.tempLegacyBlacklistData = '';
+    this.tempLegacyBlacklistData = StringFormatter.EMPTY_STRING;
     this._numberOfGame = 0;
     this._debug = false;
     this.initialize();
