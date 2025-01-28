@@ -5,7 +5,7 @@ import { IGameInfoOption } from 'src/data/commonData';
 import { CommonUtil } from 'src/util/commonUtil';
 import { DataModel } from 'src/model/dataModel';
 import { MessageDispatcher } from 'src/util/messageDispatcher';
-import { IShowLogMessage, MessageType } from 'src/data/messageData';
+import { IShowBlacklistGammeMessage, IShowLogMessage, MessageType } from 'src/data/messageData';
 import { IReqeustPopupInitDataResponse } from 'src/component/popup/data/popupMessageData';
 import { GlobalEventDispatcher, GlobalEventType } from 'src/util/globalEventDispatcher';
 
@@ -49,9 +49,16 @@ export class ComponentController {
         debug: this.dataModel.debug
       } as IReqeustPopupInitDataResponse);
     });
+    MessageDispatcher.addListener(MessageType.SHOW_BLACKLIST_GAME, (message, sender, sendCallback) => {
+      message = message as IShowBlacklistGammeMessage;
+      this.dataModel.updateShowBlacklistGame(message.data.show).then(() => {
+        location.reload();
+        sendCallback();
+      });
+      return true;
+    });
     MessageDispatcher.addListener(MessageType.FIX_DATA_CASE_SENSITIVE, (message, sender, sendCallback) => {
       this.dataModel.fixDataCaseSensitive().then(() => {
-        location.reload();
         sendCallback();
       });
       return true;

@@ -6,6 +6,8 @@ import { IPopupConfig, PopupConfig } from './config';
 import { DataStorage, StorageType } from 'src/util/dataStorage';
 import { PopupDataModel } from './model/popupDataModel';
 import { IPopupInitData } from './data/popupCommonData';
+import { MessageDispatcher } from 'src/util/messageDispatcher';
+import { MessageType } from 'src/data/messageData';
 
 export class PopupController {
   @Inject
@@ -59,19 +61,7 @@ export class PopupController {
     checkbox.type = 'checkbox';
     checkbox.checked = initData.showBlacklistGame;
     checkbox.onchange = (): void => {
-      DataStorage.setItem(this.mainConfig.storageNames.showblacklistGames, checkbox.checked).then(() => {
-        this.popupDataModel.showBlacklistGame = checkbox.checked;
-        chrome.tabs.query({ active: true, currentWindow: true }).then((currentTab) => {
-          if (!currentTab || !currentTab[0].url) {
-            return;
-          }
-          const manifest = chrome.runtime.getManifest();
-          const matchTab = manifest.content_scripts?.some(scriptConfig => scriptConfig.matches?.find(e => this.matchWildcardPattern(e, currentTab[0].url!)));
-          if (matchTab) {
-            chrome.tabs.reload();
-          }
-        });
-      });
+      MessageDispatcher.sendTabMessage({ name: MessageType.SHOW_BLACKLIST_GAME, data: { show: checkbox.checked } });
     };
     container.appendChild(checkbox);
 
