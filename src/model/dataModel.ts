@@ -226,8 +226,7 @@ export class DataModel {
     const base64DataChunks: string[] = this.chunkStringToArray(base64Data, chunkSize);
     for (let i = 0; i < base64DataChunks.length; i++) {
       const blob = new Blob([base64DataChunks[i]], { type: 'text/plain' });
-      console.log(base64DataChunks[i]);
-      CommonUtil.showLog('Blob size : ' + blob.size);
+      CommonUtil.showLog('Blob [', i, '] size : ' + blob.size);
       if (blob.size > DataStorage.MAX_STORAGE_BYTE_PER_KEY) {
         CommonUtil.showLog('Data size too big. Failed to update blacklist.');
         return [];
