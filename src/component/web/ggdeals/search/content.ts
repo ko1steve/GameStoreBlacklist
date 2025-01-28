@@ -38,7 +38,7 @@ class GgdealsSearchController extends ComponentController {
   }
 
   protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement {
-    return infoContainer as HTMLElement;
+    return infoContainer.getElementsByClassName('feature-info')[0] as HTMLElement;
   }
 }
 
