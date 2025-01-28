@@ -7,6 +7,7 @@ import { PopupDataModel } from './model/popupDataModel';
 import { IPopupInitData } from './data/popupCommonData';
 import { MessageDispatcher } from 'src/util/messageDispatcher';
 import { MessageType } from 'src/data/messageData';
+import { IReqeustBlacklistDataResponse } from 'src/component/popup/data/popupMessageData';
 
 export class PopupController {
   @Inject
@@ -82,14 +83,15 @@ export class PopupController {
   }
 
   protected async downloadBlacklistData (): Promise<void> {
-    const compressedData: StorageType | undefined = await DataStorage.getItem(this.mainConfig.storageNames.blacklist);
-    if (compressedData) {
-      const blob = new Blob([Uint8Array.from(compressedData as number[])], { type: 'text/plain' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'blacklist.txt';
-      a.click();
-    }
+    MessageDispatcher.sendTabMessage({ name: MessageType.REQUEST_BLACKLIST_DATA }, (response: IReqeustBlacklistDataResponse) => {
+      if (response.jsonContent) {
+        const blob = new Blob([response.jsonContent], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'blacklist.json';
+        a.click();
+      }
+    });
   }
 
   protected createUploadButton (parent: HTMLElement): void {
@@ -118,7 +120,7 @@ export class PopupController {
       reader.onload = async (event): Promise<void> => {
         if (event.target) {
           const content = event.target.result as string;
-          MessageDispatcher.sendTabMessage({ name: MessageType.UPDATE_BLACKLIST_DATA_FROM_POPUP, data: { content, type: file.type } });
+          MessageDispatcher.sendTabMessage({ name: MessageType.UPDATE_BLACKLIST_DATA_FROM_POPUP, data: { content } });
         }
       };
       reader.readAsText(file);
