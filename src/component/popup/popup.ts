@@ -1,11 +1,12 @@
 import './popup.css';
-import Pako from 'pako';
 import { MainConfig } from 'src/mainConfig';
 import { Container, Inject } from 'typescript-ioc';
 import { IPopupConfig, PopupConfig } from './config';
 import { DataStorage, StorageType } from 'src/util/dataStorage';
 import { PopupDataModel } from './model/popupDataModel';
 import { IPopupInitData } from './data/popupCommonData';
+import { MessageDispatcher } from 'src/util/messageDispatcher';
+import { MessageType } from 'src/data/messageData';
 
 export class PopupController {
   @Inject
@@ -59,19 +60,7 @@ export class PopupController {
     checkbox.type = 'checkbox';
     checkbox.checked = initData.showBlacklistGame;
     checkbox.onchange = (): void => {
-      DataStorage.setItem(this.mainConfig.storageNames.showblacklistGames, checkbox.checked).then(() => {
-        this.popupDataModel.showBlacklistGame = checkbox.checked;
-        chrome.tabs.query({ active: true, currentWindow: true }).then((currentTab) => {
-          if (!currentTab || !currentTab[0].url) {
-            return;
-          }
-          const manifest = chrome.runtime.getManifest();
-          const matchTab = manifest.content_scripts?.some(scriptConfig => scriptConfig.matches?.find(e => this.matchWildcardPattern(e, currentTab[0].url!)));
-          if (matchTab) {
-            chrome.tabs.reload();
-          }
-        });
-      });
+      MessageDispatcher.sendTabMessage({ name: MessageType.SHOW_BLACKLIST_GAME, data: { show: checkbox.checked } });
     };
     container.appendChild(checkbox);
 
@@ -128,9 +117,8 @@ export class PopupController {
       const reader = new FileReader();
       reader.onload = async (event): Promise<void> => {
         if (event.target) {
-          const jsonContent = event.target.result as string;
-          await DataStorage.setItem(this.mainConfig.storageNames.blacklist, Array.from(Pako.deflate(jsonContent)));
-          chrome.tabs.reload();
+          const content = event.target.result as string;
+          MessageDispatcher.sendTabMessage({ name: MessageType.UPDATE_BLACKLIST_DATA_FROM_POPUP, data: { content, type: file.type } });
         }
       };
       reader.readAsText(file);

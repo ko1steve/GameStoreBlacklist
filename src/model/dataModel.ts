@@ -2,7 +2,7 @@ import Pako from 'pako';
 import { MiniSignal } from 'mini-signals';
 import { MainConfig } from 'src/mainConfig';
 import { CommonUtil } from 'src/util/commonUtil';
-import { DataStorage, StorageType } from 'src/util/dataStorage';
+import { DataStorage, DataVersion, StorageType } from 'src/util/dataStorage';
 import { Container, Singleton } from 'typescript-ioc';
 import { TSMap } from 'typescript-map';
 import { StringFormatter } from 'src/util/stringFormatter';
@@ -27,6 +27,8 @@ export class DataModel {
   public get debug (): boolean {
     return this._debug;
   }
+
+  protected dataVersion: DataVersion = DataVersion.V_180_ABOVE;
 
   public onInitializeBlacklistCompleteSignal: MiniSignal;
 
@@ -55,6 +57,7 @@ export class DataModel {
       jsonContent = Pako.inflate(Uint8Array.from(blacklistData), { to: 'string' });
     } else if (typeof blacklistData === 'string') {
       /** version 1.7.1 and below */
+      this.dataVersion = DataVersion.V_171_BELOW;
       jsonContent = blacklistData;
     }
     if (!jsonContent) {
@@ -146,6 +149,11 @@ export class DataModel {
   }
 
   protected async updateBlacklistDataToStorage (jsonContent?: string): Promise<void> {
+    if (this.dataVersion === DataVersion.V_171_BELOW) {
+      /** Clear data below version 1.7.0 */
+      await DataStorage.clear(this.mainConfig.storageNames.blacklist, 'all');
+      this.dataVersion = DataVersion.V_180_ABOVE;
+    }
     const compressedDataChunks = this.getBlacklistJsonChunk(jsonContent);
     compressedDataChunks.forEach(async (chunkArr, i) => {
       const chunkStr = StringFormatter.uint8ArrayToString(Uint8Array.from(chunkArr));
@@ -192,6 +200,32 @@ export class DataModel {
     const end: number = (start + chunkSize < compressedDataArr.length) ? start + chunkSize : compressedDataArr.length;
     chunks.push(compressedDataArr.slice(start, end));
     return this.chunkDataArr(compressedDataArr, chunkSize, end, chunks);
+  }
+
+  public updateBlacklistDataFromPopup (content: string, type: string): Promise<void> {
+    return new Promise<void>(resolve => {
+      if (type === 'application/json') {
+        this.updateBlacklistDataToStorage(content).then(() => {
+          resolve();
+        });
+      } else if (type === 'text/plain') {
+        const jsonContent = Pako.inflate(Uint8Array.from(content), { to: 'string' });
+        this.updateBlacklistDataToStorage(jsonContent).then(() => {
+          resolve();
+        });
+      } else {
+        CommonUtil.showLog('File type was wrong');
+        resolve();
+      }
+    });
+  }
+
+  public updateShowBlacklistGame (show: boolean): Promise<void> {
+    return new Promise<void>(resolve => {
+      DataStorage.setItem(this.mainConfig.storageNames.showblacklistGames, show).then(() => {
+        resolve();
+      });
+    });
   }
 
   public updateDebugMode (debug: boolean): Promise<void> {
