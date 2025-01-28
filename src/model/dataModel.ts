@@ -236,12 +236,20 @@ export class DataModel {
     });
   }
 
+  public clearData (type: StorageDataType): Promise<void> {
+    return new Promise<void>(resolve => {
+      DataStorage.clear(type).then(() => {
+        resolve();
+      });
+    });
+  }
+
   public async showAllBlaclistData (): Promise<void> {
     await DataStorage.getItem(this.mainConfig.storageNames.blacklist, 'local').then((storageData) => {
-      CommonUtil.showLog('All local data : ' + storageData);
+      CommonUtil.showLog('Local blacklist data : ' + storageData);
     });
     await DataStorage.getItem(this.mainConfig.storageNames.blacklist, 'sync').then((storageData) => {
-      CommonUtil.showLog('All sync data : ' + storageData);
+      CommonUtil.showLog('Sync blacklist data : ' + storageData);
     });
   }
 
