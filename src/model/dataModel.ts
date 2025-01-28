@@ -23,10 +23,6 @@ export class DataModel {
     return this._showBlacklistGame;
   }
 
-  public set showBlacklistGame (value: boolean) {
-    this._showBlacklistGame = value;
-  }
-
   private _debug: boolean;
   public get debug (): boolean {
     return this._debug;
@@ -196,6 +192,23 @@ export class DataModel {
     const end: number = (start + chunkSize < compressedDataArr.length) ? start + chunkSize : compressedDataArr.length;
     chunks.push(compressedDataArr.slice(start, end));
     return this.chunkDataArr(compressedDataArr, chunkSize, end, chunks);
+  }
+
+  public updateDebugMode (debug: boolean): Promise<void> {
+    return new Promise<void>(resolve => {
+      DataStorage.setItem(this.mainConfig.storageNames.debug, debug).then(() => {
+        resolve();
+      });
+    });
+  }
+
+  public async showAllBlaclistData (): Promise<void> {
+    await DataStorage.getItem(this.mainConfig.storageNames.blacklist, 'local').then((storageData) => {
+      CommonUtil.showLog('All local data : ' + storageData);
+    });
+    await DataStorage.getItem(this.mainConfig.storageNames.blacklist, 'sync').then((storageData) => {
+      CommonUtil.showLog('All sync data : ' + storageData);
+    });
   }
 
   public async fixDataCaseSensitive (): Promise<void> {
