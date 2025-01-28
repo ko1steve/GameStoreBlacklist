@@ -2,7 +2,7 @@ import Pako from 'pako';
 import { MiniSignal } from 'mini-signals';
 import { MainConfig } from 'src/mainConfig';
 import { CommonUtil } from 'src/util/commonUtil';
-import { DataStorage, DataVersion, StorageType } from 'src/util/dataStorage';
+import { DataStorage, DataVersion, StorageDataType, StorageType } from 'src/util/dataStorage';
 import { Container, Singleton } from 'typescript-ioc';
 import { TSMap } from 'typescript-map';
 import { StringFormatter } from 'src/util/stringFormatter';
@@ -62,11 +62,11 @@ export class DataModel {
     }
     if (!jsonContent) {
       this.blacklistMap = new TSMap<string, string[]>();
-      const jsonContent = JSON.stringify(Object.fromEntries(this.blacklistMap.entries()));
-      await this.updateBlacklistDataToStorage(jsonContent);
     } else {
       this.blacklistMap = new TSMap<string, string[]>(Object.entries(JSON.parse(jsonContent)));
-      await this.updateBlacklistDataToStorage();
+      if (this.dataVersion === DataVersion.V_171_BELOW) {
+        await this.updateBlacklistDataToStorage();
+      }
     }
   }
 
@@ -151,8 +151,7 @@ export class DataModel {
   protected async updateBlacklistDataToStorage (jsonContent?: string): Promise<void> {
     if (this.dataVersion === DataVersion.V_171_BELOW) {
       /** Clear data below version 1.7.0 */
-      await DataStorage.clear(this.mainConfig.storageNames.blacklist, 'all');
-      this.dataVersion = DataVersion.V_180_ABOVE;
+      await DataStorage.remove(this.mainConfig.storageNames.blacklist, 'all');
     }
     const compressedDataChunks = this.getBlacklistJsonChunk(jsonContent);
     compressedDataChunks.forEach(async (chunkArr, i) => {
@@ -163,6 +162,7 @@ export class DataModel {
       });
     });
     await DataStorage.setItem(this.mainConfig.storageNames.blacklistChunks, compressedDataChunks.length);
+    this.dataVersion = DataVersion.V_180_ABOVE;
   }
 
   protected async getBlacklistDataFromStorage (): Promise<StorageType | undefined> {
@@ -171,16 +171,16 @@ export class DataModel {
       return await DataStorage.getItem(this.mainConfig.storageNames.blacklist);
     }
     const numberOfChunk: number = blacklistChunks as number;
-    const chunk: number[] = [];
+    const data: number[] = [];
     for (let i = 0; i < numberOfChunk; i++) {
       const base64Str = await DataStorage.getItem(this.mainConfig.storageNames.blacklist + '_' + i.toString());
       if (!base64Str) {
         return [];
       }
-      const arraybufferData = StringFormatter.stringToArrayBuffer(atob(base64Str as string));
-      chunk.push(...Array.from(new Uint8Array(arraybufferData)));
+      const uint8ArrayData = StringFormatter.stringToUint8Array(atob(base64Str as string));
+      data.push(...Array.from(new Uint8Array(uint8ArrayData)));
     }
-    return chunk;
+    return data;
   }
 
   protected getBlacklistJsonChunk (jsonContent?: string): number[][] {
@@ -230,6 +230,7 @@ export class DataModel {
 
   public updateDebugMode (debug: boolean): Promise<void> {
     return new Promise<void>(resolve => {
+      this._debug = debug;
       DataStorage.setItem(this.mainConfig.storageNames.debug, debug).then(() => {
         resolve();
       });

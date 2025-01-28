@@ -39,7 +39,7 @@ export class DataStorage {
     });
   }
 
-  public static async clear (key: string, type: StorageDataType): Promise<void> {
+  public static async remove (key: string, type: StorageDataType): Promise<void> {
     if (type === 'all' || type === 'local') {
       await chrome.storage.local.remove([key]);
     }
