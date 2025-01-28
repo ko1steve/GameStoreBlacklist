@@ -1,6 +1,8 @@
 export type StorageType = null | string | number | boolean | Array<any> | Object;
 
 export class DataStorage {
+  public static readonly MAX_STORAGE_BYTE_PER_KEY: number = 8192;
+
   public static setItem (key: string, value: StorageType): Promise<void> {
     return chrome.storage.sync.set({ [key]: value });
   }
@@ -39,7 +41,7 @@ export class DataStorage {
     });
   }
 
-  public static async remove (key: string, type: StorageDataType): Promise<void> {
+  public static async remove (key: string, type: StorageDataType = 'all'): Promise<void> {
     if (type === 'all' || type === 'local') {
       await chrome.storage.local.remove([key]);
     }
@@ -48,7 +50,7 @@ export class DataStorage {
     }
   }
 
-  public static async clear (type: StorageDataType): Promise<void> {
+  public static async clear (type: StorageDataType = 'all'): Promise<void> {
     if (type === 'all' || type === 'local') {
       await chrome.storage.local.clear();
     }

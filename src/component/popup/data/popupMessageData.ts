@@ -3,3 +3,7 @@ export interface IReqeustPopupInitDataResponse {
   showBlacklistGame: boolean;
   debug: boolean;
 }
+
+export interface IReqeustBlacklistDataResponse {
+  jsonContent: string;
+}
