@@ -40,7 +40,7 @@ class GamivoSearchController extends ComponentController {
     return newInfoElement;
   }
 
-  private getModifiedInfoElement (infoElement: HTMLElement) {
+  private getModifiedInfoElement (infoElement: HTMLElement): HTMLDivElement | null {
     const nInfoElement = document.createElement('div');
     nInfoElement.dataset.hasInit = 'true';
     nInfoElement.className = infoElement.className;

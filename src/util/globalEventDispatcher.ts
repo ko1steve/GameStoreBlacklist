@@ -1,6 +1,6 @@
 import { TSMap } from 'typescript-map';
 
-export enum GlobalEventNames {
+export enum GlobalEventType {
   DEBUG_MODE_ON = 'DEBUG_MODE_ON',
   DEBUG_MODE_OFF = 'DEBUG_MODE_OFF'
 }
@@ -21,7 +21,7 @@ window.addEventListener('message', (msg) => {
 export class GlobalEventDispatcher {
   public static eventMap: TSMap<string, ((event: IGlobalEvent) => any)[]> = new TSMap();
 
-  public static addListener (eventName: string, callbackFn: (msg?: any) => any) {
+  public static addListener (eventName: string, callbackFn: (msg?: any) => any): void {
     if (this.eventMap.has(eventName)) {
       this.eventMap.get(eventName).push(callbackFn);
     } else {
@@ -29,7 +29,7 @@ export class GlobalEventDispatcher {
     }
   }
 
-  public static dispatch (eventName: string, eventData?: any) {
+  public static dispatch (eventName: string, eventData?: any): void {
     const event: IGlobalEvent = {
       name: eventName,
       data: eventData

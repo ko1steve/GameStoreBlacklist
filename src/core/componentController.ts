@@ -6,6 +6,7 @@ import { CommonUtil } from 'src/util/commonUtil';
 import { DataModel } from 'src/model/dataModel';
 import { MessageDispatcher } from 'src/util/messageDispatcher';
 import { IShowLogMessage, MessageType } from 'src/data/messageData';
+import { IReqeustPopupInitDataResponse } from 'src/component/popup/data/popupMessageData';
 
 export class ComponentController {
   @Inject
@@ -21,17 +22,16 @@ export class ComponentController {
     this.mainConfig = Container.get(MainConfig);
     this.dataModel = Container.get(DataModel);
     this.componentConfig = componentConfig;
-    this.addEventListeners();
+    this.addSignalListener();
     this.addMessageListener();
   }
 
-  protected addEventListeners () {
+  protected addSignalListener (): void {
     this.dataModel.onInitializeBlacklistCompleteSignal.add(this.initailzie.bind(this));
   }
 
   protected addMessageListener (): void {
     MessageDispatcher.addListener(MessageType.SHOW_LOG, (message, sender, sendCallback) => {
-      console.log(MessageType.SHOW_LOG);
       message = message as IShowLogMessage;
       if (message.data.optionalParams && message.data.optionalParams.length > 0) {
         CommonUtil.showPopupLog(message.data.param, message.data.optionalParams);
@@ -39,6 +39,20 @@ export class ComponentController {
         CommonUtil.showPopupLog(message.data.param);
       }
       sendCallback();
+    });
+    MessageDispatcher.addListener(MessageType.REQUEST_POPUP_INIT_DATA, (message, sender, sendCallback) => {
+      sendCallback({
+        numberOfGame: this.dataModel.numberOfGame,
+        showBlacklistGame: this.dataModel.showBlacklistGame,
+        debug: this.dataModel.debug
+      } as IReqeustPopupInitDataResponse);
+    });
+    MessageDispatcher.addListener(MessageType.FIX_DATA_CASE_SENSITIVE, (message, sender, sendCallback) => {
+      this.dataModel.fixDataCaseSensitive().then(() => {
+        location.reload();
+        sendCallback();
+      });
+      return true;
     });
   }
 
@@ -177,17 +191,15 @@ export class ComponentController {
     let checkboxImg = checkboxParent.getElementsByClassName(this.componentConfig.checkboxContainer.checkbox.className!)[0] as HTMLImageElement;
     if (!checkboxImg) {
       checkboxImg = this.createCheckbox(checkboxParent);
-      checkboxImg.onclick = () => {
+      checkboxImg.onclick = (): void => {
         if (checkboxImg.dataset.action === this.componentConfig.checkboxContainer.checkbox.disabledAction) {
           this.dataModel.addGameToBlacklist(gameTitle);
-          this.dataModel.updateNumberOfGame();
           this.setCheckboxEnabled(checkboxImg);
           if (!this.dataModel.showBlacklistGame && option?.hideGame) {
             this.hideGame(option.hideGame.parentList, option.hideGame.infoElement);
           }
         } else {
           this.dataModel.removeGameFromBlacklist(gameTitle);
-          this.dataModel.updateNumberOfGame();
           this.setCheckboxDisabled(checkboxImg);
         }
       };
