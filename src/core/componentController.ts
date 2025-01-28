@@ -8,6 +8,7 @@ import { MessageDispatcher } from 'src/util/messageDispatcher';
 import { IShowBlacklistGammeMessage, IShowLogMessage, IUpdateBlacklistDataFromPopupMessage, MessageType } from 'src/data/messageData';
 import { IReqeustBlacklistDataResponse, IReqeustPopupInitDataResponse } from 'src/component/popup/data/popupMessageData';
 import { GlobalEventDispatcher, GlobalEventType } from 'src/util/globalEventDispatcher';
+import { StringFormatter } from 'src/util/stringFormatter';
 
 export class ComponentController {
   @Inject
@@ -226,7 +227,7 @@ export class ComponentController {
         gameTitle = gameTitle.substring(0, cutIndex);
       }
     });
-    config.excludeTitleWords.forEach(e => { gameTitle = gameTitle.replace(e, ''); });
+    config.excludeTitleWords.forEach(e => { gameTitle = gameTitle.replace(e, StringFormatter.EMPTY_STRING); });
     config.endWords.forEach(e => {
       if (gameTitle.endsWith(e)) {
         const cutIndex = gameTitle.lastIndexOf(e);

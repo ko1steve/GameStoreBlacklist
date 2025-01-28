@@ -235,8 +235,10 @@ export class DataModel {
   }
 
   protected async recoverLegacyBlacklistData (): Promise<void> {
-    await DataStorage.setItem(this.mainConfig.storageNames.blacklist, this.tempLegacyBlacklistData);
-    this.tempLegacyBlacklistData = '';
+    if (this.tempLegacyBlacklistData !== StringFormatter.EMPTY_STRING) {
+      await DataStorage.setItem(this.mainConfig.storageNames.blacklist, this.tempLegacyBlacklistData);
+      this.tempLegacyBlacklistData = StringFormatter.EMPTY_STRING;
+    }
   }
 
   protected chunkDataArr (compressedDataArr: number[], chunkSize: number, start: number = 0, chunks: number[][] = []): number[][] {
