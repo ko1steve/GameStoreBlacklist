@@ -202,6 +202,15 @@ export class DataModel {
     });
   }
 
+  public async showAllBlaclistData (): Promise<void> {
+    await DataStorage.getItem(this.mainConfig.storageNames.blacklist, 'local').then((storageData) => {
+      CommonUtil.showLog('All local data : ' + storageData);
+    });
+    await DataStorage.getItem(this.mainConfig.storageNames.blacklist, 'sync').then((storageData) => {
+      CommonUtil.showLog('All sync data : ' + storageData);
+    });
+  }
+
   public async fixDataCaseSensitive (): Promise<void> {
     const entries = this.blacklistMap.entries();
     for (let i = 0; i < entries.length; i++) {

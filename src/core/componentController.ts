@@ -61,6 +61,7 @@ export class ComponentController {
   protected addGlobalEventListener (): void {
     GlobalEventDispatcher.addListener(GlobalEventType.DEBUG_MODE_ON, this.turnOnDebugMode.bind(this));
     GlobalEventDispatcher.addListener(GlobalEventType.DEBUG_MODE_OFF, this.turnOffDebugMode.bind(this));
+    GlobalEventDispatcher.addListener(GlobalEventType.SHOW_ALL_BLACKIST_DATA, this.showAllStorageData.bind(this));
   }
 
   protected turnOnDebugMode (): void {
@@ -71,7 +72,13 @@ export class ComponentController {
 
   protected turnOffDebugMode (): void {
     this.dataModel.updateDebugMode(false).then(() => {
-      location.reload();
+      //
+    });
+  }
+
+  protected showAllStorageData (): void {
+    this.dataModel.showAllBlaclistData().then(() => {
+      //
     });
   }
 
