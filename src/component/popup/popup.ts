@@ -1,5 +1,4 @@
 import './popup.css';
-import Pako from 'pako';
 import { MainConfig } from 'src/mainConfig';
 import { Container, Inject } from 'typescript-ioc';
 import { IPopupConfig, PopupConfig } from './config';
@@ -118,9 +117,8 @@ export class PopupController {
       const reader = new FileReader();
       reader.onload = async (event): Promise<void> => {
         if (event.target) {
-          const jsonContent = event.target.result as string;
-          await DataStorage.setItem(this.mainConfig.storageNames.blacklist, Array.from(Pako.deflate(jsonContent)));
-          chrome.tabs.reload();
+          const content = event.target.result as string;
+          MessageDispatcher.sendTabMessage({ name: MessageType.UPDATE_BLACKLIST_DATA_FROM_POPUP, data: { content, type: file.type } });
         }
       };
       reader.readAsText(file);

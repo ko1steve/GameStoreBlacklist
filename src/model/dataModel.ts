@@ -202,6 +202,24 @@ export class DataModel {
     return this.chunkDataArr(compressedDataArr, chunkSize, end, chunks);
   }
 
+  public updateBlacklistDataFromPopup (content: string, type: string): Promise<void> {
+    return new Promise<void>(resolve => {
+      if (type === 'application/json') {
+        this.updateBlacklistDataToStorage(content).then(() => {
+          resolve();
+        });
+      } else if (type === 'text/plain') {
+        const jsonContent = Pako.inflate(Uint8Array.from(content), { to: 'string' });
+        this.updateBlacklistDataToStorage(jsonContent).then(() => {
+          resolve();
+        });
+      } else {
+        CommonUtil.showLog('File type was wrong');
+        resolve();
+      }
+    });
+  }
+
   public updateShowBlacklistGame (show: boolean): Promise<void> {
     return new Promise<void>(resolve => {
       DataStorage.setItem(this.mainConfig.storageNames.showblacklistGames, show).then(() => {

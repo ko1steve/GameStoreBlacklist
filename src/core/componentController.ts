@@ -57,6 +57,14 @@ export class ComponentController {
       });
       return true;
     });
+    MessageDispatcher.addListener(MessageType.UPDATE_BLACKLIST_DATA_FROM_POPUP, (message, sender, sendCallback) => {
+      message = message as IUpdateBlacklistDataFromPopupMessage;
+      this.dataModel.updateBlacklistDataFromPopup(message.data.content, message.data.type).then(() => {
+        location.reload();
+        sendCallback();
+      });
+      return true;
+    });
     MessageDispatcher.addListener(MessageType.FIX_DATA_CASE_SENSITIVE, (message, sender, sendCallback) => {
       this.dataModel.fixDataCaseSensitive().then(() => {
         sendCallback();
