@@ -2,7 +2,7 @@ import Pako from 'pako';
 import { MiniSignal } from 'mini-signals';
 import { MainConfig } from 'src/mainConfig';
 import { CommonUtil } from 'src/util/commonUtil';
-import { DataStorage, StorageType } from 'src/util/dataStorage';
+import { DataStorage, DataVersion, StorageDataType, StorageType } from 'src/util/dataStorage';
 import { Container, Singleton } from 'typescript-ioc';
 import { TSMap } from 'typescript-map';
 import { StringFormatter } from 'src/util/stringFormatter';
@@ -23,14 +23,14 @@ export class DataModel {
     return this._showBlacklistGame;
   }
 
-  public set showBlacklistGame (value: boolean) {
-    this._showBlacklistGame = value;
-  }
-
   private _debug: boolean;
   public get debug (): boolean {
     return this._debug;
   }
+
+  protected tempLegacyBlacklistData: string;
+
+  protected dataVersion: DataVersion;
 
   public onInitializeBlacklistCompleteSignal: MiniSignal;
 
@@ -38,6 +38,8 @@ export class DataModel {
     this.mainConfig = Container.get(MainConfig);
     this.blacklistMap = new TSMap<string, string[]>();
     this.onInitializeBlacklistCompleteSignal = new MiniSignal();
+    this.dataVersion = DataVersion.V_180_ABOVE;
+    this.tempLegacyBlacklistData = '';
     this._numberOfGame = 0;
     this._debug = false;
     this.initialize();
@@ -59,15 +61,17 @@ export class DataModel {
       jsonContent = Pako.inflate(Uint8Array.from(blacklistData), { to: 'string' });
     } else if (typeof blacklistData === 'string') {
       /** version 1.7.1 and below */
+      this.dataVersion = DataVersion.V_171_BELOW;
       jsonContent = blacklistData;
     }
     if (!jsonContent) {
       this.blacklistMap = new TSMap<string, string[]>();
-      const jsonContent = JSON.stringify(Object.fromEntries(this.blacklistMap.entries()));
-      await this.updateBlacklistDataToStorage(jsonContent);
     } else {
       this.blacklistMap = new TSMap<string, string[]>(Object.entries(JSON.parse(jsonContent)));
-      await this.updateBlacklistDataToStorage();
+      if (this.dataVersion === DataVersion.V_171_BELOW) {
+        await this.clearLegacyStorageData();
+        await this.updateBlacklistDataToStorage();
+      }
     }
   }
 
@@ -150,43 +154,91 @@ export class DataModel {
   }
 
   protected async updateBlacklistDataToStorage (jsonContent?: string): Promise<void> {
-    const compressedDataChunks = this.getBlacklistJsonChunk(jsonContent);
-    compressedDataChunks.forEach(async (chunkArr, i) => {
-      const chunkStr = StringFormatter.uint8ArrayToString(Uint8Array.from(chunkArr));
-      const base64Str = btoa(chunkStr);
-      await DataStorage.setItem(this.mainConfig.storageNames.blacklist + '_' + i.toString(), base64Str).catch(() => {
-        CommonUtil.showLog('DataStorage.setItem "Blacklist_' + i.toString() + '" failed.\nData size = ' + new Blob([chunkStr], { type: 'text/plain' }).size);
-      });
-    });
-    await DataStorage.setItem(this.mainConfig.storageNames.blacklistChunks, compressedDataChunks.length);
+    let saveChunks: number = 0;
+    const base64Chunks = this.getBlacklistJsonChunk(jsonContent);
+    if (base64Chunks.length === 0) {
+      return await this.recoverLegacyBlacklistData();
+    }
+    for (let i = 0; i < base64Chunks.length; i++) {
+      try {
+        await DataStorage.setItem(this.mainConfig.storageNames.blacklist + '_' + i.toString(), base64Chunks[i]);
+        saveChunks++;
+      } catch (ex) {
+        CommonUtil.showLog('DataStorage.setItem "Blacklist_' + i.toString() + '" failed.');
+        break;
+      }
+    }
+    if (saveChunks === base64Chunks.length) {
+      await DataStorage.setItem(this.mainConfig.storageNames.blacklistChunks, saveChunks);
+    } else {
+      for (let i = 0; i < saveChunks; i++) {
+        await DataStorage.remove(this.mainConfig.storageNames.blacklist + '_' + i.toString());
+      }
+      await this.recoverLegacyBlacklistData();
+    }
+    this.dataVersion = DataVersion.V_180_ABOVE;
+  }
+
+  protected async clearLegacyStorageData (): Promise<void> {
+    if (this.dataVersion === DataVersion.V_171_BELOW) {
+      /** Clear data below version 1.7.0 */
+      const jsonContent = await DataStorage.getItem(this.mainConfig.storageNames.blacklist);
+      this.tempLegacyBlacklistData = jsonContent as string;
+      await DataStorage.remove(this.mainConfig.storageNames.blacklist, 'all');
+    } else if (this.dataVersion === DataVersion.V_180_ABOVE) {
+      const numberOfChunkData: StorageType | undefined = await DataStorage.getItem(this.mainConfig.storageNames.blacklistChunks);
+      if (numberOfChunkData !== undefined) {
+        const numberOfChunk: number = numberOfChunkData as number;
+        for (let i = 0; i < numberOfChunk; i++) {
+          await DataStorage.remove(this.mainConfig.storageNames.blacklist + '_' + i.toString(), 'all');
+        }
+      }
+    }
   }
 
   protected async getBlacklistDataFromStorage (): Promise<StorageType | undefined> {
-    const blacklistChunks: StorageType | undefined = await DataStorage.getItem(this.mainConfig.storageNames.blacklistChunks);
-    if (!blacklistChunks) {
+    const numberOfChunkData: StorageType | undefined = await DataStorage.getItem(this.mainConfig.storageNames.blacklistChunks);
+    if (!numberOfChunkData) {
       return await DataStorage.getItem(this.mainConfig.storageNames.blacklist);
     }
-    const numberOfChunk: number = blacklistChunks as number;
-    const chunk: number[] = [];
+    const numberOfChunk: number = numberOfChunkData as number;
+    const data: number[] = [];
     for (let i = 0; i < numberOfChunk; i++) {
       const base64Str = await DataStorage.getItem(this.mainConfig.storageNames.blacklist + '_' + i.toString());
       if (!base64Str) {
         return [];
       }
-      const arraybufferData = StringFormatter.stringToArrayBuffer(atob(base64Str as string));
-      chunk.push(...Array.from(new Uint8Array(arraybufferData)));
+      const uint8ArrayData = StringFormatter.stringToUint8Array(atob(base64Str as string));
+      data.push(...Array.from(new Uint8Array(uint8ArrayData)));
     }
-    return chunk;
+    return data;
   }
 
-  protected getBlacklistJsonChunk (jsonContent?: string): number[][] {
+  protected getBlacklistJsonChunk (jsonContent?: string): string[] {
     if (!jsonContent) {
       jsonContent = JSON.stringify(Object.fromEntries(this.blacklistMap.entries()));
     }
     const compressedDataArr = Array.from(Pako.deflate(jsonContent));
     const chunkSize = this.mainConfig.blacklistChunkSize;
     const chunks: number[][] = this.chunkDataArr(compressedDataArr, chunkSize);
-    return chunks;
+    const base64Chunks: string[] = [];
+    for (let i = 0; i < chunks.length; i++) {
+      const chunkStr = StringFormatter.uint8ArrayToString(Uint8Array.from(chunks[i]));
+      const base64Str = btoa(chunkStr);
+      if (new Blob([base64Str], { type: 'text/plain' }).size > DataStorage.MAX_STORAGE_BYTE_PER_KEY) {
+        CommonUtil.showLog('Data size too big. Failed to update blacklist.');
+        return [];
+      }
+      base64Chunks.push(base64Str);
+    }
+    return base64Chunks;
+  }
+
+  protected async recoverLegacyBlacklistData (): Promise<void> {
+    if (this.tempLegacyBlacklistData !== StringFormatter.EMPTY_STRING) {
+      await DataStorage.setItem(this.mainConfig.storageNames.blacklist, this.tempLegacyBlacklistData);
+      this.tempLegacyBlacklistData = StringFormatter.EMPTY_STRING;
+    }
   }
 
   protected chunkDataArr (compressedDataArr: number[], chunkSize: number, start: number = 0, chunks: number[][] = []): number[][] {
@@ -196,6 +248,51 @@ export class DataModel {
     const end: number = (start + chunkSize < compressedDataArr.length) ? start + chunkSize : compressedDataArr.length;
     chunks.push(compressedDataArr.slice(start, end));
     return this.chunkDataArr(compressedDataArr, chunkSize, end, chunks);
+  }
+
+  public getBlacklistData (): Promise<string> {
+    return new Promise<string>(resolve => {
+      resolve(JSON.stringify(Object.fromEntries(this.blacklistMap.entries())));
+    });
+  }
+
+  public async updateBlacklistDataFromPopup (content: string): Promise<void> {
+    await this.clearLegacyStorageData();
+    await this.updateBlacklistDataToStorage(content);
+  }
+
+  public updateShowBlacklistGame (show: boolean): Promise<void> {
+    return new Promise<void>(resolve => {
+      DataStorage.setItem(this.mainConfig.storageNames.showblacklistGames, show).then(() => {
+        resolve();
+      });
+    });
+  }
+
+  public updateDebugMode (debug: boolean): Promise<void> {
+    return new Promise<void>(resolve => {
+      this._debug = debug;
+      DataStorage.setItem(this.mainConfig.storageNames.debug, debug).then(() => {
+        resolve();
+      });
+    });
+  }
+
+  public clearData (type: StorageDataType = 'all'): Promise<void> {
+    return new Promise<void>(resolve => {
+      DataStorage.clear(type).then(() => {
+        resolve();
+      });
+    });
+  }
+
+  public async showAllBlaclistData (): Promise<void> {
+    await DataStorage.getItem(this.mainConfig.storageNames.blacklist, 'local').then((storageData) => {
+      CommonUtil.showLog('Local blacklist data : ' + storageData);
+    });
+    await DataStorage.getItem(this.mainConfig.storageNames.blacklist, 'sync').then((storageData) => {
+      CommonUtil.showLog('Sync blacklist data : ' + storageData);
+    });
   }
 
   public async fixDataCaseSensitive (): Promise<void> {

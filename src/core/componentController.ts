@@ -5,8 +5,10 @@ import { IGameInfoOption } from 'src/data/commonData';
 import { CommonUtil } from 'src/util/commonUtil';
 import { DataModel } from 'src/model/dataModel';
 import { MessageDispatcher } from 'src/util/messageDispatcher';
-import { IShowLogMessage, MessageType } from 'src/data/messageData';
-import { IReqeustPopupInitDataResponse } from 'src/component/popup/data/popupMessageData';
+import { IShowBlacklistGammeMessage, IShowLogMessage, IUpdateBlacklistDataFromPopupMessage, MessageType } from 'src/data/messageData';
+import { IReqeustBlacklistDataResponse, IReqeustPopupInitDataResponse } from 'src/component/popup/data/popupMessageData';
+import { GlobalEventDispatcher, GlobalEventType } from 'src/util/globalEventDispatcher';
+import { StringFormatter } from 'src/util/stringFormatter';
 
 export class ComponentController {
   @Inject
@@ -24,6 +26,7 @@ export class ComponentController {
     this.componentConfig = componentConfig;
     this.addSignalListener();
     this.addMessageListener();
+    this.addGlobalEventListener();
   }
 
   protected addSignalListener (): void {
@@ -47,12 +50,65 @@ export class ComponentController {
         debug: this.dataModel.debug
       } as IReqeustPopupInitDataResponse);
     });
-    MessageDispatcher.addListener(MessageType.FIX_DATA_CASE_SENSITIVE, (message, sender, sendCallback) => {
-      this.dataModel.fixDataCaseSensitive().then(() => {
+    MessageDispatcher.addListener(MessageType.SHOW_BLACKLIST_GAME, (message, sender, sendCallback) => {
+      message = message as IShowBlacklistGammeMessage;
+      this.dataModel.updateShowBlacklistGame(message.data.show).then(() => {
         location.reload();
         sendCallback();
       });
       return true;
+    });
+    MessageDispatcher.addListener(MessageType.REQUEST_BLACKLIST_DATA, (message, sender, sendCallback) => {
+      this.dataModel.getBlacklistData().then((jsonContent) => {
+        sendCallback({ jsonContent } as IReqeustBlacklistDataResponse);
+      });
+      return true;
+    });
+    MessageDispatcher.addListener(MessageType.UPDATE_BLACKLIST_DATA_FROM_POPUP, (message, sender, sendCallback) => {
+      message = message as IUpdateBlacklistDataFromPopupMessage;
+      this.dataModel.updateBlacklistDataFromPopup(message.data.content).then(() => {
+        location.reload();
+        sendCallback();
+      });
+      return true;
+    });
+    MessageDispatcher.addListener(MessageType.FIX_DATA_CASE_SENSITIVE, (message, sender, sendCallback) => {
+      this.dataModel.fixDataCaseSensitive().then(() => {
+        sendCallback();
+      });
+      return true;
+    });
+  }
+
+  protected addGlobalEventListener (): void {
+    GlobalEventDispatcher.addListener(GlobalEventType.CLEAR_SYNC_DATA, this.clearSyncData.bind(this));
+    GlobalEventDispatcher.addListener(GlobalEventType.DEBUG_MODE_ON, this.turnOnDebugMode.bind(this));
+    GlobalEventDispatcher.addListener(GlobalEventType.DEBUG_MODE_OFF, this.turnOffDebugMode.bind(this));
+    GlobalEventDispatcher.addListener(GlobalEventType.SHOW_ALL_BLACKIST_DATA, this.showAllStorageData.bind(this));
+  }
+
+  protected turnOnDebugMode (): void {
+    this.dataModel.updateDebugMode(true).then(() => {
+      CommonUtil.showLog('Debug Mode turns on');
+    });
+  }
+
+  protected turnOffDebugMode (): void {
+    this.dataModel.updateDebugMode(false).then(() => {
+      CommonUtil.showLog('Debug Mode turns off');
+    });
+  }
+
+  protected clearSyncData (): void {
+    this.dataModel.clearData('sync').then(() => {
+      CommonUtil.showLog('Sync data is clear');
+      location.reload();
+    });
+  }
+
+  protected showAllStorageData (): void {
+    this.dataModel.showAllBlaclistData().then(() => {
+      //
     });
   }
 
@@ -171,7 +227,7 @@ export class ComponentController {
         gameTitle = gameTitle.substring(0, cutIndex);
       }
     });
-    config.excludeTitleWords.forEach(e => { gameTitle = gameTitle.replace(e, ''); });
+    config.excludeTitleWords.forEach(e => { gameTitle = gameTitle.replace(e, StringFormatter.EMPTY_STRING); });
     config.endWords.forEach(e => {
       if (gameTitle.endsWith(e)) {
         const cutIndex = gameTitle.lastIndexOf(e);

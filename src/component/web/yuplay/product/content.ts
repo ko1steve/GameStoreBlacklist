@@ -2,6 +2,7 @@ import { Container } from 'typescript-ioc';
 import { ComponentController } from '../../../../core/componentController';
 import { YuplayProductConfig } from './config';
 import './style.css';
+import { StringFormatter } from 'src/util/stringFormatter';
 
 class YuplayProductController extends ComponentController {
   protected componentConfig!: YuplayProductConfig;
@@ -69,7 +70,7 @@ class YuplayProductController extends ComponentController {
       return;
     }
     const rawGameTitle = titleContainer.title;
-    if (rawGameTitle === '') {
+    if (rawGameTitle === StringFormatter.EMPTY_STRING) {
       return;
     }
     const gameTitle = this.getModifiedGameTitle(rawGameTitle);
