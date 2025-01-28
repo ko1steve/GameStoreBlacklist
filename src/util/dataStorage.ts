@@ -9,12 +9,12 @@ export class DataStorage {
     return new Promise<StorageType | undefined>(resolve => {
       /** version 1.8 and above */
       chrome.storage.sync.get([key]).then(syncData => {
-        if (syncData && syncData[key]) {
+        if (syncData && syncData[key] !== undefined) {
           resolve(syncData[key]);
         } else {
           /** version 1.7.1 and below */
           chrome.storage.local.get([key]).then(localData => {
-            if (localData) {
+            if (localData && localData[key] !== undefined) {
               resolve(localData[key]);
             } else {
               resolve(undefined);
