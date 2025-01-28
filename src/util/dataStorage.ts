@@ -1,7 +1,7 @@
 export type StorageType = null | string | number | boolean | Array<any> | Object;
 
 export class DataStorage {
-  public static readonly MAX_STORAGE_BYTE_PER_KEY: number = 8192;
+  public static readonly MAX_STORAGE_BYTE_PER_KEY: number = 7000;
 
   public static setItem (key: string, value: StorageType): Promise<void> {
     return chrome.storage.sync.set({ [key]: value });

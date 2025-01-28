@@ -164,6 +164,7 @@ export class DataModel {
         await DataStorage.setItem(this.mainConfig.storageNames.blacklist + '_' + i.toString(), base64Chunks[i]);
         saveChunks++;
       } catch (ex) {
+        console.error(ex);
         CommonUtil.showLog('DataStorage.setItem "Blacklist_' + i.toString() + '" failed.');
         break;
       }
@@ -173,6 +174,7 @@ export class DataModel {
     } else {
       for (let i = 0; i < saveChunks; i++) {
         await DataStorage.remove(this.mainConfig.storageNames.blacklist + '_' + i.toString());
+        await DataStorage.remove(this.mainConfig.storageNames.blacklistChunks);
       }
       await this.recoverLegacyBlacklistData();
     }
@@ -202,36 +204,36 @@ export class DataModel {
       return await DataStorage.getItem(this.mainConfig.storageNames.blacklist);
     }
     const numberOfChunk: number = numberOfChunkData as number;
-    const data: number[] = [];
+    let base64FullData: string = '';
     for (let i = 0; i < numberOfChunk; i++) {
-      const base64Str = await DataStorage.getItem(this.mainConfig.storageNames.blacklist + '_' + i.toString());
-      if (!base64Str) {
+      const base64Chunk = await DataStorage.getItem(this.mainConfig.storageNames.blacklist + '_' + i.toString());
+      if (!base64Chunk) {
         return [];
       }
-      const uint8ArrayData = StringFormatter.stringToUint8Array(atob(base64Str as string));
-      data.push(...Array.from(new Uint8Array(uint8ArrayData)));
+      base64FullData += base64Chunk as string;
     }
-    return data;
+    const uint8ArrayData = StringFormatter.stringToUint8Array(atob(base64FullData as string));
+    return Array.from(uint8ArrayData);
   }
 
   protected getBlacklistJsonChunk (jsonContent?: string): string[] {
     if (!jsonContent) {
       jsonContent = JSON.stringify(Object.fromEntries(this.blacklistMap.entries()));
     }
-    const compressedDataArr = Array.from(Pako.deflate(jsonContent));
-    const chunkSize = this.mainConfig.blacklistChunkSize;
-    const chunks: number[][] = this.chunkDataArr(compressedDataArr, chunkSize);
-    const base64Chunks: string[] = [];
-    for (let i = 0; i < chunks.length; i++) {
-      const chunkStr = StringFormatter.uint8ArrayToString(Uint8Array.from(chunks[i]));
-      const base64Str = btoa(chunkStr);
-      if (new Blob([base64Str], { type: 'text/plain' }).size > DataStorage.MAX_STORAGE_BYTE_PER_KEY) {
+    const compressedDataUint8Arr = Pako.deflate(jsonContent);
+    const base64Data = btoa(StringFormatter.uint8ArrayToString(compressedDataUint8Arr));
+    const chunkSize = DataStorage.MAX_STORAGE_BYTE_PER_KEY;
+    const base64DataChunks: string[] = this.chunkStringToArray(base64Data, chunkSize);
+    for (let i = 0; i < base64DataChunks.length; i++) {
+      const blob = new Blob([base64DataChunks[i]], { type: 'text/plain' });
+      console.log(base64DataChunks[i]);
+      CommonUtil.showLog('Blob size : ' + blob.size);
+      if (blob.size > DataStorage.MAX_STORAGE_BYTE_PER_KEY) {
         CommonUtil.showLog('Data size too big. Failed to update blacklist.');
         return [];
       }
-      base64Chunks.push(base64Str);
     }
-    return base64Chunks;
+    return base64DataChunks;
   }
 
   protected async recoverLegacyBlacklistData (): Promise<void> {
@@ -241,13 +243,13 @@ export class DataModel {
     }
   }
 
-  protected chunkDataArr (compressedDataArr: number[], chunkSize: number, start: number = 0, chunks: number[][] = []): number[][] {
-    if (start === compressedDataArr.length) {
+  protected chunkStringToArray (base64Data: string, chunkSize: number, start: number = 0, chunks: string[] = []): string[] {
+    if (start === base64Data.length) {
       return chunks;
     }
-    const end: number = (start + chunkSize < compressedDataArr.length) ? start + chunkSize : compressedDataArr.length;
-    chunks.push(compressedDataArr.slice(start, end));
-    return this.chunkDataArr(compressedDataArr, chunkSize, end, chunks);
+    const end: number = (start + chunkSize < base64Data.length) ? start + chunkSize : base64Data.length;
+    chunks.push(base64Data.slice(start, end));
+    return this.chunkStringToArray(base64Data, chunkSize, end, chunks);
   }
 
   public getBlacklistData (): Promise<string> {

@@ -3,7 +3,6 @@ import { Singleton } from 'typescript-ioc';
 export interface IMainConfig {
   storageNames: IStorageNames;
   storageDefault: IStorageDefault;
-  blacklistChunkSize: number;
 }
 
 export interface IStorageNames {
@@ -31,6 +30,4 @@ export class MainConfig implements IMainConfig {
     showblacklistGames: true,
     debug: false
   };
-
-  public blacklistChunkSize: number = 4000;
 }
