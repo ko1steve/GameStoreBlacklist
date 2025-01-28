@@ -47,9 +47,18 @@ export class DataStorage {
       await chrome.storage.sync.remove([key]);
     }
   }
+
+  public static async clear (type: StorageDataType): Promise<void> {
+    if (type === 'all' || type === 'local') {
+      await chrome.storage.local.clear();
+    }
+    if (type === 'all' || type === 'sync') {
+      await chrome.storage.sync.clear();
+    }
+  }
 }
 
-type StorageDataType = 'all' | 'local' | 'sync';
+export type StorageDataType = 'all' | 'local' | 'sync';
 
 export enum DataVersion {
   V_171_BELOW = 'V_1.7.1_BELOW',

@@ -1,6 +1,7 @@
 import { TSMap } from 'typescript-map';
 
 export enum GlobalEventType {
+  CLEAR_SYNC_DATA = 'CLEAR_SYNC_DATA',
   DEBUG_MODE_ON = 'DEBUG_MODE_ON',
   DEBUG_MODE_OFF = 'DEBUG_MODE_OFF',
   SHOW_ALL_BLACKIST_DATA = 'SHOW_ALL_BLACKIST_DATA'
