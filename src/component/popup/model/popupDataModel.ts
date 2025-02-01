@@ -34,6 +34,9 @@ export class PopupDataModel {
 
   protected async initialize (): Promise<void> {
     const initData = await this.getPopupInitData();
+    if (!initData) {
+      return;
+    }
     this.showBlacklistGame = initData.showBlacklistGame;
     this.numberOfGame = initData.numberOfGame;
     this.debug = initData.debug;
