@@ -1,7 +1,7 @@
 {
   "name": "GameStoreBlacklist",
   "manifest_version": 3,
-  "version": "1.9.1",
+  "version": "1.9.2",
   "description": "",
   "action": {
     "default_popup": "src/component/popup/popup.html",
@@ -9,7 +9,8 @@
   },
   "permissions": [
     "storage",
-    "activeTab"
+    "activeTab",
+    "scripting"
   ],
   "content_scripts": [
     {
