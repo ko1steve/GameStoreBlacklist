@@ -2,10 +2,9 @@ import './popup.css';
 import { MainConfig } from 'src/mainConfig';
 import { Container, Inject } from 'typescript-ioc';
 import { IPopupConfig, PopupConfig } from './config';
-import { DataStorage, StorageType } from 'src/util/dataStorage';
 import { PopupDataModel } from './model/popupDataModel';
 import { IPopupInitData } from './data/popupCommonData';
-import { MessageDispatcher } from 'src/util/messageDispatcher';
+import { PopupMessageDispatcher } from './util/popupMessageDispatcher';
 import { MessageType } from 'src/data/messageData';
 import { IReqeustBlacklistDataResponse } from 'src/component/popup/data/popupMessageData';
 
@@ -61,7 +60,7 @@ export class PopupController {
     checkbox.type = 'checkbox';
     checkbox.checked = initData.showBlacklistGame;
     checkbox.onchange = (): void => {
-      MessageDispatcher.sendTabMessage({ name: MessageType.SHOW_BLACKLIST_GAME, data: { show: checkbox.checked } });
+      PopupMessageDispatcher.sendTabMessage({ name: MessageType.SHOW_BLACKLIST_GAME, data: { show: checkbox.checked } });
     };
     container.appendChild(checkbox);
 
@@ -83,7 +82,7 @@ export class PopupController {
   }
 
   protected async downloadBlacklistData (): Promise<void> {
-    MessageDispatcher.sendTabMessage({ name: MessageType.REQUEST_BLACKLIST_DATA }, (response: IReqeustBlacklistDataResponse) => {
+    PopupMessageDispatcher.sendTabMessage({ name: MessageType.REQUEST_BLACKLIST_DATA }, (response: IReqeustBlacklistDataResponse) => {
       if (response.jsonContent) {
         const blob = new Blob([response.jsonContent], { type: 'application/json' });
         const a = document.createElement('a');
@@ -120,7 +119,7 @@ export class PopupController {
       reader.onload = async (event): Promise<void> => {
         if (event.target) {
           const content = event.target.result as string;
-          MessageDispatcher.sendTabMessage({ name: MessageType.UPDATE_BLACKLIST_DATA_FROM_POPUP, data: { content } });
+          PopupMessageDispatcher.sendTabMessage({ name: MessageType.UPDATE_BLACKLIST_DATA_FROM_POPUP, data: { content } });
         }
       };
       reader.readAsText(file);

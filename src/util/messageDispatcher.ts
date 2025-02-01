@@ -9,6 +9,12 @@ export class MessageDispatcher {
   public static messageMap: TSMap<MessageType, MessageListenerCallback[]> = new TSMap();
 
   public static async sendTabMessage (message: Message, responseCallback?: (response: any) => void): Promise<any> {
+    if (!this.testScriptLoaded()) {
+      return;
+    }
+    if (!chrome.runtime.onMessage.hasListeners()) {
+      return;
+    }
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     if (tab.id === undefined) {
       return Promise.reject(new Error('Can\'t get the tab id'));
@@ -38,6 +44,33 @@ export class MessageDispatcher {
     } else {
       this.messageMap.set(messageName, [callback]);
     }
+  }
+
+  protected static testScriptLoaded (): boolean {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs.length === 0) {
+        return false;
+      }
+      const tabId = tabs[0].id;
+
+      if (tabId === undefined) {
+        return false;
+      }
+      chrome.scripting.executeScript(
+        {
+          target: { tabId },
+          func: () => typeof (window as any).contentScriptLoaded !== 'undefined'
+        },
+        (results) => {
+          if (chrome.runtime.lastError || !results || !results[0].result) {
+            return false;
+          } else {
+            return true;
+          }
+        }
+      );
+    });
+    return false;
   }
 }
 
