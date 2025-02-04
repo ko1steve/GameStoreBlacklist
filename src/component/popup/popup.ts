@@ -136,12 +136,6 @@ export class PopupController {
     };
     parent.appendChild(button);
   }
-
-  protected matchWildcardPattern (pattern: string, str: string): boolean {
-    const source = '^' + pattern.replaceAll('.', '\\.').replaceAll('?', '\\?').replaceAll('*', '.*') + '$';
-    const regExp = new RegExp(source);
-    return regExp.test(str);
-  }
 }
 
 const componentConfig = Container.get(PopupConfig);

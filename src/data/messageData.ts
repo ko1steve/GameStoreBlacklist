@@ -4,10 +4,11 @@ export enum MessageType {
   SHOW_BLACKLIST_GAME = 'SHOW_BLACKLIST_GAME',
   UPDATE_BLACKLIST_DATA_FROM_POPUP = 'UPDATE_BLACKLIST_DATA_FROM_POPUP',
   REQUEST_BLACKLIST_DATA = 'REQUEST_BLACKLIST_DATA',
-  SHOW_LOG = 'SHOW_LOG'
+  SHOW_LOG = 'SHOW_LOG',
+  SHOW_OBJECT = 'SHOW_OBJECT'
 }
 
-export type Message = IRequestPopupInitDataMessage | IShowBlacklistGammeMessage | IUpdateBlacklistDataFromPopupMessage | IFixDataCaseSensitiveMessage | IRequestBlacklistDataMessage | IShowLogMessage;
+export type Message = IRequestPopupInitDataMessage | IShowBlacklistGammeMessage | IUpdateBlacklistDataFromPopupMessage | IFixDataCaseSensitiveMessage | IRequestBlacklistDataMessage | IShowLogMessage | IShowObjectMessage;
 
 export interface IRequestPopupInitDataMessage {
   name: MessageType.REQUEST_POPUP_INIT_DATA;
@@ -40,5 +41,12 @@ export interface IShowLogMessage {
   data: {
     param: any,
     optionalParams?: any[]
+  }
+}
+
+export interface IShowObjectMessage {
+  name: MessageType.SHOW_OBJECT;
+  data: {
+    object: any
   }
 }

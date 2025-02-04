@@ -1,11 +1,11 @@
 import Pako from 'pako';
-import { MiniSignal } from 'mini-signals';
-import { MainConfig } from 'src/mainConfig';
-import { CommonUtil } from 'src/util/commonUtil';
-import { DataStorage, DataVersion, StorageDataType, StorageType } from 'src/util/dataStorage';
-import { Container, Singleton } from 'typescript-ioc';
 import { TSMap } from 'typescript-map';
-import { StringFormatter } from 'src/util/stringFormatter';
+import { MiniSignal } from 'mini-signals';
+import { Container, Singleton } from 'typescript-ioc';
+import { MainConfig } from './../mainConfig';
+import { CommonUtil } from './../util/commonUtil';
+import { StringFormatter } from './../util/stringFormatter';
+import { DataStorage, DataVersion, StorageDataType, StorageType } from './../util/dataStorage';
 
 @Singleton
 export class DataModel {
@@ -226,7 +226,7 @@ export class DataModel {
     const base64DataChunks: string[] = this.chunkStringToArray(base64Data, chunkSize);
     for (let i = 0; i < base64DataChunks.length; i++) {
       const blob = new Blob([base64DataChunks[i]], { type: 'text/plain' });
-      CommonUtil.showLog('Blob [', i, '] size : ' + blob.size);
+      CommonUtil.showLog('Blob [' + i + '] size : ' + blob.size);
       if (blob.size > DataStorage.MAX_STORAGE_BYTE_PER_KEY) {
         CommonUtil.showLog('Data size too big. Failed to update blacklist.');
         return [];
