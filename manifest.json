@@ -7,10 +7,12 @@
     "default_popup": "src/component/popup/popup.html",
     "default_icon": "image/icon.png"
   },
+  "background": {
+    "service_worker": "src/component/background/background.js"
+  },
   "permissions": [
     "storage",
-    "activeTab",
-    "scripting"
+    "activeTab"
   ],
   "content_scripts": [
     {
