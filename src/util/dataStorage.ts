@@ -1,15 +1,18 @@
-export type StorageType = null | string | number | boolean | Array<any> | Object;
-
 export class DataStorage {
   public static readonly MAX_STORAGE_BYTE_PER_KEY: number = 7000;
 
-  public static setItem (key: string, value: StorageType): Promise<void> {
-    return chrome.storage.sync.set({ [key]: value });
+  public static async setItem (key: string, value: StorageDataType, storageType: StorageType = StorageType.SYNC): Promise<void> {
+    if (storageType === StorageType.ALL || storageType === StorageType.LOCAL) {
+      await chrome.storage.local.set({ [key]: value });
+    }
+    if (storageType === StorageType.ALL || storageType === StorageType.SYNC) {
+      await chrome.storage.sync.set({ [key]: value });
+    }
   }
 
-  public static getItem (key: string, type: StorageDataType = 'all'): Promise<StorageType | undefined> {
-    return new Promise<StorageType | undefined>(resolve => {
-      if (type === 'all') {
+  public static getItem (key: string, type: StorageType = StorageType.ALL): Promise<StorageDataType | undefined> {
+    return new Promise<StorageDataType | undefined>(resolve => {
+      if (type === StorageType.ALL) {
         /** version 1.8 and above */
         chrome.storage.sync.get([key]).then(syncData => {
           if (syncData && syncData[key] !== undefined) {
@@ -25,13 +28,13 @@ export class DataStorage {
             });
           }
         });
-      } else if (type === 'sync') {
+      } else if (type === StorageType.SYNC) {
         chrome.storage.sync.get([key]).then(syncData => {
           if (syncData && syncData[key] !== undefined) {
             resolve(syncData[key]);
           }
         });
-      } else if (type === 'local') {
+      } else if (type === StorageType.LOCAL) {
         chrome.storage.local.get([key]).then(localData => {
           if (localData && localData[key] !== undefined) {
             resolve(localData[key]);
@@ -41,26 +44,31 @@ export class DataStorage {
     });
   }
 
-  public static async remove (key: string, type: StorageDataType = 'all'): Promise<void> {
-    if (type === 'all' || type === 'local') {
+  public static async remove (key: string, type: StorageType = StorageType.SYNC): Promise<void> {
+    if (type === StorageType.ALL || type === StorageType.LOCAL) {
       await chrome.storage.local.remove([key]);
     }
-    if (type === 'all' || type === 'sync') {
+    if (type === StorageType.ALL || type === StorageType.SYNC) {
       await chrome.storage.sync.remove([key]);
     }
   }
 
-  public static async clear (type: StorageDataType = 'all'): Promise<void> {
-    if (type === 'all' || type === 'local') {
+  public static async clear (storageType: StorageType = StorageType.SYNC): Promise<void> {
+    if (storageType === StorageType.ALL || storageType === StorageType.LOCAL) {
       await chrome.storage.local.clear();
     }
-    if (type === 'all' || type === 'sync') {
+    if (storageType === StorageType.ALL || storageType === StorageType.SYNC) {
       await chrome.storage.sync.clear();
     }
   }
 }
+export type StorageDataType = null | string | number | boolean | Array<any> | Object;
 
-export type StorageDataType = 'all' | 'local' | 'sync';
+export enum StorageType {
+  ALL = 'ALL',
+  LOCAL = 'ALL',
+  SYNC = 'ALL'
+}
 
 export enum DataVersion {
   V_171_BELOW = 'V_1.7.1_BELOW',

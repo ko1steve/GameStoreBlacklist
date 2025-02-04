@@ -32,7 +32,7 @@ body {
   margin: 10px 10px 10px 10px;
 }
 
-#downloadButton {
+.setting-button {
   font-weight: 400;
   position: relative;
 }
@@ -58,10 +58,5 @@ body {
   visibility: hidden;
   width: 0px;
   height: 0px;
-  position: relative;
-}
-
-#fixDataButton {
-  font-weight: 400;
   position: relative;
 }
