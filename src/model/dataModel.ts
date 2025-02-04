@@ -1,11 +1,11 @@
 import Pako from 'pako';
-import { MiniSignal } from 'mini-signals';
-import { MainConfig } from 'src/mainConfig';
-import { CommonUtil } from 'src/util/commonUtil';
-import { DataStorage, DataVersion, StorageDataType, StorageType } from 'src/util/dataStorage';
-import { Container, Singleton } from 'typescript-ioc';
 import { TSMap } from 'typescript-map';
-import { StringFormatter } from 'src/util/stringFormatter';
+import { MiniSignal } from 'mini-signals';
+import { Container, Singleton } from 'typescript-ioc';
+import { MainConfig } from './../mainConfig';
+import { CommonUtil } from './../util/commonUtil';
+import { StringFormatter } from './../util/stringFormatter';
+import { DataStorage, DataVersion, StorageType, StorageDataType } from './../util/dataStorage';
 
 @Singleton
 export class DataModel {
@@ -54,7 +54,7 @@ export class DataModel {
   }
 
   protected async initBlacklist (): Promise<void> {
-    const blacklistData: StorageType | undefined = await this.getBlacklistDataFromStorage();
+    const blacklistData: StorageDataType | undefined = await this.getBlacklistDataFromStorage();
     let jsonContent: string | undefined;
     if (blacklistData instanceof Array) {
       /** version 1.8 and above */
@@ -173,7 +173,7 @@ export class DataModel {
       await DataStorage.setItem(this.mainConfig.storageNames.blacklistChunks, saveChunks);
     } else {
       for (let i = 0; i < saveChunks; i++) {
-        await DataStorage.remove(this.mainConfig.storageNames.blacklist + '_' + i.toString());
+        await DataStorage.remove(this.mainConfig.storageNames.blacklist + '_' + i.toString(), StorageType.SYNC);
         await DataStorage.remove(this.mainConfig.storageNames.blacklistChunks);
       }
       await this.recoverLegacyBlacklistData();
@@ -186,20 +186,21 @@ export class DataModel {
       /** Clear data below version 1.7.0 */
       const jsonContent = await DataStorage.getItem(this.mainConfig.storageNames.blacklist);
       this.tempLegacyBlacklistData = jsonContent as string;
-      await DataStorage.remove(this.mainConfig.storageNames.blacklist, 'all');
+      await DataStorage.remove(this.mainConfig.storageNames.blacklist, StorageType.ALL);
     } else if (this.dataVersion === DataVersion.V_180_ABOVE) {
-      const numberOfChunkData: StorageType | undefined = await DataStorage.getItem(this.mainConfig.storageNames.blacklistChunks);
+      const numberOfChunkData: StorageDataType | undefined = await DataStorage.getItem(this.mainConfig.storageNames.blacklistChunks);
       if (numberOfChunkData !== undefined) {
         const numberOfChunk: number = numberOfChunkData as number;
         for (let i = 0; i < numberOfChunk; i++) {
-          await DataStorage.remove(this.mainConfig.storageNames.blacklist + '_' + i.toString(), 'all');
+          await DataStorage.remove(this.mainConfig.storageNames.blacklist + '_' + i.toString(), StorageType.SYNC);
         }
+        await DataStorage.remove(this.mainConfig.storageNames.blacklistChunks, StorageType.SYNC);
       }
     }
   }
 
-  protected async getBlacklistDataFromStorage (): Promise<StorageType | undefined> {
-    const numberOfChunkData: StorageType | undefined = await DataStorage.getItem(this.mainConfig.storageNames.blacklistChunks);
+  protected async getBlacklistDataFromStorage (): Promise<StorageDataType | undefined> {
+    const numberOfChunkData: StorageDataType | undefined = await DataStorage.getItem(this.mainConfig.storageNames.blacklistChunks);
     if (!numberOfChunkData) {
       return await DataStorage.getItem(this.mainConfig.storageNames.blacklist);
     }
@@ -226,7 +227,7 @@ export class DataModel {
     const base64DataChunks: string[] = this.chunkStringToArray(base64Data, chunkSize);
     for (let i = 0; i < base64DataChunks.length; i++) {
       const blob = new Blob([base64DataChunks[i]], { type: 'text/plain' });
-      CommonUtil.showLog('Blob [', i, '] size : ' + blob.size);
+      CommonUtil.showLog('Blob [' + i + '] size : ' + blob.size);
       if (blob.size > DataStorage.MAX_STORAGE_BYTE_PER_KEY) {
         CommonUtil.showLog('Data size too big. Failed to update blacklist.');
         return [];
@@ -251,10 +252,8 @@ export class DataModel {
     return this.chunkStringToArray(base64Data, chunkSize, end, chunks);
   }
 
-  public getBlacklistData (): Promise<string> {
-    return new Promise<string>(resolve => {
-      resolve(JSON.stringify(Object.fromEntries(this.blacklistMap.entries())));
-    });
+  public getBlacklistData (): string {
+    return JSON.stringify(Object.fromEntries(this.blacklistMap.entries()));
   }
 
   public async updateBlacklistDataFromPopup (content: string): Promise<void> {
@@ -263,11 +262,7 @@ export class DataModel {
   }
 
   public updateShowBlacklistGame (show: boolean): Promise<void> {
-    return new Promise<void>(resolve => {
-      DataStorage.setItem(this.mainConfig.storageNames.showblacklistGames, show).then(() => {
-        resolve();
-      });
-    });
+    return DataStorage.setItem(this.mainConfig.storageNames.showblacklistGames, show);
   }
 
   public updateDebugMode (debug: boolean): Promise<void> {
@@ -279,19 +274,15 @@ export class DataModel {
     });
   }
 
-  public clearData (type: StorageDataType = 'all'): Promise<void> {
-    return new Promise<void>(resolve => {
-      DataStorage.clear(type).then(() => {
-        resolve();
-      });
-    });
+  public clearData (type: StorageType): Promise<void> {
+    return DataStorage.clear(type);
   }
 
   public async showAllBlaclistData (): Promise<void> {
-    await DataStorage.getItem(this.mainConfig.storageNames.blacklist, 'local').then((storageData) => {
+    await DataStorage.getItem(this.mainConfig.storageNames.blacklist, StorageType.LOCAL).then((storageData) => {
       CommonUtil.showLog('Local blacklist data : ' + storageData);
     });
-    await DataStorage.getItem(this.mainConfig.storageNames.blacklist, 'sync').then((storageData) => {
+    await DataStorage.getItem(this.mainConfig.storageNames.blacklist, StorageType.SYNC).then((storageData) => {
       CommonUtil.showLog('Sync blacklist data : ' + storageData);
     });
   }

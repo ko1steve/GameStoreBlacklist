@@ -13,6 +13,7 @@ module.exports = {
   mode: 'none',
   entry: {
     'src/component/popup/popup': './src/component/popup/popup.ts',
+    'src/component/background/background': './src/component/background/background.ts',
     'src/component/web/gamivo/product/content': './src/component/web/gamivo/product/content.ts',
     'src/component/web/gamivo/search/content': './src/component/web/gamivo/search/content.ts',
     'src/component/web/ggdeals/product/content': './src/component/web/ggdeals/product/content.ts',

@@ -1,8 +1,8 @@
-import { MiniSignal } from 'mini-signals';
-import { MainConfig } from 'src/mainConfig';
 import { Container, Singleton } from 'typescript-ioc';
+import { MiniSignal } from 'mini-signals';
+import { MainConfig } from './../../../mainConfig';
 import { PopupMessageDispatcher } from '../util/popupMessageDispatcher';
-import { MessageType } from 'src/data/messageData';
+import { MessageType } from './../../../data/messageData';
 import { IPopupInitData } from '../data/popupCommonData';
 
 @Singleton
@@ -54,6 +54,18 @@ export class PopupDataModel {
   public fixDataCaseSensitive (): void {
     PopupMessageDispatcher.sendTabMessage({
       name: MessageType.FIX_DATA_CASE_SENSITIVE
+    });
+  }
+
+  public clearLocalStorageData (): void {
+    PopupMessageDispatcher.sendTabMessage({
+      name: MessageType.CLEAR_LOCAL_STORAGE_DATA
+    });
+  }
+
+  public clearSyncStorageData (): void {
+    PopupMessageDispatcher.sendTabMessage({
+      name: MessageType.CLEAR_SYNC_STORAGE_DATA
     });
   }
 }

@@ -1,14 +1,15 @@
 import { Container, Inject } from 'typescript-ioc';
 import { MainConfig } from '../mainConfig';
 import { ComponentConfig } from './componentConfig';
-import { IGameInfoOption } from 'src/data/commonData';
-import { CommonUtil } from 'src/util/commonUtil';
-import { DataModel } from 'src/model/dataModel';
-import { MessageDispatcher } from 'src/util/messageDispatcher';
-import { IShowBlacklistGammeMessage, IShowLogMessage, IUpdateBlacklistDataFromPopupMessage, MessageType } from 'src/data/messageData';
-import { IReqeustBlacklistDataResponse, IReqeustPopupInitDataResponse } from 'src/component/popup/data/popupMessageData';
-import { GlobalEventDispatcher, GlobalEventType } from 'src/util/globalEventDispatcher';
-import { StringFormatter } from 'src/util/stringFormatter';
+import { IGameInfoOption } from './../data/commonData';
+import { CommonUtil } from './../util/commonUtil';
+import { DataModel } from './../model/dataModel';
+import { MessageDispatcher } from './../util/messageDispatcher';
+import { IShowBlacklistGammeMessage, IUpdateBlacklistDataFromPopupMessage, MessageType } from './../data/messageData';
+import { IReqeustBlacklistDataResponse, IReqeustPopupInitDataResponse } from './../component/popup/data/popupMessageData';
+import { GlobalEventDispatcher, GlobalEventType } from './../util/globalEventDispatcher';
+import { StringFormatter } from './../util/stringFormatter';
+import { StorageType } from './../util/dataStorage';
 
 export class ComponentController {
   @Inject
@@ -34,54 +35,58 @@ export class ComponentController {
   }
 
   protected addMessageListener (): void {
-    MessageDispatcher.addListener(MessageType.SHOW_LOG, (message, sender, sendCallback) => {
-      message = message as IShowLogMessage;
-      if (message.data.optionalParams && message.data.optionalParams.length > 0) {
-        CommonUtil.showPopupLog(message.data.param, message.data.optionalParams);
-      } else {
-        CommonUtil.showPopupLog(message.data.param);
-      }
-      sendCallback();
-    });
-    MessageDispatcher.addListener(MessageType.REQUEST_POPUP_INIT_DATA, (message, sender, sendCallback) => {
-      sendCallback({
+    MessageDispatcher.addListener(MessageType.REQUEST_POPUP_INIT_DATA, (message, sender, sendResponse) => {
+      sendResponse({
         numberOfGame: this.dataModel.numberOfGame,
         showBlacklistGame: this.dataModel.showBlacklistGame,
         debug: this.dataModel.debug
       } as IReqeustPopupInitDataResponse);
     });
-    MessageDispatcher.addListener(MessageType.SHOW_BLACKLIST_GAME, (message, sender, sendCallback) => {
+    MessageDispatcher.addListener(MessageType.SHOW_BLACKLIST_GAME, (message, sender, sendResponse) => {
       message = message as IShowBlacklistGammeMessage;
       this.dataModel.updateShowBlacklistGame(message.data.show).then(() => {
         location.reload();
-        sendCallback();
+        sendResponse();
       });
       return true;
     });
-    MessageDispatcher.addListener(MessageType.REQUEST_BLACKLIST_DATA, (message, sender, sendCallback) => {
-      this.dataModel.getBlacklistData().then((jsonContent) => {
-        sendCallback({ jsonContent } as IReqeustBlacklistDataResponse);
-      });
+    MessageDispatcher.addListener(MessageType.REQUEST_BLACKLIST_DATA, (message, sender, sendResponse) => {
+      const jsonContent = this.dataModel.getBlacklistData();
+      sendResponse({ jsonContent } as IReqeustBlacklistDataResponse);
       return true;
     });
-    MessageDispatcher.addListener(MessageType.UPDATE_BLACKLIST_DATA_FROM_POPUP, (message, sender, sendCallback) => {
+    MessageDispatcher.addListener(MessageType.UPDATE_BLACKLIST_DATA_FROM_POPUP, (message, sender, sendResponse) => {
       message = message as IUpdateBlacklistDataFromPopupMessage;
       this.dataModel.updateBlacklistDataFromPopup(message.data.content).then(() => {
         location.reload();
-        sendCallback();
+        sendResponse();
       });
       return true;
     });
-    MessageDispatcher.addListener(MessageType.FIX_DATA_CASE_SENSITIVE, (message, sender, sendCallback) => {
+    MessageDispatcher.addListener(MessageType.FIX_DATA_CASE_SENSITIVE, (message, sender, sendResponse) => {
       this.dataModel.fixDataCaseSensitive().then(() => {
-        sendCallback();
+        CommonUtil.showLog('The issue of Case Sensitive is clear.');
+        sendResponse();
+      });
+      return true;
+    });
+    MessageDispatcher.addListener(MessageType.CLEAR_LOCAL_STORAGE_DATA, (message, sender, sendResponse) => {
+      this.dataModel.clearData(StorageType.LOCAL).then(() => {
+        CommonUtil.showLog('Local Data is clear.');
+        sendResponse();
+      });
+      return true;
+    });
+    MessageDispatcher.addListener(MessageType.CLEAR_SYNC_STORAGE_DATA, (message, sender, sendResponse) => {
+      this.dataModel.clearData(StorageType.SYNC).then(() => {
+        CommonUtil.showLog('Sync Data is clear.');
+        sendResponse();
       });
       return true;
     });
   }
 
   protected addGlobalEventListener (): void {
-    GlobalEventDispatcher.addListener(GlobalEventType.CLEAR_SYNC_DATA, this.clearSyncData.bind(this));
     GlobalEventDispatcher.addListener(GlobalEventType.DEBUG_MODE_ON, this.turnOnDebugMode.bind(this));
     GlobalEventDispatcher.addListener(GlobalEventType.DEBUG_MODE_OFF, this.turnOffDebugMode.bind(this));
     GlobalEventDispatcher.addListener(GlobalEventType.SHOW_ALL_BLACKIST_DATA, this.showAllStorageData.bind(this));
@@ -96,13 +101,6 @@ export class ComponentController {
   protected turnOffDebugMode (): void {
     this.dataModel.updateDebugMode(false).then(() => {
       CommonUtil.showLog('Debug Mode turns off.');
-    });
-  }
-
-  protected clearSyncData (): void {
-    this.dataModel.clearData('sync').then(() => {
-      CommonUtil.showLog('Sync data is clear.');
-      location.reload();
     });
   }
 

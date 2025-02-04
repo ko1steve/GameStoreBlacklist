@@ -44,6 +44,8 @@ export class PopupController {
       this.createDownloadButton(container);
       this.createUploadButton(container);
       this.createFixDataButton(container);
+      this.createClearLocalStorageButton(container);
+      this.createClearSyncStorageButton(container);
     }
   }
 
@@ -128,19 +130,35 @@ export class PopupController {
 
   protected createFixDataButton (parent: HTMLElement): void {
     const button = document.createElement('button');
-    button.id = this.componentConfig.fixDataButton.id!;
-    button.className = this.componentConfig.fixDataButton.className!;
-    button.textContent = this.componentConfig.fixDataButton.textContent!;
+    button.id = this.componentConfig.fixDataCaseSensitiveButton.id!;
+    button.className = this.componentConfig.fixDataCaseSensitiveButton.className!;
+    button.textContent = this.componentConfig.fixDataCaseSensitiveButton.textContent!;
     button.onclick = (): void => {
       this.popupDataModel.fixDataCaseSensitive();
     };
     parent.appendChild(button);
   }
 
-  protected matchWildcardPattern (pattern: string, str: string): boolean {
-    const source = '^' + pattern.replaceAll('.', '\\.').replaceAll('?', '\\?').replaceAll('*', '.*') + '$';
-    const regExp = new RegExp(source);
-    return regExp.test(str);
+  protected createClearLocalStorageButton (parent: HTMLElement): void {
+    const button = document.createElement('button');
+    button.id = this.componentConfig.clearLocalStorageButton.id!;
+    button.className = this.componentConfig.clearLocalStorageButton.className!;
+    button.textContent = this.componentConfig.clearLocalStorageButton.textContent!;
+    button.onclick = (): void => {
+      this.popupDataModel.clearLocalStorageData();
+    };
+    parent.appendChild(button);
+  }
+
+  protected createClearSyncStorageButton (parent: HTMLElement): void {
+    const button = document.createElement('button');
+    button.id = this.componentConfig.clearSyncStorageButton.id!;
+    button.className = this.componentConfig.clearSyncStorageButton.className!;
+    button.textContent = this.componentConfig.clearSyncStorageButton.textContent!;
+    button.onclick = (): void => {
+      this.popupDataModel.clearSyncStorageData();
+    };
+    parent.appendChild(button);
   }
 }
 

@@ -4,10 +4,13 @@ export enum MessageType {
   SHOW_BLACKLIST_GAME = 'SHOW_BLACKLIST_GAME',
   UPDATE_BLACKLIST_DATA_FROM_POPUP = 'UPDATE_BLACKLIST_DATA_FROM_POPUP',
   REQUEST_BLACKLIST_DATA = 'REQUEST_BLACKLIST_DATA',
-  SHOW_LOG = 'SHOW_LOG'
+  CLEAR_LOCAL_STORAGE_DATA = 'CLEAR_LOCAL_STORAGE_DATA',
+  CLEAR_SYNC_STORAGE_DATA = 'CLEAR_SYNC_STORAGE_DATA',
+  SHOW_LOG = 'SHOW_LOG',
+  SHOW_OBJECT = 'SHOW_OBJECT'
 }
 
-export type Message = IRequestPopupInitDataMessage | IShowBlacklistGammeMessage | IUpdateBlacklistDataFromPopupMessage | IFixDataCaseSensitiveMessage | IRequestBlacklistDataMessage | IShowLogMessage;
+export type Message = IRequestPopupInitDataMessage | IShowBlacklistGammeMessage | IUpdateBlacklistDataFromPopupMessage | IFixDataCaseSensitiveMessage | IRequestBlacklistDataMessage | IShowLogMessage | IShowObjectMessage | IClearLocalStorageDataMessage | IClearSyncStorageDataMessage;
 
 export interface IRequestPopupInitDataMessage {
   name: MessageType.REQUEST_POPUP_INIT_DATA;
@@ -35,10 +38,25 @@ export interface IRequestBlacklistDataMessage {
   name: MessageType.REQUEST_BLACKLIST_DATA;
 }
 
+export interface IClearLocalStorageDataMessage {
+  name: MessageType.CLEAR_LOCAL_STORAGE_DATA;
+}
+
+export interface IClearSyncStorageDataMessage {
+  name: MessageType.CLEAR_SYNC_STORAGE_DATA;
+}
+
 export interface IShowLogMessage {
   name: MessageType.SHOW_LOG;
   data: {
     param: any,
     optionalParams?: any[]
+  }
+}
+
+export interface IShowObjectMessage {
+  name: MessageType.SHOW_OBJECT;
+  data: {
+    object: any
   }
 }
