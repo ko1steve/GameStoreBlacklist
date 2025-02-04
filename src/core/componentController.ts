@@ -9,6 +9,7 @@ import { IShowBlacklistGammeMessage, IUpdateBlacklistDataFromPopupMessage, Messa
 import { IReqeustBlacklistDataResponse, IReqeustPopupInitDataResponse } from './../component/popup/data/popupMessageData';
 import { GlobalEventDispatcher, GlobalEventType } from './../util/globalEventDispatcher';
 import { StringFormatter } from './../util/stringFormatter';
+import { StorageType } from './../util/dataStorage';
 
 export class ComponentController {
   @Inject
@@ -50,9 +51,8 @@ export class ComponentController {
       return true;
     });
     MessageDispatcher.addListener(MessageType.REQUEST_BLACKLIST_DATA, (message, sender, sendResponse) => {
-      this.dataModel.getBlacklistData().then((jsonContent) => {
-        sendResponse({ jsonContent } as IReqeustBlacklistDataResponse);
-      });
+      const jsonContent = this.dataModel.getBlacklistData();
+      sendResponse({ jsonContent } as IReqeustBlacklistDataResponse);
       return true;
     });
     MessageDispatcher.addListener(MessageType.UPDATE_BLACKLIST_DATA_FROM_POPUP, (message, sender, sendResponse) => {
@@ -65,6 +65,21 @@ export class ComponentController {
     });
     MessageDispatcher.addListener(MessageType.FIX_DATA_CASE_SENSITIVE, (message, sender, sendResponse) => {
       this.dataModel.fixDataCaseSensitive().then(() => {
+        CommonUtil.showLog('The issue of Case Sensitive is clear.');
+        sendResponse();
+      });
+      return true;
+    });
+    MessageDispatcher.addListener(MessageType.CLEAR_LOCAL_STORAGE_DATA, (message, sender, sendResponse) => {
+      this.dataModel.clearData(StorageType.LOCAL).then(() => {
+        CommonUtil.showLog('Local Data is clear.');
+        sendResponse();
+      });
+      return true;
+    });
+    MessageDispatcher.addListener(MessageType.CLEAR_SYNC_STORAGE_DATA, (message, sender, sendResponse) => {
+      this.dataModel.clearData(StorageType.SYNC).then(() => {
+        CommonUtil.showLog('Sync Data is clear.');
         sendResponse();
       });
       return true;
@@ -72,7 +87,6 @@ export class ComponentController {
   }
 
   protected addGlobalEventListener (): void {
-    GlobalEventDispatcher.addListener(GlobalEventType.CLEAR_SYNC_DATA, this.clearSyncData.bind(this));
     GlobalEventDispatcher.addListener(GlobalEventType.DEBUG_MODE_ON, this.turnOnDebugMode.bind(this));
     GlobalEventDispatcher.addListener(GlobalEventType.DEBUG_MODE_OFF, this.turnOffDebugMode.bind(this));
     GlobalEventDispatcher.addListener(GlobalEventType.SHOW_ALL_BLACKIST_DATA, this.showAllStorageData.bind(this));
@@ -87,13 +101,6 @@ export class ComponentController {
   protected turnOffDebugMode (): void {
     this.dataModel.updateDebugMode(false).then(() => {
       CommonUtil.showLog('Debug Mode turns off.');
-    });
-  }
-
-  protected clearSyncData (): void {
-    this.dataModel.clearData('sync').then(() => {
-      CommonUtil.showLog('Sync data is clear.');
-      location.reload();
     });
   }
 

@@ -6,7 +6,9 @@ export interface IPopupConfig {
   showBlacklistGameContainer: IShowBlacklistGameCheckbox;
   downloadButton: IButtonElement;
   uploadButton: IUploadButton;
-  fixDataButton: IButtonElement;
+  fixDataCaseSensitiveButton: IButtonElement;
+  clearLocalStorageButton: IButtonElement;
+  clearSyncStorageButton: IButtonElement;
 }
 
 export interface IUploadButton extends IHTMLElement {
@@ -46,9 +48,21 @@ export class PopupConfig implements IPopupConfig {
     }
   };
 
-  public fixDataButton: IButtonElement = {
-    id: 'fixDataButton',
+  public fixDataCaseSensitiveButton: IButtonElement = {
+    id: 'fixDataCaseSensitiveButton',
+    className: 'settings settings-button',
+    textContent: 'Fix case sensitive of blacklist data'
+  };
+
+  public clearLocalStorageButton: IButtonElement = {
+    id: 'clearLocalStorageButton',
+    className: 'settings settings-button',
+    textContent: 'Clear Local Storage Data'
+  };
+
+  public clearSyncStorageButton: IButtonElement = {
+    id: 'clearSyncStorageButton',
     className: 'settings',
-    textContent: 'Fix case sensitive of blacklist data '
+    textContent: 'Clear Sync Storage Data'
   };
 }
