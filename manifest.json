@@ -17,6 +17,17 @@
   "content_scripts": [
     {
       "css": [
+        "src/component/web/fanatical/search/style.css"
+      ],
+      "js": [
+        "src/component/web/fanatical/search/content.js"
+      ],
+      "matches": [
+        "https://www.fanatical.com/*/search*"
+      ]
+    },
+    {
+      "css": [
         "src/component/web/yuplay/product/style.css"
       ],
       "js": [
@@ -120,7 +131,8 @@
         "https://www.yuplay.com/*",
         "https://www.gamivo.com/*",
         "https://gg.deals/*",
-        "https://www.humblebundle.com/*"
+        "https://www.humblebundle.com/*",
+        "https://www.fanatical.com/*"
       ]
     }
   ],
@@ -128,6 +140,7 @@
     "https://www.yuplay.com/*",
     "https://www.gamivo.com/*",
     "https://gg.deals/*",
-    "https://www.humblebundle.com/*"
+    "https://www.humblebundle.com/*",
+    "https://www.fanatical.com/*"
   ]
 }
