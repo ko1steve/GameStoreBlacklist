@@ -1,7 +1,7 @@
-import { Container } from 'typescript-ioc';
-import { ComponentController } from '../../../../core/componentController';
-import { HumbleBundleSearchConfig } from './config';
 import './style.css';
+import { Container } from 'typescript-ioc';
+import { ComponentController } from './../../../../core/componentController';
+import { HumbleBundleSearchConfig } from './config';
 
 class HumbleBundleSearchController extends ComponentController {
   protected componentConfig!: HumbleBundleSearchConfig;
@@ -24,7 +24,7 @@ class HumbleBundleSearchController extends ComponentController {
         ahrefParent.insertBefore(container, ahrefParent.firstChild);
         ahrefParent.dataset.hasInit = 'true';
       }
-      const titleElementParent = infoElement?.children[0]?.children[0]?.children[0]?.children[0]?.children[1];
+      const titleElementParent = infoElement.children[0]?.children[0]?.children[0]?.children[0]?.children[1];
       const titleElement = titleElementParent?.children[0] as HTMLElement;
       if (titleElement) {
         if (!titleElement.dataset.hasInit) {

@@ -1,7 +1,7 @@
+import './style.css';
 import { Container } from 'typescript-ioc';
 import { GgdealSearchConfig } from './config';
-import { ComponentController } from '../../../../core/componentController';
-import './style.css';
+import { ComponentController } from './../../../../core/componentController';
 
 class GgdealsSearchController extends ComponentController {
   protected componentConfig!: GgdealSearchConfig;

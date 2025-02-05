@@ -5,8 +5,8 @@ import { IPopupConfig, PopupConfig } from './config';
 import { PopupDataModel } from './model/popupDataModel';
 import { IPopupInitData } from './data/popupCommonData';
 import { PopupMessageDispatcher } from './util/popupMessageDispatcher';
-import { MessageType } from 'src/data/messageData';
-import { IReqeustBlacklistDataResponse } from 'src/component/popup/data/popupMessageData';
+import { MessageType } from './../../data/messageData';
+import { IReqeustBlacklistDataResponse } from './../../component/popup/data/popupMessageData';
 
 export class PopupController {
   @Inject

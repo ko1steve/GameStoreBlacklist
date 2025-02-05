@@ -1,4 +1,4 @@
-import { ComponentConfig, ITextHandleConfig } from '../../../../core/componentConfig';
+import { ComponentConfig, ITextHandleConfig } from './../../../../core/componentConfig';
 
 export class GgdealSearchConfig extends ComponentConfig {
   public texthandle: ITextHandleConfig = {

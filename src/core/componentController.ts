@@ -1,5 +1,5 @@
 import { Container, Inject } from 'typescript-ioc';
-import { MainConfig } from '../mainConfig';
+import { MainConfig } from './../mainConfig';
 import { ComponentConfig } from './componentConfig';
 import { IGameInfoOption } from './../data/commonData';
 import { CommonUtil } from './../util/commonUtil';
@@ -153,7 +153,7 @@ export class ComponentController {
   }
 
   protected isGameListFirstChildExist (children: HTMLElement[]): boolean {
-    return children != null && children[0] != null;
+    return children[0] !== undefined;
   }
 
   protected isGameListFirstChildInit (children: HTMLElement[]): boolean {

@@ -1,8 +1,8 @@
-import { Container } from 'typescript-ioc';
-import { ComponentController } from '../../../../core/componentController';
-import { YuplayProductConfig } from './config';
 import './style.css';
-import { StringFormatter } from 'src/util/stringFormatter';
+import { Container } from 'typescript-ioc';
+import { ComponentController } from './../../../../core/componentController';
+import { YuplayProductConfig } from './config';
+import { StringFormatter } from './../../../../util/stringFormatter';
 
 class YuplayProductController extends ComponentController {
   protected componentConfig!: YuplayProductConfig;

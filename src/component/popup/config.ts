@@ -1,5 +1,5 @@
-import { IShowBlacklistGameCheckbox } from 'src/core/componentConfig';
-import { IButtonElement, IHTMLElement, ILabelEleemnt } from 'src/data/commonData';
+import { IShowBlacklistGameCheckbox } from './../../core/componentConfig';
+import { IButtonElement, IHTMLElement, ILabelEleemnt } from './../../data/commonData';
 
 export interface IPopupConfig {
   componentId: string;

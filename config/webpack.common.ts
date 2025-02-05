@@ -2,10 +2,10 @@ import * as Path from 'path';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import ESLintPlugin from 'eslint-webpack-plugin';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
-import { ProvidePlugin } from 'webpack';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import HTMLWebpackPlugin from 'html-webpack-plugin';
-import { AssetList } from '../src/assetList';
+import { ProvidePlugin } from 'webpack';
+import { AssetList } from './../src/assetList';
 
 const appDir = Path.dirname(__dirname);
 
