@@ -1,7 +1,7 @@
-import { Container } from 'typescript-ioc';
-import { ComponentController } from '../../../../core/componentController';
-import { GgdealsProductConfig } from './config';
 import './style.css';
+import { Container } from 'typescript-ioc';
+import { ComponentController } from './../../../../core/componentController';
+import { GgdealsProductConfig } from './config';
 
 class GgdealsProductController extends ComponentController {
   protected componentConfig!: GgdealsProductConfig;

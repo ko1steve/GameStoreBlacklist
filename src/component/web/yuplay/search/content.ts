@@ -1,7 +1,7 @@
-import { Container } from 'typescript-ioc';
-import { ComponentController } from '../../../../core/componentController';
-import { YuplaySearchConfig } from './config';
 import './style.css';
+import { Container } from 'typescript-ioc';
+import { ComponentController } from './../../../../core/componentController';
+import { YuplaySearchConfig } from './config';
 
 class YuplaySearchController extends ComponentController {
   protected componentConfig!: YuplaySearchConfig;
@@ -20,8 +20,8 @@ class YuplaySearchController extends ComponentController {
     });
   }
 
-  protected getRawGameTitle (infoContainer?: HTMLElement): string | undefined {
-    return (infoContainer?.children[0]?.getElementsByClassName('catalog-image-ratio-container')[0] as HTMLElement)?.title;
+  protected getRawGameTitle (infoContainer: HTMLElement): string | undefined {
+    return (infoContainer.children[0]?.getElementsByClassName('catalog-image-ratio-container')[0] as HTMLElement)?.title;
   }
 
   protected getCheckboxParent (infoContainer?: HTMLElement): HTMLElement | null {

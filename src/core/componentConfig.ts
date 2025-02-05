@@ -1,4 +1,4 @@
-import { ICheckboxImageElement, IHTMLElement } from '../data/commonData';
+import { ICheckboxImageElement, IHTMLElement } from './../data/commonData';
 
 export interface IComponentConfig {
   componentId: string

@@ -1,5 +1,5 @@
 import { Container } from 'typescript-ioc';
-import { ComponentController } from '../../../../core/componentController';
+import { ComponentController } from './../../../../core/componentController';
 import { GamivoSearchConfig } from './config';
 import './style.css';
 
@@ -7,7 +7,7 @@ class GamivoSearchController extends ComponentController {
   protected componentConfig!: GamivoSearchConfig;
 
   protected isGameListFirstChildExist (children: HTMLElement[]): boolean {
-    return children != null && children[0] != null && children[0].children[0].children[0] != null;
+    return children[0]?.children[0]?.children[0] !== undefined;
   }
 
   protected getGameListContainer (): HTMLElement | null {

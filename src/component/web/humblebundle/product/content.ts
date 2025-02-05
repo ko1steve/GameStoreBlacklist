@@ -1,7 +1,7 @@
-import { Container } from 'typescript-ioc';
-import { ComponentController } from '../../../../core/componentController';
-import { HumbleBundleProductConfig } from './config';
 import './style.css';
+import { Container } from 'typescript-ioc';
+import { ComponentController } from './../../../../core/componentController';
+import { HumbleBundleProductConfig } from './config';
 
 class HumbleBundleProductController extends ComponentController {
   protected componentConfig!: HumbleBundleProductConfig;
