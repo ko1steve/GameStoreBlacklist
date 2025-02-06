@@ -1,0 +1,34 @@
+.checkboxImg {
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  pointer-events: visible;
+}
+
+.checkboxContainer {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  z-index: 2;
+}
+
+#showBlacklistGameCheckboxImg {
+  cursor: pointer;
+}
+
+#showBlaclistGameCheckboxText {
+  color: aliceblue;
+  font-weight: bolder;
+  font-size: 25px;
+  margin-left: 10px;
+}
+
+.flexbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flexboxItem {
+  margin: 10px 10px 10px 10px;
+}
