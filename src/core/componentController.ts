@@ -20,7 +20,24 @@ export class ComponentController {
   protected componentConfig: ComponentConfig;
   protected countGameListElementInit = 0;
 
+  protected _running = false;
+  public get running (): boolean {
+    return this._running;
+  }
+
+  public set running (running: boolean) {
+    if (this._running === running) {
+      return;
+    }
+    this._running = running;
+    if (running) {
+      this.initailzie();
+    }
+    CommonUtil.showLog('extension controller is ' + (running ? 'running' : 'stopped'));
+  }
+
   constructor (componentConfig: ComponentConfig) {
+    this._running = true;
     this.componentId = componentConfig.componentId;
     this.mainConfig = Container.get(MainConfig);
     this.dataModel = Container.get(DataModel);
@@ -36,6 +53,9 @@ export class ComponentController {
 
   protected addMessageListener (): void {
     MessageDispatcher.addListener(MessageType.REQUEST_POPUP_INIT_DATA, (message, sender, sendResponse) => {
+      if (!this._running) {
+        sendResponse(undefined);
+      }
       sendResponse({
         numberOfGame: this.dataModel.numberOfGame,
         showBlacklistGame: this.dataModel.showBlacklistGame,
@@ -53,7 +73,6 @@ export class ComponentController {
     MessageDispatcher.addListener(MessageType.REQUEST_BLACKLIST_DATA, (message, sender, sendResponse) => {
       const jsonContent = this.dataModel.getBlacklistData();
       sendResponse({ jsonContent } as IReqeustBlacklistDataResponse);
-      return true;
     });
     MessageDispatcher.addListener(MessageType.UPDATE_BLACKLIST_DATA_FROM_POPUP, (message, sender, sendResponse) => {
       message = message as IUpdateBlacklistDataFromPopupMessage;
@@ -116,7 +135,11 @@ export class ComponentController {
     } else {
       this.handleListPageContent();
     }
-    setTimeout(() => this.initailzie(), 500);
+    setTimeout(() => {
+      if (this._running) {
+        this.initailzie();
+      }
+    }, 500);
   }
 
   protected handlePageContent (): void {
