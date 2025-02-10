@@ -1,6 +1,6 @@
-import { ComponentConfig, ITextHandleConfig } from './../../../../core/componentConfig';
+import { ComponentConfig, IComponentConfig, ITextHandleConfig } from './../../../../core/componentConfig';
 
-export class GamivoSearchConfig extends ComponentConfig {
+export class GamivoSearchConfig extends ComponentConfig implements IGamivoSearchConfig {
   public texthandle: ITextHandleConfig = {
     startWords: [],
     cutToEndWords: [
@@ -17,4 +17,13 @@ export class GamivoSearchConfig extends ComponentConfig {
   };
 
   public isGameListPage: boolean = true;
+
+  public matchUrls: string[] = [
+    'https://www.gamivo.com/store/games/*',
+    'https://www.gamivo.com/search*'
+  ];
+}
+
+export interface IGamivoSearchConfig extends IComponentConfig {
+  matchUrls: string[];
 }

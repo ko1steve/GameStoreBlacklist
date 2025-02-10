@@ -13,7 +13,11 @@ class YuplayProductController extends ComponentController {
     this.handleSpecifiedListItems('most-wanted-catalog');
     this.handleSpecifiedListItems('midweek-madness-catalog');
     this.handleSpecifiedListItems('just-arrived-catalog');
-    setTimeout(() => this.initailzie(), 500);
+    setTimeout(() => {
+      if (this._running) {
+        this.initailzie();
+      }
+    }, 500);
   }
 
   protected getRawGameTitle (): string | undefined {

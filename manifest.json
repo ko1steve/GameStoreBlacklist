@@ -91,8 +91,7 @@
         "src/component/web/gamivo/search/content.js"
       ],
       "matches": [
-        "https://www.gamivo.com/store/games/steam*",
-        "https://www.gamivo.com/search*"
+        "https://www.gamivo.com/*"
       ]
     },
     {
