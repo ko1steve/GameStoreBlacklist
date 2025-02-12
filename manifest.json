@@ -17,6 +17,17 @@
   "content_scripts": [
     {
       "css": [
+        "src/component/web/gamesplanet/search/style.css"
+      ],
+      "js": [
+        "src/component/web/gamesplanet/search/content.js"
+      ],
+      "matches": [
+        "https://*.gamesplanet.com/search?*"
+      ]
+    },
+    {
+      "css": [
         "src/component/web/fanatical/main/style.css"
       ],
       "js": [
@@ -154,7 +165,8 @@
         "https://www.gamivo.com/*",
         "https://gg.deals/*",
         "https://www.humblebundle.com/*",
-        "https://www.fanatical.com/*"
+        "https://www.fanatical.com/*",
+        "https://*.gamesplanet.com/*"
       ]
     }
   ],
@@ -163,6 +175,7 @@
     "https://www.gamivo.com/*",
     "https://gg.deals/*",
     "https://www.humblebundle.com/*",
-    "https://www.fanatical.com/*"
+    "https://www.fanatical.com/*",
+    "https://*.gamesplanet.com/*"
   ]
 }
