@@ -9,6 +9,4 @@ export class GgdealSearchConfig extends ComponentConfig {
     ],
     excludeTitleWords: []
   };
-
-  public isGameListPage: boolean = true;
 }

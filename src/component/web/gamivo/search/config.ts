@@ -16,8 +16,6 @@ export class GamivoSearchConfig extends ComponentConfig implements IGamivoSearch
     ]
   };
 
-  public isGameListPage: boolean = true;
-
   public matchUrls: string[] = [
     'https://www.gamivo.com/store/games/*',
     'https://www.gamivo.com/search*'
