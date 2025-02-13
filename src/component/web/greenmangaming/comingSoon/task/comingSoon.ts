@@ -1,27 +1,30 @@
 import { ListTaskHandler } from './../../../../../core/task/listTaskHandler';
 
 export class GreenManGamingComingSoonTaskHandler extends ListTaskHandler {
-  protected handleListPageContent (): void {
-    const gameListContainerArr = this.getMultiGameListContainer();
-    if (!gameListContainerArr) {
-      return;
-    }
-    for (const gameListContainer of gameListContainerArr) {
-      if (!gameListContainer || !gameListContainer.dataset || gameListContainer.dataset.hasInit === 'true') {
-        return;
+  public start (): Promise<void> {
+    return new Promise<void>(resolve => {
+      const gameListContainerArr = this.getMultiGameListContainer();
+      if (!gameListContainerArr) {
+        return resolve();
       }
-      const gameListChildren = Array.from(gameListContainer.children) as HTMLElement[];
-      if (!this.isGameListFirstChildExist(gameListChildren) || this.isGameListFirstChildInit(gameListChildren)) {
-        return;
+      for (const gameListContainer of gameListContainerArr) {
+        if (!gameListContainer || !gameListContainer.dataset || gameListContainer.dataset.hasInit === 'true') {
+          return resolve();
+        }
+        const gameListChildren = Array.from(gameListContainer.children) as HTMLElement[];
+        if (!this.isGameListFirstChildExist(gameListChildren) || this.isGameListFirstChildInit(gameListChildren)) {
+          return resolve();
+        }
+        gameListChildren.forEach((gameInfoElement, i) => {
+          this.addCheckBoxToGameListEachChild(gameInfoElement, gameListContainer);
+        });
+        if (this.countGameListElementInit === gameListChildren.length) {
+          gameListContainer.dataset.hasInit = 'true';
+        }
+        this.countGameListElementInit = 0;
       }
-      gameListChildren.forEach((gameInfoElement, i) => {
-        this.addCheckBoxToGameListEachChild(gameInfoElement, gameListContainer);
-      });
-      if (this.countGameListElementInit === gameListChildren.length) {
-        gameListContainer.dataset.hasInit = 'true';
-      }
-      this.countGameListElementInit = 0;
-    }
+      resolve();
+    });
   }
 
   protected isGameListFirstChildExist (children: HTMLElement[]): boolean {

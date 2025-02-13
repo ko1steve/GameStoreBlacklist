@@ -1,6 +1,6 @@
 import { ListTaskHandler } from './../../../../../core/task/listTaskHandler';
 
-export class GreenManGamingPreorderTaskHandler extends ListTaskHandler {
+export class GreenManGamingSliderListTaskHandler extends ListTaskHandler {
   public start (): Promise<void> {
     return new Promise<void>(resolve => {
       const prechaseListContainerArr = this.getMultiGameListContainer();

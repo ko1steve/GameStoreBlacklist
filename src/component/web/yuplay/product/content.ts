@@ -2,77 +2,20 @@ import './style.css';
 import { Container } from 'typescript-ioc';
 import { ComponentController } from './../../../../core/componentController';
 import { YuplayProductConfig } from './config';
-import { StringFormatter } from './../../../../util/stringFormatter';
 import { YuplayProductTaskHandler } from './task/product';
+import { YuplayRecommendedTaskHandler } from './task/recommended';
+import { YuplayMostWantedTaskHandler } from './task/mostWanted';
+import { YuplayMidweekMadnessTaskHandler } from './task/midweekMadness';
+import { YuplayJustArrivedTaskHandler } from './task/justArrived';
 
 class YuplayProductController extends ComponentController {
   protected setupTaskQueue (): void {
     this.taskQueue.push(new YuplayProductTaskHandler(this.componentConfig, this.dataModel));
-    // this.handleSpecifiedListItems('recommended-catalog');
-    // this.handleSpecifiedListItems('most-wanted-catalog');
-    // this.handleSpecifiedListItems('midweek-madness-catalog');
-    // this.handleSpecifiedListItems('just-arrived-catalog');
+    this.taskQueue.push(new YuplayRecommendedTaskHandler(this.componentConfig, this.dataModel));
+    this.taskQueue.push(new YuplayMostWantedTaskHandler(this.componentConfig, this.dataModel));
+    this.taskQueue.push(new YuplayMidweekMadnessTaskHandler(this.componentConfig, this.dataModel));
+    this.taskQueue.push(new YuplayJustArrivedTaskHandler(this.componentConfig, this.dataModel));
   }
-
-  // private handleSpecifiedListItems (contanerId: string): void {
-  //   const gameListContainer = this.getSpecifiedGameListContainer(contanerId) as HTMLDivElement;
-  //   if (!gameListContainer || !gameListContainer.dataset || gameListContainer.dataset.hasInit === 'true') {
-  //     return;
-  //   }
-  //   const catalogItem = gameListContainer.getElementsByClassName('catalog-item');
-  //   if (!catalogItem) {
-  //     return;
-  //   }
-  //   const gameListChildren = Array.from(catalogItem) as HTMLElement[];
-  //   if (!this.isGameListFirstChildExist(gameListChildren) || this.isGameListFirstChildInit(gameListChildren)) {
-  //     return;
-  //   }
-  //   gameListChildren.forEach(gameInfoElement => {
-  //     this.addCheckBoxToSpecifiedListEachChild(gameInfoElement, gameListContainer);
-  //   });
-  // }
-
-  // private getSpecifiedGameListContainer (contanerId: string): HTMLElement | null {
-  //   const catalog = document.getElementsByClassName('catalog') as HTMLCollection;
-  //   if (!catalog) {
-  //     return null;
-  //   }
-  //   const catalogArr = Array.from(catalog) as HTMLElement[];
-  //   for (const item of catalogArr) {
-  //     if (item.dataset && item.dataset.catalog_id === contanerId) {
-  //       return item;
-  //     }
-  //   }
-  //   return null;
-  // }
-
-  // private addCheckBoxToSpecifiedListEachChild (gameInfoElement: HTMLElement, gameListContainer: HTMLElement): void {
-  //   if (gameInfoElement && gameInfoElement.dataset && gameInfoElement.dataset.hasInit === 'true') {
-  //     return;
-  //   }
-  //   const imageContainer = gameInfoElement.children[0] as HTMLElement;
-  //   const titleContainer = imageContainer.getElementsByClassName('catalog-image-ratio-container')[0] as HTMLElement;
-  //   if (!titleContainer) {
-  //     return;
-  //   }
-  //   const rawGameTitle = titleContainer.title;
-  //   if (rawGameTitle === StringFormatter.EMPTY_STRING) {
-  //     return;
-  //   }
-  //   const gameTitle = this.getModifiedGameTitle(rawGameTitle);
-
-  //   const inBlacklist = this.dataModel.getGameStatus(gameTitle);
-  //   this.addCheckbox(imageContainer, gameTitle, inBlacklist, {
-  //     hideGame: {
-  //       infoElement: gameInfoElement,
-  //       parentList: gameListContainer
-  //     }
-  //   });
-  //   if (inBlacklist && !this.dataModel.showBlacklistGame) {
-  //     this.hideGame(gameListContainer, gameInfoElement);
-  //   }
-  //   gameInfoElement.dataset.hasInit = 'true';
-  // }
 }
 
 const componentConfig = Container.get(YuplayProductConfig);
