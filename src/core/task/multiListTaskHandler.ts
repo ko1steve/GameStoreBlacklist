@@ -108,9 +108,8 @@ export class MultiListTaskHandler extends TaskHandler {
     return gameTitle;
   }
 
-  protected getCheckboxParent (infoContainer?: HTMLElement): HTMLElement | null {
-    const checkboxParent = document.getElementById('product-info');
-    return checkboxParent;
+  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | null {
+    return infoContainer;
   }
 
   protected addCheckbox (checkboxParent: HTMLElement, gameTitle: string, inBlacklist: boolean, option?: IGameInfoOption): void {
