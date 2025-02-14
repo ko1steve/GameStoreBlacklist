@@ -17,7 +17,7 @@ module.exports = {
     'src/component/web/greenmangaming/sales/content': './src/component/web/greenmangaming/sales/content.ts',
     'src/component/web/greenmangaming/comingSoon/content': './src/component/web/greenmangaming/comingSoon/content.ts',
     'src/component/web/gamesplanet/search/content': './src/component/web/gamesplanet/search/content.ts',
-    'src/component/web/fanatical/main/content': './src/component/web/fanatical/main/content.ts',
+    'src/component/web/fanatical/general/content': './src/component/web/fanatical/general/content.ts',
     'src/component/web/fanatical/product/content': './src/component/web/fanatical/product/content.ts',
     'src/component/web/fanatical/search/content': './src/component/web/fanatical/search/content.ts',
     'src/component/web/gamivo/product/content': './src/component/web/gamivo/product/content.ts',

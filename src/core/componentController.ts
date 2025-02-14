@@ -1,15 +1,14 @@
 import { Container, Inject } from 'typescript-ioc';
 import { MainConfig } from './../mainConfig';
 import { ComponentConfig } from './componentConfig';
-import { IGameInfoOption } from './../data/commonData';
 import { CommonUtil } from './../util/commonUtil';
 import { DataModel } from './../model/dataModel';
 import { MessageDispatcher } from './../util/messageDispatcher';
 import { IShowBlacklistGammeMessage, IUpdateBlacklistDataFromPopupMessage, MessageType } from './../data/messageData';
 import { IReqeustBlacklistDataResponse, IReqeustPopupInitDataResponse } from './../component/popup/data/popupMessageData';
 import { GlobalEventDispatcher, GlobalEventType } from './../util/globalEventDispatcher';
-import { StringFormatter } from './../util/stringFormatter';
 import { StorageType } from './../util/dataStorage';
+import { TaskHandler } from './task/taskHandler';
 
 export class ComponentController {
   @Inject
@@ -18,7 +17,7 @@ export class ComponentController {
   protected componentId: string;
   protected mainConfig: MainConfig;
   protected componentConfig: ComponentConfig;
-  protected countGameListElementInit = 0;
+  protected taskQueue: TaskHandler[];
 
   protected _running = false;
   public get running (): boolean {
@@ -37,7 +36,9 @@ export class ComponentController {
   }
 
   constructor (componentConfig: ComponentConfig) {
+    CommonUtil.showLog('extension controller is running');
     this._running = true;
+    this.taskQueue = [];
     this.componentId = componentConfig.componentId;
     this.mainConfig = Container.get(MainConfig);
     this.dataModel = Container.get(DataModel);
@@ -130,189 +131,26 @@ export class ComponentController {
   }
 
   protected initailzie (): void {
-    if (!this.componentConfig.isGameListPage) {
-      this.handlePageContent();
-    } else {
-      this.handleListPageContent();
-    }
-    setTimeout(() => {
-      if (this._running) {
-        this.initailzie();
-      }
-    }, 500);
-  }
-
-  protected handlePageContent (): void {
-    const rawGameTitle = this.getRawGameTitle();
-    if (!rawGameTitle) {
-      return;
-    }
-    const gameTitle = this.getModifiedGameTitle(rawGameTitle);
-
-    const checkboxParent = this.getCheckboxParent();
-    if (!checkboxParent) {
-      return;
-    }
-    const inBlacklist = this.dataModel.getGameStatus(gameTitle);
-    this.addCheckbox(checkboxParent, gameTitle, inBlacklist);
-  }
-
-  protected handleListPageContent (): void {
-    const gameListContainer = this.getGameListContainer() as HTMLDivElement;
-    if (!gameListContainer || !gameListContainer.dataset || gameListContainer.dataset.hasInit === 'true') {
-      return;
-    }
-    const gameListChildren = Array.from(gameListContainer.children) as HTMLElement[];
-    if (!this.isGameListFirstChildExist(gameListChildren) || this.isGameListFirstChildInit(gameListChildren)) {
-      return;
-    }
-    gameListChildren.forEach(gameInfoElement => {
-      this.addCheckBoxToGameListEachChild(gameInfoElement, gameListContainer);
-    });
-    if (this.countGameListElementInit === gameListChildren.length) {
-      gameListContainer.dataset.hasInit = 'true';
-    }
-    this.countGameListElementInit = 0;
-  }
-
-  protected isGameListFirstChildExist (children: HTMLElement[]): boolean {
-    return children[0] !== undefined;
-  }
-
-  protected isGameListFirstChildInit (children: HTMLElement[]): boolean {
-    return children[0].dataset && children[0].dataset.hasInit === 'true';
-  }
-
-  protected addCheckBoxToGameListEachChild (gameInfoElement: HTMLElement, gameListContainer: HTMLElement): void {
-    if (gameInfoElement.dataset && gameInfoElement.dataset.hasInit === 'true') {
-      this.countGameListElementInit++;
-      return;
-    }
-    const modifiedInfoElement = this.modifyGameInfoElement(gameInfoElement, gameListContainer);
-    if (!modifiedInfoElement) {
-      return;
-    }
-    gameInfoElement = modifiedInfoElement;
-    const rawGameTitle = this.getRawGameTitle(gameInfoElement);
-    if (!rawGameTitle) {
-      return;
-    }
-    const gameTitle = this.getModifiedGameTitle(rawGameTitle);
-
-    const checkboxParent = this.getCheckboxParent(gameInfoElement);
-    if (!checkboxParent) {
-      return;
-    }
-    const inBlacklist = this.dataModel.getGameStatus(gameTitle);
-    this.addCheckbox(checkboxParent, gameTitle, inBlacklist, {
-      hideGame: {
-        infoElement: gameInfoElement,
-        parentList: gameListContainer
-      }
-    });
-
-    if (this.componentConfig.isGameListPage) {
-      if (inBlacklist && !this.dataModel.showBlacklistGame) {
-        this.hideGame(gameListContainer, gameInfoElement);
-      }
-    }
-    gameInfoElement.dataset.hasInit = 'true';
-    this.countGameListElementInit++;
-  }
-
-  protected modifyGameInfoElement (infoElement: HTMLElement, parent: HTMLElement): HTMLElement | null {
-    // ex. add class, remove children
-    return infoElement;
-  }
-
-  protected getGameListContainer (): HTMLElement | null {
-    const container = document.getElementById('gameList');
-    return container;
-  }
-
-  protected getRawGameTitle (infoContainer?: HTMLElement): string | undefined {
-    return document.getElementById('title')?.innerText;
-  }
-
-  protected getModifiedGameTitle (gameTitle: string): string {
-    const config = this.componentConfig.texthandle;
-    config.startWords.forEach(e => {
-      if (gameTitle.startsWith(e)) {
-        const cutIndex = gameTitle.indexOf(e);
-        gameTitle = gameTitle.substring(cutIndex + e.length);
-      }
-    });
-    config.cutToEndWords.forEach(e => {
-      const cutIndex = gameTitle.indexOf(e);
-      if (cutIndex >= 0) {
-        gameTitle = gameTitle.substring(0, cutIndex);
-      }
-    });
-    config.excludeTitleWords.forEach(e => { gameTitle = gameTitle.replace(e, StringFormatter.EMPTY_STRING); });
-    config.endWords.forEach(e => {
-      if (gameTitle.endsWith(e)) {
-        const cutIndex = gameTitle.lastIndexOf(e);
-        gameTitle = gameTitle.substring(0, cutIndex);
-      }
-    });
-    gameTitle = gameTitle.trim();
-    return gameTitle;
-  }
-
-  protected getCheckboxParent (infoContainer?: HTMLElement): HTMLElement | null {
-    const checkboxParent = document.getElementById('product-info');
-    return checkboxParent;
-  }
-
-  protected addCheckbox (checkboxParent: HTMLElement, gameTitle: string, inBlacklist: boolean, option?: IGameInfoOption): void {
-    let checkboxImg = checkboxParent.getElementsByClassName(this.componentConfig.checkboxContainer.checkbox.className!)[0] as HTMLImageElement;
-    if (!checkboxImg) {
-      checkboxImg = this.createCheckbox(checkboxParent);
-      checkboxImg.onclick = (): void => {
-        if (checkboxImg.dataset.action === this.componentConfig.checkboxContainer.checkbox.disabledAction) {
-          this.dataModel.addGameToBlacklist(gameTitle);
-          this.setCheckboxEnabled(checkboxImg);
-          if (!this.dataModel.showBlacklistGame && option?.hideGame) {
-            this.hideGame(option.hideGame.parentList, option.hideGame.infoElement);
-          }
-        } else {
-          this.dataModel.removeGameFromBlacklist(gameTitle);
-          this.setCheckboxDisabled(checkboxImg);
+    this.setupTaskQueue();
+    const promiseList: Promise<void>[] = [];
+    this.taskQueue.forEach(e => promiseList.push(e.start()));
+    Promise.all(promiseList).then(() => {
+      this.clearTaskQueue();
+      setTimeout(() => {
+        if (this._running) {
+          this.initailzie();
         }
-      };
-      checkboxParent.dataset.hasInit = 'true';
-      if (inBlacklist) {
-        CommonUtil.showLog('In Blacklist : ' + gameTitle);
-        this.setCheckboxEnabled(checkboxImg);
-      }
-    }
+      }, this.mainConfig.refreshInterval);
+    });
   }
 
-  protected createCheckbox (parent: HTMLElement): HTMLImageElement {
-    const conainer = document.createElement('div');
-    conainer.className = this.componentConfig.checkboxContainer.className!;
-    const checkboxImg = document.createElement('img');
-    checkboxImg.className = this.componentConfig.checkboxContainer.checkbox.className!;
-    this.setCheckboxDisabled(checkboxImg);
-    conainer.appendChild(checkboxImg);
-    parent.style.position = 'relative';
-    parent.appendChild(conainer);
-    return checkboxImg;
+  protected setupTaskQueue (): void {
+    // this.taskQueue.push(new ProductTaskHandler(this.componentConfig, this.dataModel));
+    // this.taskQueue.push(new ListTaskHandler(this.componentConfig, this.dataModel));
+    // this.taskQueue.push(new MultiListTaskHandler(this.componentConfig, this.dataModel));
   }
 
-  protected setCheckboxEnabled (checkboxImg: HTMLImageElement): void {
-    const config = this.componentConfig.checkboxContainer.checkbox;
-    checkboxImg.dataset.action = config.action;
-    checkboxImg.src = chrome.runtime.getURL(config.sourceName!);
-  }
-
-  protected setCheckboxDisabled (checkboxImg: HTMLImageElement): void {
-    const config = this.componentConfig.checkboxContainer.checkbox;
-    checkboxImg.dataset.action = config.disabledAction;
-    checkboxImg.src = chrome.runtime.getURL(config.disabledSourceName!);
-  }
-
-  protected hideGame (gameListContainer: HTMLElement, gameContainer: HTMLElement): void {
-    gameListContainer.removeChild(gameContainer);
+  protected clearTaskQueue (): void {
+    this.taskQueue = [];
   }
 }

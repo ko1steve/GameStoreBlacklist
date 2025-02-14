@@ -1,5 +1,6 @@
 export class StringFormatter {
   public static readonly EMPTY_STRING = '';
+  public static readonly SPACE = ' ';
 
   public static uint8ArrayToString (uint8Array: Uint8Array): string {
     return Array.from(uint8Array, charCode => String.fromCharCode(charCode)).join(StringFormatter.EMPTY_STRING);

@@ -2,33 +2,11 @@ import './style.css';
 import { Container } from 'typescript-ioc';
 import { ComponentController } from './../../../../core/componentController';
 import { YuplaySearchConfig } from './config';
+import { YuplaySearchTaskHandler } from './task/seatch';
 
 class YuplaySearchController extends ComponentController {
-  protected componentConfig!: YuplaySearchConfig;
-
-  protected handleListPageContent (): void {
-    const gameListContainer = document.getElementsByClassName('catalog')[0] as HTMLElement;
-    if (!gameListContainer || !gameListContainer.dataset || gameListContainer.dataset.hasInit === 'true') {
-      return;
-    }
-    const gameListChildren = Array.from(gameListContainer.children) as HTMLElement[];
-    if (!this.isGameListFirstChildExist(gameListChildren) || this.isGameListFirstChildInit(gameListChildren)) {
-      return;
-    }
-    gameListChildren.forEach(gameInfoElement => {
-      this.addCheckBoxToGameListEachChild(gameInfoElement, gameListContainer);
-    });
-  }
-
-  protected getRawGameTitle (infoContainer: HTMLElement): string | undefined {
-    return (infoContainer.children[0]?.getElementsByClassName('catalog-image-ratio-container')[0] as HTMLElement)?.title;
-  }
-
-  protected getCheckboxParent (infoContainer?: HTMLElement): HTMLElement | null {
-    if (!infoContainer) {
-      return null;
-    }
-    return infoContainer.children[0] as HTMLElement;
+  protected setupTaskQueue (): void {
+    this.taskQueue.push(new YuplaySearchTaskHandler(this.componentConfig, this.dataModel));
   }
 }
 

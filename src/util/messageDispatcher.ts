@@ -14,7 +14,7 @@ export class MessageDispatcher {
     }
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     if (!tab || tab.id === undefined) {
-      return Promise.reject(new Error('Can\'t get the tab id'));
+      throw (new Error('Can\'t get the tab id'));
     }
     if (responseCallback) {
       return new Promise<void>(resolve => {
@@ -22,17 +22,15 @@ export class MessageDispatcher {
         resolve();
       });
     }
-    return chrome.tabs.sendMessage(tab.id!, message);
+    await chrome.tabs.sendMessage(tab.id!, message);
   }
 
   public static async sendRuntimeMessage (message: Message, responseCallback?: (response: any) => void): Promise<any> {
     if (responseCallback) {
-      return new Promise<void>(resolve => {
-        chrome.runtime.sendMessage(message, responseCallback);
-        resolve();
-      });
+      chrome.runtime.sendMessage(message, responseCallback);
+      return;
     }
-    return chrome.runtime.sendMessage(message);
+    await chrome.runtime.sendMessage(message);
   }
 
   public static addListener (messageName: MessageType, callback: MessageListenerCallback): void {
