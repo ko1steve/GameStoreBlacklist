@@ -3,6 +3,7 @@ import { Singleton } from 'typescript-ioc';
 export interface IMainConfig {
   storageNames: IStorageNames;
   storageDefault: IStorageDefault;
+  refreshInterval: number;
 }
 
 export interface IStorageNames {
@@ -30,4 +31,6 @@ export class MainConfig implements IMainConfig {
     showblacklistGames: true,
     debug: false
   };
+
+  public refreshInterval: number = 1000;
 }

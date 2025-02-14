@@ -5,15 +5,15 @@ export class GreenManGamingSliderListTaskHandler extends ListTaskHandler {
     return new Promise<void>(resolve => {
       const prechaseListContainerArr = this.getMultiGameListContainer();
       if (!prechaseListContainerArr || prechaseListContainerArr.length === 0) {
-        return;
+        return resolve();
       }
       for (const prechaseListContainer of prechaseListContainerArr) {
         if (!prechaseListContainer || !prechaseListContainer.dataset || prechaseListContainer.dataset.hasInit === 'true') {
-          return;
+          return resolve();
         }
         const prechaseListChildren = Array.from(prechaseListContainer.children) as HTMLElement[];
         if (!this.isGameListFirstChildExist(prechaseListChildren) || this.isGameListFirstChildInit(prechaseListChildren)) {
-          return;
+          return resolve();
         }
         prechaseListChildren.forEach(gameInfoElement => {
           this.addCheckBoxToGameListEachChild(gameInfoElement, prechaseListContainer);

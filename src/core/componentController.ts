@@ -8,9 +8,7 @@ import { IShowBlacklistGammeMessage, IUpdateBlacklistDataFromPopupMessage, Messa
 import { IReqeustBlacklistDataResponse, IReqeustPopupInitDataResponse } from './../component/popup/data/popupMessageData';
 import { GlobalEventDispatcher, GlobalEventType } from './../util/globalEventDispatcher';
 import { StorageType } from './../util/dataStorage';
-import { ProductTaskHandler } from './task/productTaskHandler';
 import { TaskHandler } from './task/taskHandler';
-import { ListTaskHandler } from './task/listTaskHandler';
 
 export class ComponentController {
   @Inject
@@ -142,13 +140,14 @@ export class ComponentController {
         if (this._running) {
           this.initailzie();
         }
-      }, 500);
+      }, this.mainConfig.refreshInterval);
     });
   }
 
   protected setupTaskQueue (): void {
-    this.taskQueue.push(new ProductTaskHandler(this.componentConfig, this.dataModel));
-    this.taskQueue.push(new ListTaskHandler(this.componentConfig, this.dataModel));
+    // this.taskQueue.push(new ProductTaskHandler(this.componentConfig, this.dataModel));
+    // this.taskQueue.push(new ListTaskHandler(this.componentConfig, this.dataModel));
+    // this.taskQueue.push(new MultiListTaskHandler(this.componentConfig, this.dataModel));
   }
 
   protected clearTaskQueue (): void {

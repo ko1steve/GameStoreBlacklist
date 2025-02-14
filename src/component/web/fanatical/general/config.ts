@@ -1,4 +1,4 @@
 import { ComponentConfig } from './../../../../core/componentConfig';
 
-export class FanaticalMainConfig extends ComponentConfig {
+export class FanaticalHitCardsRowConfig extends ComponentConfig {
 }

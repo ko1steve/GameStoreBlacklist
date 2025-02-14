@@ -50,13 +50,14 @@
     },
     {
       "css": [
-        "src/component/web/fanatical/main/style.css"
+        "src/component/web/fanatical/general/style.css"
       ],
       "js": [
-        "src/component/web/fanatical/main/content.js"
+        "src/component/web/fanatical/general/content.js"
       ],
       "matches": [
         "https://www.fanatical.com/*/",
+        "https://www.fanatical.com/*/on-sale",
         "https://www.fanatical.com/*/?langRedirect=*"
       ]
     },
