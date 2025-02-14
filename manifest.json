@@ -154,6 +154,17 @@
     },
     {
       "css": [
+        "src/component/web/humblebundle/mainPage/style.css"
+      ],
+      "js": [
+        "src/component/web/humblebundle/mainPage/content.js"
+      ],
+      "matches": [
+        "https://www.humblebundle.com/"
+      ]
+    },
+    {
+      "css": [
         "src/component/web/humblebundle/product/style.css"
       ],
       "js": [
