@@ -171,7 +171,7 @@
         "src/component/web/humblebundle/product/content.js"
       ],
       "matches": [
-        "https://www.humblebundle.com/store/*"
+        "https://www.humblebundle.com/store/*/"
       ]
     },
     {
@@ -183,6 +183,17 @@
       ],
       "matches": [
         "https://www.humblebundle.com/store/search?*"
+      ]
+    },
+    {
+      "css": [
+        "src/component/web/humblebundle/promo/style.css"
+      ],
+      "js": [
+        "src/component/web/humblebundle/promo/content.js"
+      ],
+      "matches": [
+        "https://www.humblebundle.com/store/promo/*"
       ]
     }
   ],
