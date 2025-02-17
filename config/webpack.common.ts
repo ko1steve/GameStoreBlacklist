@@ -27,6 +27,7 @@ module.exports = {
     'src/component/web/yuplay/product/content': './src/component/web/yuplay/product/content.ts',
     'src/component/web/yuplay/search/content': './src/component/web/yuplay/search/content.ts',
     'src/component/web/humbleBundle/mainPage/content': './src/component/web/humbleBundle/mainPage/content.ts',
+    'src/component/web/humbleBundle/promo/content': './src/component/web/humbleBundle/promo/content.ts',
     'src/component/web/humbleBundle/product/content': './src/component/web/humbleBundle/product/content.ts',
     'src/component/web/humbleBundle/search/content': './src/component/web/humbleBundle/search/content.ts'
   },
