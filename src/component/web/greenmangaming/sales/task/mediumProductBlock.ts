@@ -1,6 +1,6 @@
-import { ListTaskHandler } from './../../../../../core/task/listTaskHandler';
+import { MultiListTaskHandler } from './../../../../..//core/task/multiListTaskHandler';
 
-export class GreenManGamingComingSoonTaskHandler extends ListTaskHandler {
+export class GreenManGamingMediumProductBlockTaskHandler extends MultiListTaskHandler {
   public start (): Promise<void> {
     return new Promise<void>(resolve => {
       const gameListContainerArr = this.getMultiGameListContainer();
@@ -11,7 +11,8 @@ export class GreenManGamingComingSoonTaskHandler extends ListTaskHandler {
         if (!gameListContainer || !gameListContainer.dataset || gameListContainer.dataset.hasInit === 'true') {
           return resolve();
         }
-        const gameListChildren = Array.from(gameListContainer.children) as HTMLElement[];
+        /** Skip large block */
+        const gameListChildren = Array.from(gameListContainer.children).slice(1) as HTMLElement[];
         if (!this.isGameListFirstChildExist(gameListChildren) || this.isGameListFirstChildInit(gameListChildren)) {
           return resolve();
         }

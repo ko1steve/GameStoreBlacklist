@@ -14,8 +14,10 @@ module.exports = {
   entry: {
     'src/component/popup/popup': './src/component/popup/popup.ts',
     'src/component/background/background': './src/component/background/background.ts',
+    'src/component/web/greenmangaming/mainPage/content': './src/component/web/greenmangaming/mainPage/content.ts',
     'src/component/web/greenmangaming/sales/content': './src/component/web/greenmangaming/sales/content.ts',
     'src/component/web/greenmangaming/comingSoon/content': './src/component/web/greenmangaming/comingSoon/content.ts',
+    'src/component/web/greenmangaming/search/content': './src/component/web/greenmangaming/search/content.ts',
     'src/component/web/gamesplanet/search/content': './src/component/web/gamesplanet/search/content.ts',
     'src/component/web/fanatical/content': './src/component/web/fanatical/content.ts',
     'src/component/web/gamivo/product/content': './src/component/web/gamivo/product/content.ts',

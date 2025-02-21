@@ -2,11 +2,11 @@ import './style.css';
 import { Container } from 'typescript-ioc';
 import { ComponentController } from './../../../../core/componentController';
 import { GreenManGamingSalesConfig } from './config';
-import { GreenManGamingSalesTaskHandler } from './task/sales';
+import { GreenManGamingMediumProductBlockTaskHandler } from './task/mediumProductBlock';
 
 class GreenManGamingSalesController extends ComponentController {
   protected setupTaskQueue (): void {
-    this.taskQueue.push(new GreenManGamingSalesTaskHandler(this.componentConfig, this.dataModel));
+    this.taskQueue.push(new GreenManGamingMediumProductBlockTaskHandler(this.componentConfig, this.dataModel));
   }
 }
 

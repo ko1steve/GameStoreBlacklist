@@ -4,6 +4,8 @@ import { StringFormatter } from 'src/util/stringFormatter';
 import { TaskHandler } from './taskHandler';
 
 export class MultiListTaskHandler extends TaskHandler {
+  protected countGameListElementInit: number = 0;
+
   public start (): Promise<void> {
     return new Promise<void>(resolve => {
       const gameListContainerArr = this.getMultiGameListContainer();
@@ -21,6 +23,10 @@ export class MultiListTaskHandler extends TaskHandler {
         gameListChildren.forEach((gameInfoElement, i) => {
           this.addCheckBoxToGameListEachChild(gameInfoElement, gameListContainer);
         });
+        if (this.countGameListElementInit === gameListChildren.length) {
+          gameListContainer.dataset.hasInit = 'true';
+        }
+        this.countGameListElementInit = 0;
       }
       resolve();
     });
@@ -44,6 +50,7 @@ export class MultiListTaskHandler extends TaskHandler {
 
   protected addCheckBoxToGameListEachChild (gameInfoElement: HTMLElement, gameListContainer: HTMLElement): void {
     if (gameInfoElement.dataset && gameInfoElement.dataset.hasInit === 'true') {
+      this.countGameListElementInit++;
       return;
     }
     const modifiedInfoElement = this.modifyGameInfoElement(gameInfoElement, gameListContainer);
@@ -72,6 +79,7 @@ export class MultiListTaskHandler extends TaskHandler {
       this.hideGame(gameListContainer, gameInfoElement);
     }
     gameInfoElement.dataset.hasInit = 'true';
+    this.countGameListElementInit++;
   }
 
   protected modifyGameInfoElement (infoElement: HTMLElement, parent: HTMLElement): HTMLElement | undefined {

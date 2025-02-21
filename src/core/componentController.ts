@@ -18,7 +18,6 @@ export class ComponentController {
   protected mainConfig: MainConfig;
   protected componentConfig: ComponentConfig;
   protected taskQueue: TaskHandler[];
-  protected dataInit: boolean;
 
   protected _running;
   public get running (): boolean {
@@ -38,16 +37,11 @@ export class ComponentController {
 
   constructor (componentConfig: ComponentConfig) {
     this.componentConfig = componentConfig;
-    this.dataInit = false;
     this._running = false;
     this.taskQueue = [];
     this.componentId = componentConfig.componentId;
     this.mainConfig = Container.get(MainConfig);
     this.dataModel = Container.get(DataModel);
-    if (this.dataModel.initialized && !this.dataInit) {
-      this.dataInit = true;
-      this.initailzie();
-    }
     this.addSignalListener();
     this.addMessageListener();
     this.addGlobalEventListener();
@@ -58,8 +52,7 @@ export class ComponentController {
   }
 
   protected onInitializeBlacklist (): void {
-    if (!this.dataInit) {
-      this.dataInit = true;
+    if (this.running) {
       this.initailzie();
     }
   }
@@ -143,6 +136,9 @@ export class ComponentController {
   }
 
   protected initailzie (): void {
+    if (!this.dataModel.initialized) {
+      return;
+    }
     this.setupTaskQueue();
     const promiseList: Promise<void>[] = [];
     this.taskQueue.forEach(e => promiseList.push(e.start()));
