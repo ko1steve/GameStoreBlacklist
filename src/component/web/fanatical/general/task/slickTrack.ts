@@ -25,10 +25,6 @@ export class FanaticalSlickTrackTaskHandler extends MultiListTaskHandler {
     return children[0]?.children[0]?.getElementsByClassName('HitCardContainer')[0] !== undefined;
   }
 
-  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | undefined {
-    return infoContainer;
-  }
-
   protected getRawGameTitle (infoContainer: HTMLElement): string | undefined {
     return (infoContainer.children[0]?.getElementsByClassName('hit-card-overlay')[0]?.children[0]?.children[1]?.children[0]?.children[0] as HTMLAnchorElement)?.innerText;
   }
