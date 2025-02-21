@@ -22,7 +22,7 @@ export class ProductTaskHandler extends TaskHandler {
     });
   }
 
-  protected getRawGameTitle (infoContainer?: HTMLElement): string | undefined {
+  protected getRawGameTitle (): string | undefined {
     return document.getElementById('title')?.innerText;
   }
 
