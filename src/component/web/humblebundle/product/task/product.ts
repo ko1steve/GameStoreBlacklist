@@ -2,9 +2,7 @@ import { ProductTaskHandler } from './../../../../../core/task/productTaskHandle
 
 export class HumbleBundleProductTaskHandler extends ProductTaskHandler {
   protected getRawGameTitle (): string {
-    return (document.getElementsByClassName('product-header-view')[0]
-      ?.getElementsByTagName('h1')[0] as HTMLHeadingElement)
-      ?.innerText;
+    return (document.getElementsByClassName('human_name-view')[0] as HTMLHeadingElement)?.innerText;
   }
 
   protected getCheckboxParent (): HTMLElement | undefined {
