@@ -10,10 +10,12 @@ export class ListTaskHandler extends TaskHandler {
     return new Promise<void>(resolve => {
       const gameListContainer = this.getGameListContainer() as HTMLDivElement;
       if (!gameListContainer || !gameListContainer.dataset || gameListContainer.dataset.hasInit === 'true') {
+        CommonUtil.showLog(1);
         return resolve();
       }
       const gameListChildren = Array.from(gameListContainer.children) as HTMLElement[];
       if (!this.isGameListFirstChildExist(gameListChildren) || this.isGameListFirstChildInit(gameListChildren)) {
+        CommonUtil.showLog(2);
         return resolve();
       }
       gameListChildren.forEach(gameInfoElement => {
@@ -27,8 +29,11 @@ export class ListTaskHandler extends TaskHandler {
     });
   }
 
-  protected getGameListContainer (): HTMLElement | null {
+  protected getGameListContainer (): HTMLElement | undefined {
     const container = document.getElementById('gameList');
+    if (!container) {
+      return undefined;
+    }
     return container;
   }
 
@@ -74,7 +79,7 @@ export class ListTaskHandler extends TaskHandler {
     this.countGameListElementInit++;
   }
 
-  protected modifyGameInfoElement (infoElement: HTMLElement, parent: HTMLElement): HTMLElement | null {
+  protected modifyGameInfoElement (infoElement: HTMLElement, parent: HTMLElement): HTMLElement | undefined {
     // ex. add class, remove children
     return infoElement;
   }
@@ -108,9 +113,8 @@ export class ListTaskHandler extends TaskHandler {
     return gameTitle;
   }
 
-  protected getCheckboxParent (infoContainer?: HTMLElement): HTMLElement | null {
-    const checkboxParent = document.getElementById('product-info');
-    return checkboxParent;
+  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | undefined {
+    return infoContainer;
   }
 
   protected addCheckbox (checkboxParent: HTMLElement, gameTitle: string, inBlacklist: boolean, option?: IGameInfoOption): void {

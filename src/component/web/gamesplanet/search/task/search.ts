@@ -5,12 +5,12 @@ export class GamesplanetSearchTaskHandler extends ListTaskHandler {
     return children[0]?.children[0]?.children[0] !== undefined;
   }
 
-  protected getGameListContainer (): HTMLElement | null {
-    return document.getElementById('search_filtered_view');
-  }
-
-  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | null {
-    return infoContainer;
+  protected getGameListContainer (): HTMLElement | undefined {
+    const container = document.getElementById('search_filtered_view');
+    if (!container) {
+      return undefined;
+    }
+    return container;
   }
 
   protected getRawGameTitle (infoContainer: HTMLElement): string | undefined {

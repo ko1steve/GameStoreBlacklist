@@ -51,8 +51,11 @@ export class ProductTaskHandler extends TaskHandler {
     return gameTitle;
   }
 
-  protected getCheckboxParent (infoContainer?: HTMLElement): HTMLElement | null {
+  protected getCheckboxParent (infoContainer?: HTMLElement): HTMLElement | undefined {
     const checkboxParent = document.getElementById('product-info');
+    if (!checkboxParent) {
+      return undefined;
+    }
     return checkboxParent;
   }
 

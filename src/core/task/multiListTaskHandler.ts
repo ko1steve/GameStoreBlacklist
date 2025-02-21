@@ -74,7 +74,7 @@ export class MultiListTaskHandler extends TaskHandler {
     gameInfoElement.dataset.hasInit = 'true';
   }
 
-  protected modifyGameInfoElement (infoElement: HTMLElement, parent: HTMLElement): HTMLElement | null {
+  protected modifyGameInfoElement (infoElement: HTMLElement, parent: HTMLElement): HTMLElement | undefined {
     // ex. add class, remove children
     return infoElement;
   }
@@ -108,7 +108,7 @@ export class MultiListTaskHandler extends TaskHandler {
     return gameTitle;
   }
 
-  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | null {
+  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | undefined {
     return infoContainer;
   }
 

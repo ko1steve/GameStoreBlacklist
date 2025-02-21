@@ -27,7 +27,7 @@ export class HumbleBundleSlickTrackTaskHandler extends MultiListTaskHandler {
     return children[0]?.children[0]?.children[0]?.children[0]?.children[0]?.children[0] !== undefined;
   }
 
-  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | null {
+  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | undefined {
     return infoContainer;
   }
 

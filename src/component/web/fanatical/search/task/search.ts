@@ -5,12 +5,8 @@ export class FanaticalSearchTaskHandler extends ListTaskHandler {
     return children[0]?.children[0]?.getElementsByClassName('hit-card-overlay')[0] !== undefined;
   }
 
-  protected getGameListContainer (): HTMLElement | null {
+  protected getGameListContainer (): HTMLElement | undefined {
     return document.getElementsByClassName('search-results')[0] as HTMLDivElement;
-  }
-
-  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | null {
-    return infoContainer;
   }
 
   protected getRawGameTitle (infoContainer: HTMLElement): string | undefined {

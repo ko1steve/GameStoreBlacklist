@@ -7,7 +7,7 @@ export class HumbleBundleProductTaskHandler extends ProductTaskHandler {
       ?.innerText;
   }
 
-  protected getCheckboxParent (): HTMLElement | null {
+  protected getCheckboxParent (): HTMLElement | undefined {
     return document.getElementsByClassName('showcase-info-section')[0] as HTMLDivElement;
   }
 }
