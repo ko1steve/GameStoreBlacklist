@@ -6,6 +6,6 @@ export class FanaticalProductTaskHandler extends ProductTaskHandler {
   }
 
   protected getCheckboxParent (): HTMLElement | undefined {
-    return document.getElementsByClassName('ProductHeader__cover')[0] as HTMLElement;
+    return document.getElementsByClassName('product-name')[0] as HTMLElement;
   }
 }
