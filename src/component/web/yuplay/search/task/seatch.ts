@@ -9,10 +9,7 @@ export class YuplaySearchTaskHandler extends ListTaskHandler {
     return (infoContainer.children[0]?.getElementsByClassName('catalog-image-ratio-container')[0] as HTMLElement)?.title;
   }
 
-  protected getCheckboxParent (infoContainer?: HTMLElement): HTMLElement | undefined {
-    if (!infoContainer) {
-      return undefined;
-    }
+  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | undefined {
     return infoContainer.children[0] as HTMLElement;
   }
 }

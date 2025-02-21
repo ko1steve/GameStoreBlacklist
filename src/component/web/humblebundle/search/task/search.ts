@@ -5,10 +5,6 @@ export class HumbleBundleSearchTaskHandler extends ListTaskHandler {
     return document.getElementsByClassName('entities-list')[0] as HTMLElement;
   }
 
-  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | undefined {
-    return infoContainer;
-  }
-
   protected getRawGameTitle (infoContainer: HTMLElement): string | undefined {
     return (infoContainer.getElementsByClassName('entity-title')[0] as HTMLSpanElement)?.innerText;
   }

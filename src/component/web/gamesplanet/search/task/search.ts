@@ -13,10 +13,6 @@ export class GamesplanetSearchTaskHandler extends ListTaskHandler {
     return container;
   }
 
-  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | undefined {
-    return infoContainer;
-  }
-
   protected getRawGameTitle (infoContainer: HTMLElement): string | undefined {
     return (infoContainer.children[0]?.children[0]?.children[0] as HTMLImageElement)?.alt;
   }
