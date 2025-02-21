@@ -1,5 +1,5 @@
-import { MultiListTaskHandler } from './../../../../../core/task/multiListTaskHandler';
-import { StringFormatter } from './../../../../../util/stringFormatter';
+import { MultiListTaskHandler } from './../../../../core/task/multiListTaskHandler';
+import { StringFormatter } from './../../../../util/stringFormatter';
 
 export class FanaticalSlickTrackTaskHandler extends MultiListTaskHandler {
   protected getMultiGameListContainer (): HTMLElement[] | undefined {
@@ -8,16 +8,19 @@ export class FanaticalSlickTrackTaskHandler extends MultiListTaskHandler {
       return undefined;
     }
     const excludeParentClass = ['CardPanelCarousel', 'fan-favourites'];
+    const excludeSectionTitle = ['FantasyVerse'];
     return containers.filter(e => {
       const className = (e.parentNode?.parentNode?.parentNode as HTMLElement).className;
       if (!className) {
-        return e;
+        return true;
       }
-      const classArr = className.split(StringFormatter.SPACE);
-      if (classArr.some(e => excludeParentClass.includes(e))) {
-        return undefined;
+      return !className.split(StringFormatter.SPACE).some(e => excludeParentClass.includes(e));
+    }).filter(e => {
+      const sectionTitle = ((e.parentNode?.parentNode?.parentNode?.parentNode as HTMLElement)?.getElementsByClassName('section-title')[0] as HTMLHeadingElement)?.innerText;
+      if (!sectionTitle) {
+        return false;
       }
-      return e;
+      return !excludeSectionTitle.some(e => sectionTitle.includes(e));
     });
   }
 
@@ -25,11 +28,11 @@ export class FanaticalSlickTrackTaskHandler extends MultiListTaskHandler {
     return children[0]?.children[0]?.getElementsByClassName('HitCardContainer')[0] !== undefined;
   }
 
-  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | undefined {
-    return infoContainer;
-  }
-
   protected getRawGameTitle (infoContainer: HTMLElement): string | undefined {
     return (infoContainer.children[0]?.getElementsByClassName('hit-card-overlay')[0]?.children[0]?.children[1]?.children[0]?.children[0] as HTMLAnchorElement)?.innerText;
+  }
+
+  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | undefined {
+    return infoContainer.getElementsByClassName('HitCard')[0] as HTMLElement;
   }
 }

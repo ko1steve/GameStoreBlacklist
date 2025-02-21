@@ -20,3 +20,4 @@ class YuplayProductController extends ComponentController {
 
 const componentConfig = Container.get(YuplayProductConfig);
 const controller = new YuplayProductController(componentConfig);
+controller.running = true;

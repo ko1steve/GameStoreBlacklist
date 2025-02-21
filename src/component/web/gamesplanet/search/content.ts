@@ -12,3 +12,4 @@ class GamesplanetSearchController extends ComponentController {
 
 const componentConfig = Container.get(GamesplanetSearchConfig);
 const controller = new GamesplanetSearchController(componentConfig);
+controller.running = true;

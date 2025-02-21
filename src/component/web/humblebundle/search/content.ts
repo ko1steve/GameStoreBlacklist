@@ -12,3 +12,4 @@ class HumbleBundleSearchController extends ComponentController {
 
 const componentConfig = Container.get(HumbleBundleSearchConfig);
 const controller = new HumbleBundleSearchController(componentConfig);
+controller.running = true;

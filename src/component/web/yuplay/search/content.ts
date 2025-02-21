@@ -12,3 +12,4 @@ class YuplaySearchController extends ComponentController {
 
 const componentConfig = Container.get(YuplaySearchConfig);
 const controller = new YuplaySearchController(componentConfig);
+controller.running = true;

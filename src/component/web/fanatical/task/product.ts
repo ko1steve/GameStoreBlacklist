@@ -1,4 +1,4 @@
-import { ProductTaskHandler } from 'src/core/task/productTaskHandler';
+import { ProductTaskHandler } from './../../../../core/task/productTaskHandler';
 
 export class FanaticalProductTaskHandler extends ProductTaskHandler {
   protected getRawGameTitle (): string | undefined {

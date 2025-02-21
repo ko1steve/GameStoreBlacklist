@@ -12,3 +12,4 @@ class GgdealsGamesController extends ComponentController {
 
 const componentConfig = Container.get(GgdealGamesConfig);
 const controller = new GgdealsGamesController(componentConfig);
+controller.running = true;

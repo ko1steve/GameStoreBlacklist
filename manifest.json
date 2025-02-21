@@ -50,37 +50,13 @@
     },
     {
       "css": [
-        "src/component/web/fanatical/general/style.css"
+        "src/component/web/fanatical/style.css"
       ],
       "js": [
-        "src/component/web/fanatical/general/content.js"
+        "src/component/web/fanatical/content.js"
       ],
       "matches": [
-        "https://www.fanatical.com/*/",
-        "https://www.fanatical.com/*/on-sale",
-        "https://www.fanatical.com/*/?langRedirect=*"
-      ]
-    },
-    {
-      "css": [
-        "src/component/web/fanatical/product/style.css"
-      ],
-      "js": [
-        "src/component/web/fanatical/product/content.js"
-      ],
-      "matches": [
-        "https://www.fanatical.com/*/game/*"
-      ]
-    },
-    {
-      "css": [
-        "src/component/web/fanatical/search/style.css"
-      ],
-      "js": [
-        "src/component/web/fanatical/search/content.js"
-      ],
-      "matches": [
-        "https://www.fanatical.com/*/search*"
+        "https://www.fanatical.com/*"
       ]
     },
     {

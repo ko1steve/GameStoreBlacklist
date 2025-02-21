@@ -14,3 +14,4 @@ class HumbleBundlePromoController extends ComponentController {
 
 const componentConfig = Container.get(HumbleBundlePromoConfig);
 const controller = new HumbleBundlePromoController(componentConfig);
+controller.running = true;

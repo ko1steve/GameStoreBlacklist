@@ -14,4 +14,5 @@ const hrefRegex = /^https:\/\/www.humblebundle.com\/store\/(?!search\?).+$/gmi;
 if (hrefRegex.test(window.location.href)) {
   const componentConfig = Container.get(HumbleBundleProductConfig);
   const controller = new HumbleBundleProductController(componentConfig);
+  controller.running = true;
 }

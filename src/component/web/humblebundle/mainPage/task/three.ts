@@ -9,10 +9,6 @@ export class HumbleBundleThreeTaskHandler extends MultiListTaskHandler {
     return containers;
   }
 
-  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | undefined {
-    return infoContainer;
-  }
-
   protected getRawGameTitle (infoContainer: HTMLElement): string | undefined {
     return (infoContainer.children[0]?.children[1]?.children[0]?.children[0]?.children[0] as HTMLSpanElement)?.innerText;
   }
