@@ -24,6 +24,7 @@ module.exports = {
     'src/component/web/gamivo/search/content': './src/component/web/gamivo/search/content.ts',
     'src/component/web/ggdeals/product/content': './src/component/web/ggdeals/product/content.ts',
     'src/component/web/ggdeals/deals/content': './src/component/web/ggdeals/deals/content.ts',
+    'src/component/web/ggdeals/games/content': './src/component/web/ggdeals/games/content.ts',
     'src/component/web/yuplay/product/content': './src/component/web/yuplay/product/content.ts',
     'src/component/web/yuplay/search/content': './src/component/web/yuplay/search/content.ts',
     'src/component/web/humbleBundle/mainPage/content': './src/component/web/humbleBundle/mainPage/content.ts',

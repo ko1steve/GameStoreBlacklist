@@ -154,6 +154,17 @@
     },
     {
       "css": [
+        "src/component/web/ggdeals/games/style.css"
+      ],
+      "js": [
+        "src/component/web/ggdeals/games/content.js"
+      ],
+      "matches": [
+        "https://gg.deals/games/*"
+      ]
+    },
+    {
+      "css": [
         "src/component/web/humblebundle/mainPage/style.css"
       ],
       "js": [
