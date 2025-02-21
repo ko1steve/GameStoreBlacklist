@@ -182,7 +182,8 @@
         "src/component/web/humblebundle/search/content.js"
       ],
       "matches": [
-        "https://www.humblebundle.com/store/search?*"
+        "https://www.humblebundle.com/store/search?*",
+        "https://www.humblebundle.com/store/c/*"
       ]
     },
     {
