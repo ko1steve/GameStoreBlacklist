@@ -9,7 +9,7 @@ export class HumbleBundleThreeTaskHandler extends MultiListTaskHandler {
     return containers;
   }
 
-  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | null {
+  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | undefined {
     return infoContainer;
   }
 

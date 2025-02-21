@@ -1,11 +1,11 @@
 import { ListTaskHandler } from './../../../../../core/task/listTaskHandler';
 
 export class HumbleBundleSearchTaskHandler extends ListTaskHandler {
-  protected getGameListContainer (): HTMLElement | null {
-    return document.getElementsByClassName('entities-list')[0] as HTMLDivElement;
+  protected getGameListContainer (): HTMLElement | undefined {
+    return document.getElementsByClassName('entities-list')[0] as HTMLElement;
   }
 
-  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | null {
+  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | undefined {
     return infoContainer;
   }
 

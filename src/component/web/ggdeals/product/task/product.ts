@@ -1,28 +1,16 @@
 import { ProductTaskHandler } from './../../../../../core/task/productTaskHandler';
 
 export class GgdealsProductTaskHandler extends ProductTaskHandler {
-  protected getCheckboxParent (): HTMLElement | null {
+  protected getCheckboxParent (): HTMLElement | undefined {
     const gameCardElement = document.getElementById('game-card');
-    if (!gameCardElement) {
-      return null;
+    const gameHeaderElement = gameCardElement?.getElementsByClassName('game-header')[0];
+    const gameSectionElement = gameHeaderElement?.getElementsByClassName('game-section')[0];
+    const colLeftElement = gameSectionElement?.getElementsByClassName('col-left')[0];
+    const gameHeaderBox = colLeftElement?.getElementsByClassName('game-header-box')[0];
+    const wrapperElement = gameHeaderBox?.getElementsByClassName('game-info-image-wrapper')[0] as HTMLElement;
+    if (!wrapperElement) {
+      return undefined;
     }
-    const gameHeaderElement = gameCardElement.getElementsByClassName('game-header')[0];
-    if (!gameHeaderElement) {
-      return null;
-    }
-    const gameSectionElement = gameHeaderElement.getElementsByClassName('game-section')[0];
-    if (!gameSectionElement) {
-      return null;
-    }
-    const colLeftElement = gameSectionElement.getElementsByClassName('col-left')[0];
-    if (!colLeftElement) {
-      return null;
-    }
-    const gameHeaderBox = colLeftElement.getElementsByClassName('game-header-box')[0];
-    if (!gameHeaderBox) {
-      return null;
-    }
-    const wrapperElement = gameHeaderBox.getElementsByClassName('game-info-image-wrapper')[0] as HTMLElement;
     wrapperElement.style.position = 'relative';
     return wrapperElement;
   }

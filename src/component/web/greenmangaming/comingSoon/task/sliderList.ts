@@ -43,7 +43,7 @@ export class GreenManGamingSliderListTaskHandler extends ListTaskHandler {
     return title;
   }
 
-  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | null {
+  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | undefined {
     return infoContainer.children[0] as HTMLElement;
   }
 }

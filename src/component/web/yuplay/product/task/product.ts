@@ -5,11 +5,8 @@ export class YuplayProductTaskHandler extends ProductTaskHandler {
     return document.getElementById('product-main-information')?.getElementsByClassName('product-name')[0]?.innerHTML;
   }
 
-  protected getCheckboxParent (infoContainer?: HTMLElement): HTMLElement | null {
+  protected getCheckboxParent (infoContainer?: HTMLElement): HTMLElement | undefined {
     const mainItemContainer = document.getElementById('product-main-information');
-    if (!mainItemContainer) {
-      return null;
-    }
-    return mainItemContainer.getElementsByClassName('catalog-image-container')[0] as HTMLElement;
+    return mainItemContainer?.getElementsByClassName('catalog-image-container')[0] as HTMLElement;
   }
 }

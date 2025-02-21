@@ -7,7 +7,7 @@ export class GamivoProductTaskHandler extends ProductTaskHandler {
       ?.innerText;
   }
 
-  protected getCheckboxParent (): HTMLElement | null {
+  protected getCheckboxParent (): HTMLElement | undefined {
     return document.getElementsByClassName('product-info')[0] as HTMLDivElement;
   }
 }

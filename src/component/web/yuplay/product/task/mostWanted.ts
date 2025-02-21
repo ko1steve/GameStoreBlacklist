@@ -22,10 +22,10 @@ export class YuplayMostWantedTaskHandler extends ListTaskHandler {
     });
   }
 
-  protected getGameListContainer (): HTMLElement | null {
+  protected getGameListContainer (): HTMLElement | undefined {
     const catalog = document.getElementsByClassName('catalog') as HTMLCollection;
     if (!catalog) {
-      return null;
+      return undefined;
     }
     const catalogArr = Array.from(catalog) as HTMLElement[];
     for (const item of catalogArr) {
@@ -33,7 +33,7 @@ export class YuplayMostWantedTaskHandler extends ListTaskHandler {
         return item;
       }
     }
-    return null;
+    return undefined;
   }
 
   protected getRawGameTitle (infoContainer: HTMLElement): string | undefined {
@@ -44,7 +44,7 @@ export class YuplayMostWantedTaskHandler extends ListTaskHandler {
     return titleContainer.title;
   }
 
-  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | null {
+  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | undefined {
     return infoContainer.children[0] as HTMLElement;
   }
 }

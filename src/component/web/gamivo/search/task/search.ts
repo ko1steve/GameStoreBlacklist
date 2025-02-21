@@ -5,30 +5,27 @@ export class GamivoSearchTaskHandler extends ListTaskHandler {
     return children[0]?.children[0]?.children[0] !== undefined;
   }
 
-  protected getGameListContainer (): HTMLElement | null {
+  protected getGameListContainer (): HTMLElement | undefined {
     return document.getElementsByClassName('search-results__tiles')[0] as HTMLDivElement;
   }
 
-  protected getCheckboxParent (newInfoElement?: HTMLDivElement): HTMLElement | null {
-    if (!newInfoElement) {
-      return null;
-    }
-    const productTitleContainer = newInfoElement.getElementsByClassName('product-tile')[0] as HTMLDivElement;
-    const productImageContainer = productTitleContainer.getElementsByClassName('product-tile__image')[0] as HTMLDivElement;
+  protected getCheckboxParent (newInfoElement: HTMLDivElement): HTMLElement | undefined {
+    const productTitleContainer = newInfoElement.getElementsByClassName('product-tile')[0];
+    const productImageContainer = productTitleContainer.getElementsByClassName('product-tile__image')[0];
     if (!productImageContainer) {
-      return null;
+      return undefined;
     }
-    return productImageContainer.getElementsByTagName('div')[0] as HTMLDivElement;
+    return productImageContainer.getElementsByTagName('div')[0] as HTMLElement;
   }
 
   protected getRawGameTitle (infoContainer: HTMLElement): string | undefined {
     return (infoContainer.children[0]?.children[1]?.children[0]?.children[0] as HTMLSpanElement)?.innerText;
   }
 
-  protected modifyGameInfoElement (infoElement: HTMLElement, parent: HTMLElement): HTMLElement | null {
+  protected modifyGameInfoElement (infoElement: HTMLElement, parent: HTMLElement): HTMLElement | undefined {
     const newInfoElement = this.getModifiedInfoElement(infoElement);
     if (!newInfoElement) {
-      return null;
+      return undefined;
     }
     parent.removeChild(infoElement);
     parent.appendChild(newInfoElement);
@@ -63,16 +60,18 @@ export class GamivoSearchTaskHandler extends ListTaskHandler {
     return nInfoElement;
   }
 
-  private getNewProductImageContainer (productTitleContainer: HTMLDivElement): HTMLElement | null {
+  private getNewProductImageContainer (productTitleContainer: HTMLDivElement): HTMLElement | undefined {
     const productImageContainer = productTitleContainer.getElementsByClassName('product-tile__image')[0] as HTMLDivElement;
-    if (!productImageContainer) { return null; }
-
+    if (!productImageContainer) {
+      return undefined;
+    }
     const nProductImageContainer = document.createElement('div');
     nProductImageContainer.className = productImageContainer.className;
 
     const nImageLinkContainer = this.getNewImageLinkContainer(productImageContainer);
-    if (!nImageLinkContainer) { return null; }
-
+    if (!nImageLinkContainer) {
+      return undefined;
+    }
     nProductImageContainer.appendChild(nImageLinkContainer);
 
     const nPromotionContainer = this.getNewPromotionContainer(productImageContainer);

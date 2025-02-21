@@ -27,8 +27,11 @@ export class ListTaskHandler extends TaskHandler {
     });
   }
 
-  protected getGameListContainer (): HTMLElement | null {
+  protected getGameListContainer (): HTMLElement | undefined {
     const container = document.getElementById('gameList');
+    if (!container) {
+      return undefined;
+    }
     return container;
   }
 
@@ -74,7 +77,7 @@ export class ListTaskHandler extends TaskHandler {
     this.countGameListElementInit++;
   }
 
-  protected modifyGameInfoElement (infoElement: HTMLElement, parent: HTMLElement): HTMLElement | null {
+  protected modifyGameInfoElement (infoElement: HTMLElement, parent: HTMLElement): HTMLElement | undefined {
     // ex. add class, remove children
     return infoElement;
   }
@@ -108,8 +111,11 @@ export class ListTaskHandler extends TaskHandler {
     return gameTitle;
   }
 
-  protected getCheckboxParent (infoContainer?: HTMLElement): HTMLElement | null {
+  protected getCheckboxParent (infoContainer?: HTMLElement): HTMLElement | undefined {
     const checkboxParent = document.getElementById('product-info');
+    if (!checkboxParent) {
+      return undefined;
+    }
     return checkboxParent;
   }
 
