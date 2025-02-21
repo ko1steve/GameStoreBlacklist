@@ -1,6 +1,6 @@
 import { ListTaskHandler } from './../../../../../core/task/listTaskHandler';
 
-export class GgdealsSearchTaskHandler extends ListTaskHandler {
+export class GgdealsListItemsTaskHandler extends ListTaskHandler {
   protected getGameListContainer (): HTMLElement | null {
     const dealsList = document.getElementById('deals-list');
     if (!dealsList) {

@@ -1,6 +1,6 @@
 import { ComponentConfig, ITextHandleConfig } from './../../../../core/componentConfig';
 
-export class GgdealSearchConfig extends ComponentConfig {
+export class GgdealDealsConfig extends ComponentConfig {
   public texthandle: ITextHandleConfig = {
     startWords: [],
     endWords: [],
