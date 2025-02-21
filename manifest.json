@@ -57,8 +57,30 @@
         "src/component/web/greenmangaming/comingSoon/content.js"
       ],
       "matches": [
-        "https://www.greenmangaming.com/top-upcoming-games/*",
-        "https://www.greenmangaming.com/*/top-upcoming-games/*"
+        "https://www.greenmangaming.com/all-games/",
+        "https://www.greenmangaming.com/*/all-games/",
+        "https://www.greenmangaming.com/top-upcoming-games/",
+        "https://www.greenmangaming.com/*/top-upcoming-games/",
+        "https://www.greenmangaming.com/new-gmg/",
+        "https://www.greenmangaming.com/*/new-gmg/"
+      ]
+    },
+    {
+      "css": [
+        "src/component/web/greenmangaming/search/style.css"
+      ],
+      "js": [
+        "src/component/web/greenmangaming/search/content.js"
+      ],
+      "matches": [
+        "https://www.greenmangaming.com/all-games/*",
+        "https://www.greenmangaming.com/*/all-games/*",
+        "https://www.greenmangaming.com/top-upcoming-games/pre-purchase/",
+        "https://www.greenmangaming.com/*/top-upcoming-games/pre-purchase/",
+        "https://www.greenmangaming.com/new-gmg/all-results/",
+        "https://www.greenmangaming.com/new-gmg/*/all-results/",
+        "https://www.greenmangaming.com/search?*",
+        "https://www.greenmangaming.com/*/search?*"
       ]
     },
     {
