@@ -14,3 +14,4 @@ class GreenManGamingComingController extends ComponentController {
 
 const componentConfig = Container.get(GreenManGamingComingSoonConfig);
 const controller = new GreenManGamingComingController(componentConfig);
+controller.running = true;

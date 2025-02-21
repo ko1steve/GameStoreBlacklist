@@ -12,3 +12,4 @@ class GreenManGamingSalesController extends ComponentController {
 
 const componentConfig = Container.get(GreenManGamingSalesConfig);
 const controller = new GreenManGamingSalesController(componentConfig);
+controller.running = true;

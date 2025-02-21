@@ -12,3 +12,4 @@ class GamivoProductController extends ComponentController {
 
 const componentConfig = Container.get(GamivoProductConfig);
 const controller = new GamivoProductController(componentConfig);
+controller.running = true;

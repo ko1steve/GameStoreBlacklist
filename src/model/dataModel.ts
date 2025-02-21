@@ -28,6 +28,11 @@ export class DataModel {
     return this._debug;
   }
 
+  private _initialized: boolean;
+  public get initialized (): boolean {
+    return this._initialized;
+  }
+
   protected tempLegacyBlacklistData: string;
 
   protected dataVersion: DataVersion;
@@ -42,6 +47,7 @@ export class DataModel {
     this.tempLegacyBlacklistData = StringFormatter.EMPTY_STRING;
     this._numberOfGame = 0;
     this._debug = false;
+    this._initialized = false;
     this.initialize();
   }
 
@@ -50,6 +56,7 @@ export class DataModel {
     await this.initShowBlacklistGame();
     await this.initDebugMode();
     this.initNumberOfGame();
+    this._initialized = true;
     this.onInitializeBlacklistCompleteSignal.dispatch();
   }
 

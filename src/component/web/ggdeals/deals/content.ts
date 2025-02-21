@@ -12,3 +12,4 @@ class GgdealsDealsController extends ComponentController {
 
 const componentConfig = Container.get(GgdealDealsConfig);
 const controller = new GgdealsDealsController(componentConfig);
+controller.running = true;

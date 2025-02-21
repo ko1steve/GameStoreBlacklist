@@ -14,3 +14,4 @@ class HumbleBundleThreeController extends ComponentController {
 
 const componentConfig = Container.get(HumbleBundleThreeConfig);
 const controller = new HumbleBundleThreeController(componentConfig);
+controller.running = true;

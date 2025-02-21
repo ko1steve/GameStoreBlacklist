@@ -10,12 +10,10 @@ export class ListTaskHandler extends TaskHandler {
     return new Promise<void>(resolve => {
       const gameListContainer = this.getGameListContainer() as HTMLDivElement;
       if (!gameListContainer || !gameListContainer.dataset || gameListContainer.dataset.hasInit === 'true') {
-        CommonUtil.showLog(1);
         return resolve();
       }
       const gameListChildren = Array.from(gameListContainer.children) as HTMLElement[];
       if (!this.isGameListFirstChildExist(gameListChildren) || this.isGameListFirstChildInit(gameListChildren)) {
-        CommonUtil.showLog(2);
         return resolve();
       }
       gameListChildren.forEach(gameInfoElement => {

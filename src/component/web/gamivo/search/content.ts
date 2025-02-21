@@ -31,6 +31,7 @@ const observer = new MutationObserver(() => {
       controller.running = true;
     } else {
       controller = new GamivoSearchController(componentConfig);
+      controller.running = true;
     }
   } else {
     CommonUtil.showLog('Url is unmathched ...');

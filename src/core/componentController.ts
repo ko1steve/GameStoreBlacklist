@@ -18,8 +18,9 @@ export class ComponentController {
   protected mainConfig: MainConfig;
   protected componentConfig: ComponentConfig;
   protected taskQueue: TaskHandler[];
+  protected dataInit: boolean;
 
-  protected _running = false;
+  protected _running;
   public get running (): boolean {
     return this._running;
   }
@@ -36,20 +37,31 @@ export class ComponentController {
   }
 
   constructor (componentConfig: ComponentConfig) {
-    CommonUtil.showLog('extension controller is running');
-    this._running = true;
+    this.componentConfig = componentConfig;
+    this.dataInit = false;
+    this._running = false;
     this.taskQueue = [];
     this.componentId = componentConfig.componentId;
     this.mainConfig = Container.get(MainConfig);
     this.dataModel = Container.get(DataModel);
-    this.componentConfig = componentConfig;
+    if (this.dataModel.initialized && !this.dataInit) {
+      this.dataInit = true;
+      this.initailzie();
+    }
     this.addSignalListener();
     this.addMessageListener();
     this.addGlobalEventListener();
   }
 
   protected addSignalListener (): void {
-    this.dataModel.onInitializeBlacklistCompleteSignal.add(this.initailzie.bind(this));
+    this.dataModel.onInitializeBlacklistCompleteSignal.add(this.onInitializeBlacklist.bind(this));
+  }
+
+  protected onInitializeBlacklist (): void {
+    if (!this.dataInit) {
+      this.dataInit = true;
+      this.initailzie();
+    }
   }
 
   protected addMessageListener (): void {
