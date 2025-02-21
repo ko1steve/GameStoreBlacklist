@@ -158,7 +158,7 @@
         "src/component/web/humblebundle/product/content.js"
       ],
       "matches": [
-        "https://www.humblebundle.com/store/*/"
+        "https://www.humblebundle.com/store/*"
       ]
     },
     {
