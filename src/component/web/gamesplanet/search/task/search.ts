@@ -6,7 +6,11 @@ export class GamesplanetSearchTaskHandler extends ListTaskHandler {
   }
 
   protected getGameListContainer (): HTMLElement | undefined {
-    return document.getElementById('search_filtered_view');
+    const container = document.getElementById('search_filtered_view');
+    if (!container) {
+      return undefined;
+    }
+    return container;
   }
 
   protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | undefined {
