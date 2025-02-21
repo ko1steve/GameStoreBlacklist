@@ -15,7 +15,7 @@ export class GgdealsProductTaskHandler extends ProductTaskHandler {
     return wrapperElement;
   }
 
-  protected getRawGameTitle (infoContainer?: HTMLElement): string | undefined {
+  protected getRawGameTitle (): string | undefined {
     const catagoryListElement = document.getElementById('page')
       ?.getElementsByClassName('relative breadcrumbs-widget pjax-inner-replace')[0]?.children[0]?.children[0];
     const length = catagoryListElement?.children.length!;
