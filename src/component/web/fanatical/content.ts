@@ -36,6 +36,7 @@ const observer = new MutationObserver(() => {
     currentController.running = false;
   }
   currentUrl = location.href;
+  CommonUtil.showLog('Url: ' + location.href);
   const matchUrl = mathchStoreUrls(location.href);
   if (matchUrl && ControllerTypeMap.has(matchUrl)) {
     CommonUtil.showLog('Url is mathched !');
@@ -47,7 +48,6 @@ const observer = new MutationObserver(() => {
       }
     }
   } else {
-    CommonUtil.showLog('Url: ' + location.href);
     CommonUtil.showLog('Url is unmathched ...');
   }
 });

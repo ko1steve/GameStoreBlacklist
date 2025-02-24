@@ -1,31 +1,8 @@
 import { MultiListTaskHandler } from './../../../../../core/task/multiListTaskHandler';
 
 export class GreenManGamingMediumProductBlockTaskHandler extends MultiListTaskHandler {
-  public start (): Promise<void> {
-    return new Promise<void>(resolve => {
-      const gameListContainerArr = this.getMultiGameListContainer();
-      if (!gameListContainerArr) {
-        return resolve();
-      }
-      for (const gameListContainer of gameListContainerArr) {
-        if (!gameListContainer || !gameListContainer.dataset || gameListContainer.dataset.hasInit === 'true') {
-          return resolve();
-        }
-        /** Skip large block */
-        const gameListChildren = Array.from(gameListContainer.children).slice(1) as HTMLElement[];
-        if (!this.isGameListFirstChildExist(gameListChildren) || this.isGameListFirstChildInit(gameListChildren)) {
-          return resolve();
-        }
-        gameListChildren.forEach((gameInfoElement, i) => {
-          this.addCheckBoxToGameListEachChild(gameInfoElement, gameListContainer);
-        });
-        if (this.countGameListElementInit === gameListChildren.length) {
-          gameListContainer.dataset.hasInit = 'true';
-        }
-        this.countGameListElementInit = 0;
-      }
-      resolve();
-    });
+  protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] | undefined {
+    return Array.from(gameListContainer.children).slice(1) as HTMLElement[];
   }
 
   protected isGameListFirstChildExist (children: HTMLElement[]): boolean {

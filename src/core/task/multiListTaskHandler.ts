@@ -16,8 +16,8 @@ export class MultiListTaskHandler extends TaskHandler {
         if (!gameListContainer) {
           return resolve();
         }
-        const gameListChildren = Array.from(gameListContainer.children) as HTMLElement[];
-        if (!this.isGameListFirstChildExist(gameListChildren)) {
+        const gameListChildren = this.getGameListChildren(gameListContainer);
+        if (!gameListChildren || !this.isGameListFirstChildExist(gameListChildren)) {
           return resolve();
         }
         gameListChildren.forEach((gameInfoElement, i) => {
@@ -40,12 +40,12 @@ export class MultiListTaskHandler extends TaskHandler {
     return containers;
   }
 
-  protected isGameListFirstChildExist (children: HTMLElement[]): boolean {
-    return children[0] !== undefined;
+  protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] | undefined {
+    return Array.from(gameListContainer.children) as HTMLElement[];
   }
 
-  protected isGameListFirstChildInit (children: HTMLElement[]): boolean {
-    return children[0].dataset && children[0].dataset.hasInit === 'true';
+  protected isGameListFirstChildExist (children: HTMLElement[]): boolean {
+    return children[0] !== undefined;
   }
 
   protected addCheckBoxToGameListEachChild (gameInfoElement: HTMLElement, gameListContainer: HTMLElement): void {
