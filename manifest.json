@@ -107,13 +107,23 @@
     },
     {
       "css": [
+        "src/component/web/yuplay/mainPage/style.css"
+      ],
+      "js": [
+        "src/component/web/yuplay/mainPage/content.js"
+      ],
+      "matches": [
+        "https://www.yuplay.com/"
+      ]
+    },
+    {
+      "css": [
         "src/component/web/yuplay/product/style.css"
       ],
       "js": [
         "src/component/web/yuplay/product/content.js"
       ],
       "matches": [
-        "https://www.yuplay.com/",
         "https://www.yuplay.com/product/*"
       ]
     },
