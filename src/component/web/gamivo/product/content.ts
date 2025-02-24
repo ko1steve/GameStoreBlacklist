@@ -3,7 +3,7 @@ import { Container } from 'typescript-ioc';
 import { ComponentController } from './../../../../core/componentController';
 import { GamivoProductConfig } from './config';
 import { GamivoProductTaskHandler } from './task/product';
-import { GamivoRecommendTaskHandler } from './task/search';
+import { GamivoRecommendTaskHandler } from './task/recommend';
 
 class GamivoProductController extends ComponentController {
   protected setupTaskQueue (): void {
