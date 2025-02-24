@@ -14,6 +14,10 @@ export class HumbleBundleSlickTrackTaskHandler extends MultiListTaskHandler {
     return firstGameInfo?.children[0]?.children[1]?.children[0]?.children[0]?.children[0] !== undefined;
   }
 
+  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | undefined {
+    return infoContainer.children[0] as HTMLElement;
+  }
+
   protected getRawGameTitle (infoContainer: HTMLElement): string | undefined {
     return (infoContainer.children[0]?.children[1]?.children[0]?.children[0]?.children[0] as HTMLSpanElement)?.innerText;
   }
