@@ -12,8 +12,8 @@ export class ListTaskHandler extends TaskHandler {
       if (!gameListContainer || !gameListContainer.dataset || gameListContainer.dataset.hasInit === 'true') {
         return resolve();
       }
-      const gameListChildren = Array.from(gameListContainer.children) as HTMLElement[];
-      if (!this.isGameListFirstChildExist(gameListChildren) || this.isGameListFirstChildInit(gameListChildren)) {
+      const gameListChildren = this.getGameListChildren(gameListContainer);
+      if (!gameListChildren || !this.isGameListFirstChildExist(gameListChildren)) {
         return resolve();
       }
       gameListChildren.forEach(gameInfoElement => {
@@ -35,12 +35,12 @@ export class ListTaskHandler extends TaskHandler {
     return container;
   }
 
-  protected isGameListFirstChildExist (children: HTMLElement[]): boolean {
-    return children[0] !== undefined;
+  protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] | undefined {
+    return Array.from(gameListContainer.children) as HTMLElement[];
   }
 
-  protected isGameListFirstChildInit (children: HTMLElement[]): boolean {
-    return children[0].dataset && children[0].dataset.hasInit === 'true';
+  protected isGameListFirstChildExist (children: HTMLElement[]): boolean {
+    return children[0] !== undefined;
   }
 
   protected addCheckBoxToGameListEachChild (gameInfoElement: HTMLElement, gameListContainer: HTMLElement): void {

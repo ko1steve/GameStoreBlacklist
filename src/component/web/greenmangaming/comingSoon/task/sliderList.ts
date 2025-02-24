@@ -1,32 +1,6 @@
-import { ListTaskHandler } from './../../../../../core/task/listTaskHandler';
+import { MultiListTaskHandler } from './../../../../../core/task/multiListTaskHandler';
 
-export class GreenManGamingSliderListTaskHandler extends ListTaskHandler {
-  public start (): Promise<void> {
-    return new Promise<void>(resolve => {
-      const prechaseListContainerArr = this.getMultiGameListContainer();
-      if (!prechaseListContainerArr || prechaseListContainerArr.length === 0) {
-        return resolve();
-      }
-      for (const prechaseListContainer of prechaseListContainerArr) {
-        if (!prechaseListContainer || !prechaseListContainer.dataset || prechaseListContainer.dataset.hasInit === 'true') {
-          return resolve();
-        }
-        const prechaseListChildren = Array.from(prechaseListContainer.children) as HTMLElement[];
-        if (!this.isGameListFirstChildExist(prechaseListChildren) || this.isGameListFirstChildInit(prechaseListChildren)) {
-          return resolve();
-        }
-        prechaseListChildren.forEach(gameInfoElement => {
-          this.addCheckBoxToGameListEachChild(gameInfoElement, prechaseListContainer);
-        });
-        if (this.countGameListElementInit === prechaseListChildren.length) {
-          prechaseListContainer.dataset.hasInit = 'true';
-        }
-        this.countGameListElementInit = 0;
-      }
-      resolve();
-    });
-  }
-
+export class GreenManGamingSliderListTaskHandler extends MultiListTaskHandler {
   protected getMultiGameListContainer (): HTMLElement[] | undefined {
     return Array.from(document.getElementsByClassName('owl-stage')) as HTMLElement[];
   }
@@ -37,10 +11,6 @@ export class GreenManGamingSliderListTaskHandler extends ListTaskHandler {
 
   protected getRawGameTitle (infoContainer: HTMLElement): string | undefined {
     return (infoContainer.children[0]?.children[1]?.children[0]?.children[3] as HTMLImageElement)?.alt;
-  }
-
-  protected getModifiedGameTitle (title: string): string {
-    return title;
   }
 
   protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | undefined {

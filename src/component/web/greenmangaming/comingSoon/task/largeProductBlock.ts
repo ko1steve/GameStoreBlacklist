@@ -1,10 +1,6 @@
 import { MultiListTaskHandler } from './../../../../..//core/task/multiListTaskHandler';
 
 export class GreenManGamingComingSoonTaskHandler extends MultiListTaskHandler {
-  protected isGameListFirstChildExist (children: HTMLElement[]): boolean {
-    return children[0]?.children[0]?.children[0] !== undefined;
-  }
-
   protected getMultiGameListContainer (): HTMLElement[] | undefined {
     const collection = Array.from(document.getElementsByClassName('large-product-block')) as HTMLElement[];
     if (!collection || collection.length === 0) {
@@ -17,6 +13,10 @@ export class GreenManGamingComingSoonTaskHandler extends MultiListTaskHandler {
       }
     }
     return gameListContainers;
+  }
+
+  protected isGameListFirstChildExist (children: HTMLElement[]): boolean {
+    return children[0]?.children[0]?.children[0] !== undefined;
   }
 
   protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | undefined {
