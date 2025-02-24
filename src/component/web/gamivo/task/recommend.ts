@@ -1,4 +1,4 @@
-import { ListTaskHandler } from './../../../../../core/task/listTaskHandler';
+import { ListTaskHandler } from './../../../../core/task/listTaskHandler';
 
 export class GamivoRecommendTaskHandler extends ListTaskHandler {
   protected isGameListFirstChildExist (children: HTMLElement[]): boolean {
@@ -6,10 +6,10 @@ export class GamivoRecommendTaskHandler extends ListTaskHandler {
   }
 
   protected getGameListContainer (): HTMLElement | undefined {
-    return document.getElementsByClassName('recommendations__vertical-tiles-container')[0] as HTMLDivElement;
+    return document.getElementsByClassName('recommendations__vertical-tiles-container')[0] as HTMLElement;
   }
 
-  protected getCheckboxParent (infoContainer: HTMLDivElement): HTMLElement | undefined {
+  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | undefined {
     return infoContainer;
   }
 

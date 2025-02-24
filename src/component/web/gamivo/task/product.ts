@@ -1,4 +1,4 @@
-import { ProductTaskHandler } from './../../../../../core/task/productTaskHandler';
+import { ProductTaskHandler } from './../../../../core/task/productTaskHandler';
 
 export class GamivoProductTaskHandler extends ProductTaskHandler {
   protected getRawGameTitle (): string | undefined {
@@ -8,6 +8,6 @@ export class GamivoProductTaskHandler extends ProductTaskHandler {
   }
 
   protected getCheckboxParent (): HTMLElement | undefined {
-    return document.getElementsByClassName('product-info')[0] as HTMLDivElement;
+    return document.getElementsByClassName('product-info')[0] as HTMLElement;
   }
 }
