@@ -6,7 +6,7 @@ export class FanaticalSearchTaskHandler extends ListTaskHandler {
   }
 
   protected getGameListContainer (): HTMLElement | undefined {
-    return document.getElementsByClassName('search-results')[0] as HTMLDivElement;
+    return document.getElementsByClassName('search-results')[0] as HTMLElement;
   }
 
   protected getRawGameTitle (infoContainer: HTMLElement): string | undefined {

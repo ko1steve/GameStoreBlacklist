@@ -32,7 +32,7 @@ export class ComponentController {
     if (running) {
       this.initailzie();
     }
-    CommonUtil.showLog('extension controller is ' + (running ? 'running' : 'stopped'));
+    CommonUtil.showLog('extension controller ' + this.componentConfig.componentId + ' is ' + (running ? 'running' : 'stopped'));
   }
 
   constructor (componentConfig: ComponentConfig) {
