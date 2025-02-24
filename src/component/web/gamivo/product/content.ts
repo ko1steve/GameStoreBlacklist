@@ -3,10 +3,12 @@ import { Container } from 'typescript-ioc';
 import { ComponentController } from './../../../../core/componentController';
 import { GamivoProductConfig } from './config';
 import { GamivoProductTaskHandler } from './task/product';
+import { GamivoRecommendTaskHandler } from './task/search';
 
 class GamivoProductController extends ComponentController {
   protected setupTaskQueue (): void {
     this.taskQueue.push(new GamivoProductTaskHandler(this.componentConfig, this.dataModel));
+    this.taskQueue.push(new GamivoRecommendTaskHandler(this.componentConfig, this.dataModel));
   }
 }
 
