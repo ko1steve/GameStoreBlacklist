@@ -40,7 +40,8 @@ export class ListTaskHandler extends TaskHandler {
   }
 
   protected isGameListFirstChildExist (children: HTMLElement[]): boolean {
-    return children[0] !== undefined;
+    const firstGameInfo = children[0];
+    return firstGameInfo !== undefined;
   }
 
   protected addCheckBoxToGameListEachChild (gameInfoElement: HTMLElement, gameListContainer: HTMLElement): void {

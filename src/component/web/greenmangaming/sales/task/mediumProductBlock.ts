@@ -20,7 +20,8 @@ export class GreenManGamingMediumProductBlockTaskHandler extends MultiListTaskHa
   }
 
   protected isGameListFirstChildExist (children: HTMLElement[]): boolean {
-    return children[0]?.children[0]?.children[0] !== undefined;
+    const firstGameInfo = children[0];
+    return firstGameInfo?.children[0]?.children[0] !== undefined;
   }
 
   protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | undefined {
