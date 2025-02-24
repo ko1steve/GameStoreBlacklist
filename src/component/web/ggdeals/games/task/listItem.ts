@@ -2,7 +2,7 @@ import { ListTaskHandler } from './../../../../../core/task/listTaskHandler';
 
 export class GgdealsListItemsTaskHandler extends ListTaskHandler {
   protected getGameListContainer (): HTMLElement | undefined {
-    return document.getElementsByClassName('list-items')[0] as HTMLDivElement;
+    return document.getElementsByClassName('list-items')[0] as HTMLElement;
   }
 
   protected getRawGameTitle (infoContainer: HTMLElement): string | undefined {

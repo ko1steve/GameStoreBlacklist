@@ -8,7 +8,7 @@ export class ListTaskHandler extends TaskHandler {
 
   public start (): Promise<void> {
     return new Promise<void>(resolve => {
-      const gameListContainer = this.getGameListContainer() as HTMLDivElement;
+      const gameListContainer = this.getGameListContainer();
       if (!gameListContainer || !gameListContainer.dataset || gameListContainer.dataset.hasInit === 'true') {
         return resolve();
       }

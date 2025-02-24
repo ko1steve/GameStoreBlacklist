@@ -6,6 +6,6 @@ export class HumbleBundleProductTaskHandler extends ProductTaskHandler {
   }
 
   protected getCheckboxParent (): HTMLElement | undefined {
-    return document.getElementsByClassName('product-header-view')[0] as HTMLDivElement;
+    return document.getElementsByClassName('product-header-view')[0] as HTMLElement;
   }
 }
