@@ -9,4 +9,10 @@ export class YuplayProductTaskHandler extends ProductTaskHandler {
     const mainItemContainer = document.getElementById('product-main-information');
     return mainItemContainer?.getElementsByClassName('catalog-image-container')[0] as HTMLElement;
   }
+
+  protected createCheckbox (parent: HTMLElement): HTMLImageElement {
+    const checkboxImg = super.createCheckbox(parent);
+    checkboxImg.parentElement!.className = this.componentConfig.checkboxContainer.className! + ' right';
+    return checkboxImg;
+  }
 }
