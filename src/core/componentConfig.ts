@@ -1,10 +1,9 @@
-import { ICheckboxImageElement, IHTMLElement } from '../data/commonData';
+import { ICheckboxImageElement, IHTMLElement } from './../data/commonData';
 
 export interface IComponentConfig {
   componentId: string
   checkboxContainer: ICheckBoxContainer
   texthandle: ITextHandleConfig
-  isGameListPage: boolean
 }
 
 export interface ITextHandleConfig {
@@ -42,6 +41,4 @@ export class ComponentConfig implements IComponentConfig {
     cutToEndWords: [],
     excludeTitleWords: []
   };
-
-  public isGameListPage: boolean = false;
 }

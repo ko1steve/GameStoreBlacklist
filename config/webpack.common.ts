@@ -2,10 +2,10 @@ import * as Path from 'path';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import ESLintPlugin from 'eslint-webpack-plugin';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
-import { ProvidePlugin } from 'webpack';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import HTMLWebpackPlugin from 'html-webpack-plugin';
-import { AssetList } from '../src/assetList';
+import { ProvidePlugin } from 'webpack';
+import { AssetList } from './../src/assetList';
 
 const appDir = Path.dirname(__dirname);
 
@@ -14,12 +14,21 @@ module.exports = {
   entry: {
     'src/component/popup/popup': './src/component/popup/popup.ts',
     'src/component/background/background': './src/component/background/background.ts',
-    'src/component/web/gamivo/product/content': './src/component/web/gamivo/product/content.ts',
-    'src/component/web/gamivo/search/content': './src/component/web/gamivo/search/content.ts',
+    'src/component/web/greenmangaming/mainPage/content': './src/component/web/greenmangaming/mainPage/content.ts',
+    'src/component/web/greenmangaming/sales/content': './src/component/web/greenmangaming/sales/content.ts',
+    'src/component/web/greenmangaming/comingSoon/content': './src/component/web/greenmangaming/comingSoon/content.ts',
+    'src/component/web/greenmangaming/search/content': './src/component/web/greenmangaming/search/content.ts',
+    'src/component/web/gamesplanet/search/content': './src/component/web/gamesplanet/search/content.ts',
+    'src/component/web/fanatical/content': './src/component/web/fanatical/content.ts',
+    'src/component/web/gamivo/content': './src/component/web/gamivo/content.ts',
     'src/component/web/ggdeals/product/content': './src/component/web/ggdeals/product/content.ts',
-    'src/component/web/ggdeals/search/content': './src/component/web/ggdeals/search/content.ts',
+    'src/component/web/ggdeals/deals/content': './src/component/web/ggdeals/deals/content.ts',
+    'src/component/web/ggdeals/games/content': './src/component/web/ggdeals/games/content.ts',
+    'src/component/web/yuplay/mainPage/content': './src/component/web/yuplay/mainPage/content.ts',
     'src/component/web/yuplay/product/content': './src/component/web/yuplay/product/content.ts',
     'src/component/web/yuplay/search/content': './src/component/web/yuplay/search/content.ts',
+    'src/component/web/humbleBundle/mainPage/content': './src/component/web/humbleBundle/mainPage/content.ts',
+    'src/component/web/humbleBundle/promo/content': './src/component/web/humbleBundle/promo/content.ts',
     'src/component/web/humbleBundle/product/content': './src/component/web/humbleBundle/product/content.ts',
     'src/component/web/humbleBundle/search/content': './src/component/web/humbleBundle/search/content.ts'
   },

@@ -9,15 +9,7 @@ export class CommonUtil {
     if (optionalParams && optionalParams.length > 0) {
       message.data.optionalParams = optionalParams;
     }
-    return chrome.runtime.sendMessage(message);
-  }
-
-  public static async showObject (object: any): Promise<void> {
-    if (!chrome.runtime.onMessage.hasListeners()) {
-      return;
-    }
-    const message: Message = { name: MessageType.SHOW_OBJECT, data: { object } };
-    return chrome.runtime.sendMessage(message);
+    await chrome.runtime.sendMessage(message);
   }
 
   public static matchWildcardPattern (pattern: string, str: string): boolean {

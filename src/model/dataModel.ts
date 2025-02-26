@@ -28,6 +28,11 @@ export class DataModel {
     return this._debug;
   }
 
+  private _initialized: boolean;
+  public get initialized (): boolean {
+    return this._initialized;
+  }
+
   protected tempLegacyBlacklistData: string;
 
   protected dataVersion: DataVersion;
@@ -42,6 +47,7 @@ export class DataModel {
     this.tempLegacyBlacklistData = StringFormatter.EMPTY_STRING;
     this._numberOfGame = 0;
     this._debug = false;
+    this._initialized = false;
     this.initialize();
   }
 
@@ -50,6 +56,7 @@ export class DataModel {
     await this.initShowBlacklistGame();
     await this.initDebugMode();
     this.initNumberOfGame();
+    this._initialized = true;
     this.onInitializeBlacklistCompleteSignal.dispatch();
   }
 
@@ -102,7 +109,7 @@ export class DataModel {
     });
   }
 
-  public async addGameToBlacklist (gameTitle: string): Promise<void> {
+  public addGameToBlacklist (gameTitle: string): Promise<void> {
     return new Promise<void>(resolve => {
       const lowerCaseTitle = gameTitle.toLowerCase();
       const key = lowerCaseTitle[0];
@@ -110,6 +117,10 @@ export class DataModel {
         this.blacklistMap.set(key, [lowerCaseTitle]);
       } else {
         const list = this.blacklistMap.get(key)!;
+        if (list.includes(lowerCaseTitle)) {
+          CommonUtil.showLog('"' + gameTitle + '" is already in blacklist. ');
+          return resolve();
+        }
         list.push(lowerCaseTitle);
         this.blacklistMap.set(key, list);
       }
@@ -121,17 +132,18 @@ export class DataModel {
     });
   }
 
-  public async removeGameFromBlacklist (gameTitle: string): Promise<void> {
+  public removeGameFromBlacklist (gameTitle: string): Promise<void> {
     return new Promise<void>(resolve => {
       const lowerCaseTitle = gameTitle.toLowerCase();
       const key = lowerCaseTitle[0];
       if (!this.blacklistMap.has(key)) {
-        return;
+        return resolve();
       }
       const list = this.blacklistMap.get(key)!;
       const index = list.findIndex(e => e === lowerCaseTitle);
       if (index < 0) {
-        return;
+        CommonUtil.showLog('"' + gameTitle + '" was already removed from blacklist. ');
+        return resolve();
       }
       list.splice(index, 1);
       this.blacklistMap.set(key, list);
