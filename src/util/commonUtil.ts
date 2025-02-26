@@ -12,14 +12,6 @@ export class CommonUtil {
     await chrome.runtime.sendMessage(message);
   }
 
-  public static async showObject (object: any): Promise<void> {
-    if (!chrome.runtime.onMessage.hasListeners()) {
-      return;
-    }
-    const message: Message = { name: MessageType.SHOW_OBJECT, data: { object } };
-    await chrome.runtime.sendMessage(message);
-  }
-
   public static matchWildcardPattern (pattern: string, str: string): boolean {
     const source = '^' + pattern.replaceAll('.', '\\.').replaceAll('?', '\\?').replaceAll('*', '.*') + '$';
     const regExp = new RegExp(source);
