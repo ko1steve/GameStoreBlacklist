@@ -59,6 +59,8 @@
       "matches": [
         "https://www.greenmangaming.com/all-games/",
         "https://www.greenmangaming.com/*/all-games/",
+        "https://www.greenmangaming.com/coming-soon/",
+        "https://www.greenmangaming.com/*/coming-soon/",
         "https://www.greenmangaming.com/top-upcoming-games/",
         "https://www.greenmangaming.com/*/top-upcoming-games/",
         "https://www.greenmangaming.com/new-gmg/",
