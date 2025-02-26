@@ -9,6 +9,12 @@ export class FanaticalHitCardsRowTaskHandler extends MultiListTaskHandler {
     return collection;
   }
 
+  protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] {
+    return super.getGameListChildren(gameListContainer).filter(e => {
+      return e.getElementsByClassName('hitCardStripe__content')[0]?.getElementsByClassName('card-price-container')[0];
+    });
+  }
+
   protected isGameListFirstChildExist (children: HTMLElement[]): boolean {
     const firstGameInfo = children[0];
     return firstGameInfo?.getElementsByClassName('hit-card-overlay')[0] !== undefined;

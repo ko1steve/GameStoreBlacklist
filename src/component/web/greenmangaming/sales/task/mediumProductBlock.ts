@@ -15,7 +15,7 @@ export class GreenManGamingMediumProductBlockTaskHandler extends MultiListTaskHa
     return gameListContainers;
   }
 
-  protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] | undefined {
+  protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] {
     return Array.from(gameListContainer.children).slice(1) as HTMLElement[];
   }
 

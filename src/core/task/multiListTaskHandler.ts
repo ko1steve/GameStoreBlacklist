@@ -17,7 +17,7 @@ export class MultiListTaskHandler extends TaskHandler {
           return resolve();
         }
         const gameListChildren = this.getGameListChildren(gameListContainer);
-        if (!gameListChildren || !this.isGameListFirstChildExist(gameListChildren)) {
+        if (gameListChildren.length === 0 || !this.isGameListFirstChildExist(gameListChildren)) {
           return resolve();
         }
         gameListChildren.forEach((gameInfoElement, i) => {
@@ -40,7 +40,7 @@ export class MultiListTaskHandler extends TaskHandler {
     return containers;
   }
 
-  protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] | undefined {
+  protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] {
     return Array.from(gameListContainer.children) as HTMLElement[];
   }
 
