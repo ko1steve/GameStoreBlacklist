@@ -1,7 +1,7 @@
 import { MultiListTaskHandler } from './../../../../../core/task/multiListTaskHandler';
 
 export class GreenManGamingMediumProductBlockTaskHandler extends MultiListTaskHandler {
-  protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] | undefined {
+  protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] {
     return Array.from(gameListContainer.children).slice(1) as HTMLElement[];
   }
 
