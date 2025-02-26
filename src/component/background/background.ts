@@ -4,9 +4,9 @@ import { MessageDispatcher } from './../../util/messageDispatcher';
 MessageDispatcher.addListener(MessageType.SHOW_LOG, (message, sender, sendResponse) => {
   message = message as IShowLogMessage;
   if (message.data.optionalParams && message.data.optionalParams.length > 0) {
-    console.log('%c[GameStoreBlackList] ' + message.data.param, ...message.data.optionalParams, 'color: green; font-weight: bold');
+    console.log(message.data.param, ...message.data.optionalParams);
   } else {
-    console.log('%c[GameStoreBlackList] ' + message.data.param, 'color: green; font-weight: bold');
+    console.log(message.data.param);
   }
   sendResponse();
 });
