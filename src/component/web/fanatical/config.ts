@@ -1,5 +1,18 @@
 import { TSMap } from 'typescript-map';
 import { ComponentConfig } from './../../../core/componentConfig';
+import { ComponentController } from './../../../core/componentController';
+import { FanaticalGeneralController } from './controller/general';
+import { FanaticalProductController } from './controller/product';
+import { FanaticalSearchController } from './controller/search';
+
+export class FanaticalGeneralConfig extends ComponentConfig {
+}
+
+export class FanaticalProductConfig extends ComponentConfig {
+}
+
+export class FanaticalSearchConfig extends ComponentConfig {
+}
 
 export enum ControllerType {
   GENERAL = 'GENERAL',
@@ -7,7 +20,7 @@ export enum ControllerType {
   SEARCH = 'SEARCH'
 }
 
-export const ControllerTypeMap = new TSMap<string, ControllerType>([
+export const UrlTypeMap = new TSMap<string, ControllerType>([
   [
     'https://www.fanatical.com/*/', ControllerType.GENERAL
   ],
@@ -25,11 +38,26 @@ export const ControllerTypeMap = new TSMap<string, ControllerType>([
   ]
 ]);
 
-export class FanaticalGeneralConfig extends ComponentConfig {
-}
+export const ConfigClassMap = new TSMap<string, new() => ComponentConfig>([
+  [
+    ControllerType.GENERAL, FanaticalGeneralConfig
+  ],
+  [
+    ControllerType.PRODUCT, FanaticalProductConfig
+  ],
+  [
+    ControllerType.SEARCH, FanaticalSearchConfig
+  ]
+]);
 
-export class FanaticalProductConfig extends ComponentConfig {
-}
-
-export class FanaticalSearchConfig extends ComponentConfig {
-}
+export const ControllerClassMap = new TSMap<string, new(componentConfig: ComponentConfig) => ComponentController>([
+  [
+    ControllerType.GENERAL, FanaticalGeneralController
+  ],
+  [
+    ControllerType.PRODUCT, FanaticalProductController
+  ],
+  [
+    ControllerType.SEARCH, FanaticalSearchController
+  ]
+]);
