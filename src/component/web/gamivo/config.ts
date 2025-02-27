@@ -1,5 +1,12 @@
 import { TSMap } from 'typescript-map';
-import { ComponentConfig, ITextHandleConfig } from './../../../core/componentConfig';
+import { ComponentConfig } from './../../../core/componentConfig';
+import { ComponentController } from './../../../core/componentController';
+import { GamivoMainPageConfig } from './config/mainPage';
+import { GamivoProductConfig } from './config/product';
+import { GamivoSearchConfig } from './config/search';
+import { GamivoMainPageController } from './controller/mainPage';
+import { GamivoProductController } from './controller/product';
+import { GamivoSearchController } from './controller/search';
 
 export enum ControllerType {
   MAIN_PAGE = 'MAIN_PAGE',
@@ -7,7 +14,7 @@ export enum ControllerType {
   SEARCH = 'SEARCH'
 }
 
-export const ControllerTypeMap = new TSMap<string, ControllerType>([
+export const UrlTypeMap = new TSMap<string, ControllerType>([
   [
     'https://www.gamivo.com/', ControllerType.MAIN_PAGE
   ],
@@ -46,52 +53,26 @@ export const ControllerTypeMap = new TSMap<string, ControllerType>([
   ]
 ]);
 
-export class GamivoMainPageConfig extends ComponentConfig {
-  public componentId: string = 'GamivoMainPage';
-  public texthandle: ITextHandleConfig = {
-    startWords: ['Buy '],
-    endWords: [' EN', ' EU', ' DE', ' FR', ' IT', ' ZH', ' JA', ' ES', ' RU', ' PL', ' CS', ' ROW'],
-    cutToEndWords: [
-      ' EN/', ' EU/', ' DE/', ' FR/', ' IT/', ' ZH/', ' JA/', ' ES/', ' RU/', ' PL/', ' CS/', 'ROW/',
-      ' EN ', ' EU ', ' DE ', ' FR ', ' IT ', ' ZH ', ' JA ', ' ES ', ' RU ', ' PL ', ' CS ', ' ROW ',
-      ' PRE-ORDER', ' Steam Account'
-    ],
-    excludeTitleWords: [
-      'Steam Gift', 'Global Steam Gift', 'Global Steam', 'Asia Steam'
-    ]
-  };
-}
+export const ConfigClassMap = new TSMap<string, new() => ComponentConfig>([
+  [
+    ControllerType.MAIN_PAGE, GamivoMainPageConfig
+  ],
+  [
+    ControllerType.PRODUCT, GamivoProductConfig
+  ],
+  [
+    ControllerType.SEARCH, GamivoSearchConfig
+  ]
+]);
 
-export class GamivoProductConfig extends ComponentConfig {
-  public componentId: string = 'GamivoProduct';
-  public texthandle: ITextHandleConfig = {
-    startWords: ['Buy '],
-    endWords: [' EN', ' EU', ' DE', ' FR', ' IT', ' ZH', ' JA', ' ES', ' RU', ' PL', ' CS', ' ROW'],
-    cutToEndWords: [
-      ' EN/', ' EU/', ' DE/', ' FR/', ' IT/', ' ZH/', ' JA/', ' ES/', ' RU/', ' PL/', ' CS/', 'ROW/',
-      ' EN ', ' EU ', ' DE ', ' FR ', ' IT ', ' ZH ', ' JA ', ' ES ', ' RU ', ' PL ', ' CS ', ' ROW ',
-      ' PRE-ORDER', ' Steam Account'
-    ],
-    excludeTitleWords: [
-      'Steam Gift', 'Global Steam Gift', 'Global Steam', 'Asia Steam'
-    ]
-  };
-}
-
-export class GamivoSearchConfig extends ComponentConfig {
-  public componentId: string = 'GamivoSearch';
-  public texthandle: ITextHandleConfig = {
-    startWords: [],
-    cutToEndWords: [
-      ' EN/', ' EU/', ' DE/', ' FR/', ' IT/', ' ZH/', ' JA/', ' ES/', ' RU/', ' PL/', ' CS/', 'ROW/',
-      ' EN ', ' EU ', ' DE ', ' FR ', ' IT ', ' ZH ', ' JA ', ' ES ', ' RU ', ' PL ', ' CS ', ' ROW ',
-      ' PRE-ORDER', ' Steam Account'
-    ],
-    excludeTitleWords: [
-      'Steam Gift', 'Global Steam Gift', 'Global Steam', 'Asia Steam'
-    ],
-    endWords: [
-      ' EN', ' EU', ' DE', ' FR', ' IT', ' ZH', ' JA', ' ES', ' RU', ' PL', ' CS', ' ROW'
-    ]
-  };
-}
+export const ControllerClassMap = new TSMap<string, new(componentConfig: ComponentConfig) => ComponentController>([
+  [
+    ControllerType.MAIN_PAGE, GamivoMainPageController
+  ],
+  [
+    ControllerType.PRODUCT, GamivoProductController
+  ],
+  [
+    ControllerType.SEARCH, GamivoSearchController
+  ]
+]);

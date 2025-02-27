@@ -4,15 +4,9 @@ import { ComponentController } from './../../../core/componentController';
 import { FanaticalGeneralController } from './controller/general';
 import { FanaticalProductController } from './controller/product';
 import { FanaticalSearchController } from './controller/search';
-
-export class FanaticalGeneralConfig extends ComponentConfig {
-}
-
-export class FanaticalProductConfig extends ComponentConfig {
-}
-
-export class FanaticalSearchConfig extends ComponentConfig {
-}
+import { FanaticalGeneralConfig } from './config/general';
+import { FanaticalProductConfig } from './config/product';
+import { FanaticalSearchConfig } from './config/search';
 
 export enum ControllerType {
   GENERAL = 'GENERAL',
