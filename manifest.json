@@ -87,13 +87,13 @@
     },
     {
       "css": [
-        "src/component/web/gamesplanet/search/style.css"
+        "src/component/web/gamesplanet/style.css"
       ],
       "js": [
-        "src/component/web/gamesplanet/search/content.js"
+        "src/component/web/gamesplanet/content.js"
       ],
       "matches": [
-        "https://*.gamesplanet.com/search?*"
+        "https://*.gamesplanet.com/*"
       ]
     },
     {
