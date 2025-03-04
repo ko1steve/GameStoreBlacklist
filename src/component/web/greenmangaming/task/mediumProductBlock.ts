@@ -1,6 +1,6 @@
-import { MultiListTaskHandler } from './../../../../..//core/task/multi-list-task-handler';
+import { MultiListTaskHandler } from '../../../../core/task/multi-list-task-handler';
 
-export class GreenManGamingComingSoonTaskHandler extends MultiListTaskHandler {
+export class GreenManGamingMediumProductBlockTaskHandler extends MultiListTaskHandler {
   protected getMultiGameListContainer (): HTMLElement[] | undefined {
     const collection = Array.from(document.getElementsByClassName('large-product-block')) as HTMLElement[];
     if (!collection || collection.length === 0) {
@@ -13,6 +13,10 @@ export class GreenManGamingComingSoonTaskHandler extends MultiListTaskHandler {
       }
     }
     return gameListContainers;
+  }
+
+  protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] {
+    return Array.from(gameListContainer.children).slice(1) as HTMLElement[];
   }
 
   protected isGameListFirstChildExist (children: HTMLElement[]): boolean {

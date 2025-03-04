@@ -1,12 +1,12 @@
-import { MultiListTaskHandler } from './../../../../..//core/task/multi-list-task-handler';
+import { MultiListTaskHandler } from '../../../../core/task/multi-list-task-handler';
 
-export class GreenManGamingMediumProductBlockTaskHandler extends MultiListTaskHandler {
+export class GreenManGamingProductBlockTaskHandler extends MultiListTaskHandler {
   protected getMultiGameListContainer (): HTMLElement[] | undefined {
-    const collection = Array.from(document.getElementsByClassName('large-product-block')) as HTMLElement[];
+    const collection = Array.from(document.getElementsByClassName('medium-product-block')) as HTMLElement[];
     if (!collection || collection.length === 0) {
       return undefined;
     }
-    const gameListContainers = collection.map(e => e.children[0]?.children[0]?.children[0]?.children[0]?.children[0] as HTMLElement);
+    const gameListContainers = collection.map(e => e.getElementsByClassName('module-content')[0] as HTMLElement);
     for (const container of gameListContainers) {
       if (!container) {
         return undefined;
@@ -16,7 +16,7 @@ export class GreenManGamingMediumProductBlockTaskHandler extends MultiListTaskHa
   }
 
   protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] {
-    return Array.from(gameListContainer.children).slice(1) as HTMLElement[];
+    return super.getGameListChildren(gameListContainer).filter(e => !e.getElementsByTagName('a')[0].href.includes('/publisher-sale/'));
   }
 
   protected isGameListFirstChildExist (children: HTMLElement[]): boolean {
@@ -29,6 +29,6 @@ export class GreenManGamingMediumProductBlockTaskHandler extends MultiListTaskHa
   }
 
   protected getRawGameTitle (infoContainer: HTMLElement): string | undefined {
-    return (infoContainer.children[0]?.children[0]?.children[3]?.children[0] as HTMLImageElement)?.alt;
+    return (infoContainer.getElementsByClassName('img-full')[0] as HTMLImageElement)?.alt;
   }
 }

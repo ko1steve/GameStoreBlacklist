@@ -1,15 +1,6 @@
-import { MultiListTaskHandler } from './../../../../../core/task/multi-list-task-handler';
+import { MultiListTaskHandler } from '../../../../core/task/multi-list-task-handler';
 
-export class GreenManGamingMediumProductBlockTaskHandler extends MultiListTaskHandler {
-  protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] {
-    return Array.from(gameListContainer.children).slice(1) as HTMLElement[];
-  }
-
-  protected isGameListFirstChildExist (children: HTMLElement[]): boolean {
-    const firstGameInfo = children[0];
-    return firstGameInfo?.children[0]?.children[0] !== undefined;
-  }
-
+export class GreenManGamingComingSoonTaskHandler extends MultiListTaskHandler {
   protected getMultiGameListContainer (): HTMLElement[] | undefined {
     const collection = Array.from(document.getElementsByClassName('large-product-block')) as HTMLElement[];
     if (!collection || collection.length === 0) {
@@ -22,6 +13,11 @@ export class GreenManGamingMediumProductBlockTaskHandler extends MultiListTaskHa
       }
     }
     return gameListContainers;
+  }
+
+  protected isGameListFirstChildExist (children: HTMLElement[]): boolean {
+    const firstGameInfo = children[0];
+    return firstGameInfo?.children[0]?.children[0] !== undefined;
   }
 
   protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | undefined {
