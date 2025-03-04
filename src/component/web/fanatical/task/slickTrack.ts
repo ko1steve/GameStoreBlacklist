@@ -1,5 +1,5 @@
-import { MultiListTaskHandler } from './../../../../core/task/multiListTaskHandler';
-import { StringFormatter } from './../../../../util/stringFormatter';
+import { MultiListTaskHandler } from './../../../../core/task/multi-list-task-handler';
+import { StringFormatter } from './../../../../util/string-formatter';
 
 export class FanaticalSlickTrackTaskHandler extends MultiListTaskHandler {
   protected getMultiGameListContainer (): HTMLElement[] | undefined {

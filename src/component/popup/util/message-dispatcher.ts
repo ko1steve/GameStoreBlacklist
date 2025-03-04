@@ -1,7 +1,7 @@
 import { Singleton } from 'typescript-ioc';
-import { Message } from './../../../data/messageData';
-import { MessageDispatcher } from './../../../util/messageDispatcher';
-import { PopupCommonUtil } from './popupCommonUtil';
+import { Message } from './../../../data/message-data';
+import { MessageDispatcher } from './../../../util/message-dispatcher';
+import { PopupCommonUtil } from './common-util';
 
 @Singleton
 export class PopupMessageDispatcher extends MessageDispatcher {

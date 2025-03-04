@@ -1,6 +1,6 @@
 import { TSMap } from 'typescript-map';
-import { ComponentConfig } from './../../../core/componentConfig';
-import { ComponentController } from './../../../core/componentController';
+import { ComponentConfig } from './../../../core/component-config';
+import { ComponentController } from './../../../core/component-controller';
 import { FanaticalGeneralController } from './controller/general';
 import { FanaticalProductController } from './controller/product';
 import { FanaticalSearchController } from './controller/search';
@@ -32,7 +32,7 @@ export const UrlTypeMap = new TSMap<string, ControllerType>([
   ]
 ]);
 
-export const ConfigClassMap = new TSMap<string, new () => ComponentConfig>([
+export const ConfigClassMap = new TSMap<string, new() => ComponentConfig>([
   [
     ControllerType.GENERAL, FanaticalGeneralConfig
   ],
@@ -44,7 +44,7 @@ export const ConfigClassMap = new TSMap<string, new () => ComponentConfig>([
   ]
 ]);
 
-export const ControllerClassMap = new TSMap<string, new (componentConfig: ComponentConfig) => ComponentController>([
+export const ControllerClassMap = new TSMap<string, new(componentConfig: ComponentConfig) => ComponentController>([
   [
     ControllerType.GENERAL, FanaticalGeneralController
   ],

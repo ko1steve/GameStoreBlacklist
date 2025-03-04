@@ -1,6 +1,6 @@
 import { Singleton } from 'typescript-ioc';
 import { TSMap } from 'typescript-map';
-import { Message, MessageType } from './../data/messageData';
+import { Message, MessageType } from './../data/message-data';
 
 export type MessageListenerCallback = (message: Message, sender: chrome.runtime.MessageSender, sendResponse: (response?: any) => void) => void;
 

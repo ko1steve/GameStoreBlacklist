@@ -1,4 +1,4 @@
-import { ListTaskHandler } from 'src/core/task/listTaskHandler';
+import { ListTaskHandler } from 'src/core/task/list-task-handler';
 
 export class GamesplanetSearchTaskHandler extends ListTaskHandler {
   protected isGameListFirstChildExist (children: HTMLElement[]): boolean {

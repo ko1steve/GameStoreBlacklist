@@ -1,89 +1,28 @@
-import { CommonUtil } from 'src/util/commonUtil';
-import { IGameInfoOption } from 'src/data/commonData';
-import { StringFormatter } from 'src/util/stringFormatter';
-import { TaskHandler } from './taskHandler';
+import { CommonUtil } from './../../util/common-util';
+import { StringFormatter } from './../../util/string-formatter';
+import { IGameInfoOption } from './../../data/common-data';
+import { TaskHandler } from './task-handler';
 
-export class ListTaskHandler extends TaskHandler {
-  protected countGameListElementInit: number = 0;
-
+export class ProductTaskHandler extends TaskHandler {
   public start (): Promise<void> {
     return new Promise<void>(resolve => {
-      const gameListContainer = this.getGameListContainer();
-      if (!gameListContainer || !gameListContainer.dataset || gameListContainer.dataset.hasInit === 'true') {
+      const rawGameTitle = this.getRawGameTitle();
+      if (!rawGameTitle) {
         return resolve();
       }
-      const gameListChildren = this.getGameListChildren(gameListContainer);
-      if (gameListChildren.length === 0 || !this.isGameListFirstChildExist(gameListChildren)) {
+      const gameTitle = this.getModifiedGameTitle(rawGameTitle);
+
+      const checkboxParent = this.getCheckboxParent();
+      if (!checkboxParent) {
         return resolve();
       }
-      gameListChildren.forEach(gameInfoElement => {
-        this.addCheckBoxToGameListEachChild(gameInfoElement, gameListContainer);
-      });
-      if (this.countGameListElementInit === gameListChildren.length) {
-        gameListContainer.dataset.hasInit = 'true';
-      }
-      this.countGameListElementInit = 0;
+      const inBlacklist = this.dataModel.getGameStatus(gameTitle);
+      this.addCheckbox(checkboxParent, gameTitle, inBlacklist);
       resolve();
     });
   }
 
-  protected getGameListContainer (): HTMLElement | undefined {
-    const container = document.getElementById('gameList');
-    if (!container) {
-      return undefined;
-    }
-    return container;
-  }
-
-  protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] {
-    return Array.from(gameListContainer.children) as HTMLElement[];
-  }
-
-  protected isGameListFirstChildExist (children: HTMLElement[]): boolean {
-    const firstGameInfo = children[0];
-    return firstGameInfo !== undefined;
-  }
-
-  protected addCheckBoxToGameListEachChild (gameInfoElement: HTMLElement, gameListContainer: HTMLElement): void {
-    if (gameInfoElement.dataset && gameInfoElement.dataset.hasInit === 'true') {
-      this.countGameListElementInit++;
-      return;
-    }
-    const modifiedInfoElement = this.modifyGameInfoElement(gameInfoElement, gameListContainer);
-    if (!modifiedInfoElement) {
-      return;
-    }
-    gameInfoElement = modifiedInfoElement;
-    const rawGameTitle = this.getRawGameTitle(gameInfoElement);
-    if (!rawGameTitle) {
-      return;
-    }
-    const gameTitle = this.getModifiedGameTitle(rawGameTitle);
-
-    const checkboxParent = this.getCheckboxParent(gameInfoElement);
-    if (!checkboxParent) {
-      return;
-    }
-    const inBlacklist = this.dataModel.getGameStatus(gameTitle);
-    this.addCheckbox(checkboxParent, gameTitle, inBlacklist, {
-      hideGame: {
-        infoElement: gameInfoElement,
-        parentList: gameListContainer
-      }
-    });
-    if (inBlacklist && !this.dataModel.showBlacklistGame) {
-      this.hideGame(gameListContainer, gameInfoElement);
-    }
-    gameInfoElement.dataset.hasInit = 'true';
-    this.countGameListElementInit++;
-  }
-
-  protected modifyGameInfoElement (infoElement: HTMLElement, parent: HTMLElement): HTMLElement | undefined {
-    // ex. add class, remove children
-    return infoElement;
-  }
-
-  protected getRawGameTitle (infoContainer?: HTMLElement): string | undefined {
+  protected getRawGameTitle (): string | undefined {
     return document.getElementById('title')?.innerText;
   }
 
@@ -112,8 +51,12 @@ export class ListTaskHandler extends TaskHandler {
     return gameTitle;
   }
 
-  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | undefined {
-    return infoContainer;
+  protected getCheckboxParent (infoContainer?: HTMLElement): HTMLElement | undefined {
+    const checkboxParent = document.getElementById('product-info');
+    if (!checkboxParent) {
+      return undefined;
+    }
+    return checkboxParent;
   }
 
   protected addCheckbox (checkboxParent: HTMLElement, gameTitle: string, inBlacklist: boolean, option?: IGameInfoOption): void {

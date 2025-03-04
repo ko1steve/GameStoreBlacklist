@@ -5,7 +5,7 @@ import TerserWebpackPlugin from 'terser-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import HTMLWebpackPlugin from 'html-webpack-plugin';
 import { ProvidePlugin } from 'webpack';
-import { AssetList } from './../src/assetList';
+import { AssetList } from './../src/asset-list';
 
 const appDir = Path.dirname(__dirname);
 

@@ -1,6 +1,6 @@
-import { GamivoCarouselInnerTaskHandler } from './../task/carouselInner';
-import { GamivoHomeRecommendTaskHandler } from './../task/homeRecommend';
-import { ComponentController } from './../../../../core/componentController';
+import { GamivoCarouselInnerTaskHandler } from './../task/carousel-inner';
+import { GamivoHomeRecommendTaskHandler } from './../task/home-recommend';
+import { ComponentController } from './../../../../core/component-controller';
 
 export class GamivoMainPageController extends ComponentController {
   protected setupTaskQueue (): void {

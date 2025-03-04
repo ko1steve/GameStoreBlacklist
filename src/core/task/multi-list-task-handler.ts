@@ -1,7 +1,7 @@
-import { CommonUtil } from 'src/util/commonUtil';
-import { IGameInfoOption } from 'src/data/commonData';
-import { StringFormatter } from 'src/util/stringFormatter';
-import { TaskHandler } from './taskHandler';
+import { CommonUtil } from './../../util/common-util';
+import { IGameInfoOption } from './../../data/common-data';
+import { StringFormatter } from './../../util/string-formatter';
+import { TaskHandler } from './task-handler';
 
 export class MultiListTaskHandler extends TaskHandler {
   protected countGameListElementInit: number = 0;

@@ -1,12 +1,12 @@
 import './popup.css';
-import { MainConfig } from 'src/mainConfig';
+import { MainConfig } from 'src/main-config';
 import { Container, Inject } from 'typescript-ioc';
 import { IPopupConfig, PopupConfig } from './config';
-import { PopupDataModel } from './model/popupDataModel';
-import { IPopupInitData } from './data/popupCommonData';
-import { PopupMessageDispatcher } from './util/popupMessageDispatcher';
-import { MessageType } from './../../data/messageData';
-import { IReqeustBlacklistDataResponse } from './../../component/popup/data/popupMessageData';
+import { PopupDataModel } from './model/data-model';
+import { IPopupInitData } from './data/common-data';
+import { PopupMessageDispatcher } from './util/message-dispatcher';
+import { MessageType } from './../../data/message-data';
+import { IReqeustBlacklistDataResponse } from './../../component/popup/data/message-data';
 
 export class PopupController {
   @Inject

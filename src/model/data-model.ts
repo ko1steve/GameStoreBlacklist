@@ -2,10 +2,10 @@ import Pako from 'pako';
 import { TSMap } from 'typescript-map';
 import { MiniSignal } from 'mini-signals';
 import { Container, Singleton } from 'typescript-ioc';
-import { MainConfig } from './../mainConfig';
-import { CommonUtil } from './../util/commonUtil';
-import { StringFormatter } from './../util/stringFormatter';
-import { DataStorage, DataVersion, StorageType, StorageDataType } from './../util/dataStorage';
+import { MainConfig } from './../main-config';
+import { CommonUtil } from './../util/common-util';
+import { StringFormatter } from './../util/string-formatter';
+import { DataStorage, DataVersion, StorageType, StorageDataType } from './../util/data-storage';
 
 @Singleton
 export class DataModel {

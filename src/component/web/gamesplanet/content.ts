@@ -1,12 +1,12 @@
 import './style.css';
 import { TSMap } from 'typescript-map';
 import { Container } from 'typescript-ioc';
-import { ComponentController } from './../../../core/componentController';
-import { CommonUtil } from './../../../util/commonUtil';
-import { StringFormatter } from './../../../util/stringFormatter';
-import { MessageDispatcher } from './../../../util/messageDispatcher';
-import { MessageType } from './../../../data/messageData';
-import { UrlTypeMap, ConfigClassMap, ControllerClassMap, ControllerType } from './configmap';
+import { ComponentController } from './../../../core/component-controller';
+import { CommonUtil } from './../../../util/common-util';
+import { StringFormatter } from './../../../util/string-formatter';
+import { MessageDispatcher } from './../../../util/message-dispatcher';
+import { MessageType } from './../../../data/message-data';
+import { UrlTypeMap, ConfigClassMap, ControllerClassMap, ControllerType } from './config-map';
 
 let currentUrl: string = StringFormatter.EMPTY_STRING;
 let currentController: ComponentController;

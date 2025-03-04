@@ -1,4 +1,4 @@
-import { ListTaskHandler } from './../../../../../core/task/listTaskHandler';
+import { ListTaskHandler } from './../../../../../core/task/list-task-handler';
 
 export class HumbleBundleSlickTrackTaskHandler extends ListTaskHandler {
   protected getGameListContainer (): HTMLElement | undefined {

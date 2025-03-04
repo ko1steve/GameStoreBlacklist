@@ -1,5 +1,5 @@
-import { DataModel } from './../../model/dataModel';
-import { ComponentConfig } from './../componentConfig';
+import { DataModel } from './../../model/data-model';
+import { ComponentConfig } from './../component-config';
 
 export class TaskHandler {
   protected componentConfig: ComponentConfig;

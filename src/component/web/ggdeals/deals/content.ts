@@ -1,8 +1,8 @@
 import './style.css';
 import { Container } from 'typescript-ioc';
 import { GgdealDealsConfig } from './config';
-import { ComponentController } from './../../../../core/componentController';
-import { GgdealsListItemsTaskHandler } from './task/listItems';
+import { ComponentController } from './../../../../core/component-controller';
+import { GgdealsListItemsTaskHandler } from './task/list-items';
 
 class GgdealsDealsController extends ComponentController {
   protected setupTaskQueue (): void {

@@ -1,4 +1,4 @@
-import { ComponentConfig, ITextHandleConfig } from './../../../../core/componentConfig';
+import { ComponentConfig, ITextHandleConfig } from './../../../../core/component-config';
 
 export class GamivoSearchConfig extends ComponentConfig {
   public componentId: string = 'GamivoSearch';

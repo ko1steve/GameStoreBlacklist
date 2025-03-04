@@ -1,12 +1,12 @@
 import './style.css';
 import { Container } from 'typescript-ioc';
-import { ComponentController } from './../../../../core/componentController';
+import { ComponentController } from './../../../../core/component-controller';
 import { YuplayProductConfig } from './config';
 import { YuplayRecommendedTaskHandler } from './task/recommended';
-import { YuplayMostWantedTaskHandler } from './task/mostWanted';
-import { YuplayMidweekMadnessTaskHandler } from './task/midweekMadness';
-import { YuplayJustArrivedTaskHandler } from './task/justArrived';
-import { YuplayComingSoonTaskHandler } from './task/comingSoon';
+import { YuplayMostWantedTaskHandler } from './task/most-wanted';
+import { YuplayMidweekMadnessTaskHandler } from './task/midweek-madness';
+import { YuplayJustArrivedTaskHandler } from './task/just-arrived';
+import { YuplayComingSoonTaskHandler } from './task/coming-soon';
 
 class YuplayMainPageController extends ComponentController {
   protected setupTaskQueue (): void {

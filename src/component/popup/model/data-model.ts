@@ -1,9 +1,9 @@
 import { Container, Singleton } from 'typescript-ioc';
 import { MiniSignal } from 'mini-signals';
-import { MainConfig } from './../../../mainConfig';
-import { PopupMessageDispatcher } from './../util/popupMessageDispatcher';
-import { MessageType } from './../../../data/messageData';
-import { IPopupInitData } from './../data/popupCommonData';
+import { MainConfig } from './../../../main-config';
+import { PopupMessageDispatcher } from './../util/message-dispatcher';
+import { MessageType } from './../../../data/message-data';
+import { IPopupInitData } from './../data/common-data';
 
 @Singleton
 export class PopupDataModel {

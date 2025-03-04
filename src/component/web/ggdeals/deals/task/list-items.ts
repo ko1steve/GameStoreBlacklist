@@ -1,5 +1,5 @@
-import { StringFormatter } from 'src/util/stringFormatter';
-import { ListTaskHandler } from './../../../../../core/task/listTaskHandler';
+import { StringFormatter } from 'src/util/string-formatter';
+import { ListTaskHandler } from './../../../../../core/task/list-task-handler';
 
 export class GgdealsListItemsTaskHandler extends ListTaskHandler {
   protected getGameListContainer (): HTMLElement | undefined {

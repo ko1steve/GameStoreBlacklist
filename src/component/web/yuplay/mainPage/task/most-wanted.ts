@@ -1,6 +1,6 @@
-import { ListTaskHandler } from './../../../../../core/task/listTaskHandler';
+import { ListTaskHandler } from './../../../../../core/task/list-task-handler';
 
-export class YuplayJustArrivedTaskHandler extends ListTaskHandler {
+export class YuplayMostWantedTaskHandler extends ListTaskHandler {
   protected getGameListContainer (): HTMLElement | undefined {
     const catalog = document.getElementsByClassName('catalog') as HTMLCollection;
     if (!catalog) {
@@ -8,7 +8,7 @@ export class YuplayJustArrivedTaskHandler extends ListTaskHandler {
     }
     const catalogArr = Array.from(catalog) as HTMLElement[];
     for (const item of catalogArr) {
-      if (item.dataset && item.dataset.catalog_id === 'just-arrived-catalog') {
+      if (item.dataset && item.dataset.catalog_id === 'most-wanted-catalog') {
         return item;
       }
     }

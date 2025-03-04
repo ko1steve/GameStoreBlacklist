@@ -1,6 +1,6 @@
 import { TSMap } from 'typescript-map';
-import { ComponentConfig } from './../../../core/componentConfig';
-import { ComponentController } from './../../../core/componentController';
+import { ComponentConfig } from './../../../core/component-config';
+import { ComponentController } from './../../../core/component-controller';
 import { GamivoSearchConfig } from './../gamivo/config/search';
 import { GamivoSearchController } from './../gamivo/controller/search';
 

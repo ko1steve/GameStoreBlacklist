@@ -1,5 +1,5 @@
-import { StringFormatter } from 'src/util/stringFormatter';
-import { MultiListTaskHandler } from './../../../../../core/task/multiListTaskHandler';
+import { StringFormatter } from 'src/util/string-formatter';
+import { MultiListTaskHandler } from './../../../../../core/task/multi-list-task-handler';
 
 export class HumbleBundleSlickTrackTaskHandler extends MultiListTaskHandler {
   protected getMultiGameListContainer (): HTMLElement[] | undefined {

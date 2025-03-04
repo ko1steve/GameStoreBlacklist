@@ -1,4 +1,4 @@
-import { ComponentController } from './../../../../core/componentController';
+import { ComponentController } from './../../../../core/component-controller';
 import { GamivoProductTaskHandler } from './../task/product';
 import { GamivoRecommendTaskHandler } from './../task/recommend';
 

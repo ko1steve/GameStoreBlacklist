@@ -1,6 +1,6 @@
 import './style.css';
 import { Container } from 'typescript-ioc';
-import { ComponentController } from './../../../../core/componentController';
+import { ComponentController } from './../../../../core/component-controller';
 import { YuplaySearchConfig } from './config';
 import { YuplaySearchTaskHandler } from './task/seatch';
 

@@ -1,10 +1,10 @@
 import { TSMap } from 'typescript-map';
-import { ComponentConfig } from './../../../core/componentConfig';
-import { ComponentController } from './../../../core/componentController';
-import { GamivoMainPageConfig } from './config/mainPage';
+import { ComponentConfig } from './../../../core/component-config';
+import { ComponentController } from './../../../core/component-controller';
+import { GamivoMainPageConfig } from './config/main-page';
 import { GamivoProductConfig } from './config/product';
 import { GamivoSearchConfig } from './config/search';
-import { GamivoMainPageController } from './controller/mainPage';
+import { GamivoMainPageController } from './controller/main-page';
 import { GamivoProductController } from './controller/product';
 import { GamivoSearchController } from './controller/search';
 
@@ -53,7 +53,7 @@ export const UrlTypeMap = new TSMap<string, ControllerType>([
   ]
 ]);
 
-export const ConfigClassMap = new TSMap<string, new() => ComponentConfig>([
+export const ConfigClassMap = new TSMap<string, new () => ComponentConfig>([
   [
     ControllerType.MAIN_PAGE, GamivoMainPageConfig
   ],
@@ -65,7 +65,7 @@ export const ConfigClassMap = new TSMap<string, new() => ComponentConfig>([
   ]
 ]);
 
-export const ControllerClassMap = new TSMap<string, new(componentConfig: ComponentConfig) => ComponentController>([
+export const ControllerClassMap = new TSMap<string, new (componentConfig: ComponentConfig) => ComponentController>([
   [
     ControllerType.MAIN_PAGE, GamivoMainPageController
   ],

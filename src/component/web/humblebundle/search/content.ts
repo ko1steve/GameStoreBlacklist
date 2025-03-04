@@ -1,6 +1,6 @@
 import './style.css';
 import { Container } from 'typescript-ioc';
-import { ComponentController } from './../../../../core/componentController';
+import { ComponentController } from './../../../../core/component-controller';
 import { HumbleBundleSearchConfig } from './config';
 import { HumbleBundleSearchTaskHandler } from './task/search';
 

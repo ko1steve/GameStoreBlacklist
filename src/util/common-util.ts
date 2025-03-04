@@ -1,4 +1,4 @@
-import { Message, MessageType } from './../data/messageData';
+import { Message, MessageType } from './../data/message-data';
 
 export class CommonUtil {
   public static async showLog (param: any, ...optionalParams: any[]): Promise<void> {

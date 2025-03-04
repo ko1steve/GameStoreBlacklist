@@ -1,9 +1,9 @@
 import './style.css';
 import { Container } from 'typescript-ioc';
-import { ComponentController } from './../../../../core/componentController';
+import { ComponentController } from './../../../../core/component-controller';
 import { HumbleBundleProductConfig } from './config';
 import { HumbleBundleProductTaskHandler } from './task/product';
-import { HumbleBundleSlickTrackTaskHandler } from './task/slickTrack';
+import { HumbleBundleSlickTrackTaskHandler } from './task/slick-track';
 
 class HumbleBundleProductController extends ComponentController {
   protected setupTaskQueue (): void {

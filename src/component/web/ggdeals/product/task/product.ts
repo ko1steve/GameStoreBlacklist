@@ -1,4 +1,4 @@
-import { ProductTaskHandler } from './../../../../../core/task/productTaskHandler';
+import { ProductTaskHandler } from './../../../../../core/task/product-task-handler';
 
 export class GgdealsProductTaskHandler extends ProductTaskHandler {
   protected getCheckboxParent (): HTMLElement | undefined {

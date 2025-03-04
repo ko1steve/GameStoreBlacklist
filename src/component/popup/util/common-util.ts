@@ -1,5 +1,5 @@
-import { Message, MessageType } from './../../../data/messageData';
-import { CommonUtil } from './../../../util/commonUtil';
+import { Message, MessageType } from './../../../data/message-data';
+import { CommonUtil } from './../../../util/common-util';
 
 export class PopupCommonUtil extends CommonUtil {
   public static async showLog (param: any, ...optionalParams: any[]): Promise<void> {

@@ -1,4 +1,4 @@
-import { ComponentConfig, ITextHandleConfig } from './../../../../core/componentConfig';
+import { ComponentConfig, ITextHandleConfig } from './../../../../core/component-config';
 
 export class GgdealDealsConfig extends ComponentConfig {
   public texthandle: ITextHandleConfig = {

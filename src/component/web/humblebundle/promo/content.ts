@@ -1,8 +1,8 @@
 import './style.css';
 import { Container } from 'typescript-ioc';
-import { ComponentController } from './../../../../core/componentController';
+import { ComponentController } from './../../../../core/component-controller';
 import { HumbleBundlePromoConfig } from './config';
-import { HumbleBundleSlickTrackTaskHandler } from './task/slickTrack';
+import { HumbleBundleSlickTrackTaskHandler } from './task/slick-track';
 import { HumbleBundleSearchTaskHandler } from './task/search';
 
 class HumbleBundlePromoController extends ComponentController {

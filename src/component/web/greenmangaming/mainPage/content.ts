@@ -1,6 +1,6 @@
 import './style.css';
 import { Container } from 'typescript-ioc';
-import { ComponentController } from './../../../../core/componentController';
+import { ComponentController } from './../../../../core/component-controller';
 import { GreenManGamingMainPageConfig } from './config';
 import { GreenManGamingMediumProductBlockTaskHandler } from './task/mediumProductBlock';
 import { GreenManGamingProductBloackTaskHandler } from 'src/component/web/greenmangaming/mainPage/task/productBlock';

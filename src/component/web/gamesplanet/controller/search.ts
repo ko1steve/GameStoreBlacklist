@@ -1,4 +1,4 @@
-import { ComponentController } from './../../../../core/componentController';
+import { ComponentController } from './../../../../core/component-controller';
 import { GamesplanetSearchTaskHandler } from '../task/search';
 
 export class GamesplanetSearchController extends ComponentController {
