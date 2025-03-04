@@ -153,37 +153,13 @@
     },
     {
       "css": [
-        "src/component/web/ggdeals/product/style.css"
+        "src/component/web/ggdeals/style.css"
       ],
       "js": [
-        "src/component/web/ggdeals/product/content.js"
+        "src/component/web/ggdeals/content.js"
       ],
       "matches": [
-        "https://gg.deals/game/*",
-        "https://gg.deals/dlc/*",
-        "https://gg.deals/pack/*"
-      ]
-    },
-    {
-      "css": [
-        "src/component/web/ggdeals/deals/style.css"
-      ],
-      "js": [
-        "src/component/web/ggdeals/deals/content.js"
-      ],
-      "matches": [
-        "https://gg.deals/deals/*"
-      ]
-    },
-    {
-      "css": [
-        "src/component/web/ggdeals/games/style.css"
-      ],
-      "js": [
-        "src/component/web/ggdeals/games/content.js"
-      ],
-      "matches": [
-        "https://gg.deals/games/*"
+        "https://gg.deals/*"
       ]
     },
     {

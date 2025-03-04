@@ -1,6 +1,8 @@
 import { ComponentConfig, ITextHandleConfig } from './../../../../core/component-config';
 
-export class GgdealDealsConfig extends ComponentConfig {
+export class GgdealsGamesConfig extends ComponentConfig {
+  public componentId: string = 'ggdeals-games';
+
   public texthandle: ITextHandleConfig = {
     startWords: [],
     endWords: [],

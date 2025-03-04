@@ -1,9 +1,19 @@
 .checkboxImg {
+  cursor: pointer;
+}
+
+.checkboxContainer {
+  position: absolute;
+  top: 12px;
+  left: -50px;
+  z-index: 999;
+}
+
+.checkboxContainer-right {
   position: absolute;
   top: 0px;
   right: 0px;
-  cursor: pointer;
-  z-index: 2;
+  z-index: 999;
 }
 
 #showBlacklistGameCheckboxImg {

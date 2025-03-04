@@ -53,7 +53,7 @@ export const UrlTypeMap = new TSMap<string, ControllerType>([
   ]
 ]);
 
-export const ConfigClassMap = new TSMap<string, new () => ComponentConfig>([
+export const ConfigClassMap = new TSMap<string, new() => ComponentConfig>([
   [
     ControllerType.MAIN_PAGE, GamivoMainPageConfig
   ],
@@ -65,7 +65,7 @@ export const ConfigClassMap = new TSMap<string, new () => ComponentConfig>([
   ]
 ]);
 
-export const ControllerClassMap = new TSMap<string, new (componentConfig: ComponentConfig) => ComponentController>([
+export const ControllerClassMap = new TSMap<string, new(componentConfig: ComponentConfig) => ComponentController>([
   [
     ControllerType.MAIN_PAGE, GamivoMainPageController
   ],
