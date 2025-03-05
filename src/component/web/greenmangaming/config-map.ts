@@ -14,7 +14,7 @@ export enum ControllerType {
   COMING_SOON = 'COMING_SOON',
   MAIN_PAGE = 'MAIN_PAGE',
   SALES = 'SALES',
-  SEARCH = 'SALES'
+  SEARCH = 'SEARCH'
 }
 
 export const UrlTypeMap = new TSMap<string, ControllerType>([
