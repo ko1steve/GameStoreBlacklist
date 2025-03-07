@@ -9,11 +9,17 @@ export class ListTaskHandler extends TaskHandler {
   public start (): Promise<void> {
     return new Promise<void>(resolve => {
       const gameListContainer = this.getGameListContainer();
-      if (!gameListContainer || !gameListContainer.dataset || gameListContainer.dataset.hasInit === 'true') {
+      if (!gameListContainer) {
+        CommonUtil.showLog('Can\'t find the information list.');
+        return resolve();
+      }
+      if (gameListContainer.dataset.hasInit === 'true') {
+        CommonUtil.showLog('The information list has been already handled.');
         return resolve();
       }
       const gameListChildren = this.getGameListChildren(gameListContainer);
       if (gameListChildren.length === 0 || !this.isGameListFirstChildExist(gameListChildren)) {
+        console.log(2);
         return resolve();
       }
       gameListChildren.forEach(gameInfoElement => {
@@ -47,21 +53,25 @@ export class ListTaskHandler extends TaskHandler {
   protected addCheckBoxToGameListEachChild (gameInfoElement: HTMLElement, gameListContainer: HTMLElement): void {
     if (gameInfoElement.dataset && gameInfoElement.dataset.hasInit === 'true') {
       this.countGameListElementInit++;
+      console.log(3);
       return;
     }
     const modifiedInfoElement = this.modifyGameInfoElement(gameInfoElement, gameListContainer);
     if (!modifiedInfoElement) {
+      console.log(4);
       return;
     }
     gameInfoElement = modifiedInfoElement;
     const rawGameTitle = this.getRawGameTitle(gameInfoElement);
     if (!rawGameTitle) {
+      console.log(5);
       return;
     }
     const gameTitle = this.getModifiedGameTitle(rawGameTitle);
 
     const checkboxParent = this.getCheckboxParent(gameInfoElement);
     if (!checkboxParent) {
+      console.log(6);
       return;
     }
     const inBlacklist = this.dataModel.getGameStatus(gameTitle);

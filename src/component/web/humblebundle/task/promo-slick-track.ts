@@ -1,7 +1,7 @@
 import { StringFormatter } from 'src/util/string-formatter';
-import { MultiListTaskHandler } from './../../../../../core/task/multi-list-task-handler';
+import { MultiListTaskHandler } from './../../../../core/task/multi-list-task-handler';
 
-export class HumbleBundleSlickTrackTaskHandler extends MultiListTaskHandler {
+export class HumbleBundlePromoSlickTrackTaskHandler extends MultiListTaskHandler {
   protected getMultiGameListContainer (): HTMLElement[] | undefined {
     const containers = Array.from(document.getElementsByClassName('slick-track')) as HTMLElement[];
     if (!containers || containers.length === 0) {

@@ -1,4 +1,4 @@
-import { ProductTaskHandler } from './../../../../../core/task/product-task-handler';
+import { ProductTaskHandler } from './../../../../core/task/product-task-handler';
 
 export class HumbleBundleProductTaskHandler extends ProductTaskHandler {
   protected getRawGameTitle (): string {

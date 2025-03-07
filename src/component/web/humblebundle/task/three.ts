@@ -1,4 +1,4 @@
-import { MultiListTaskHandler } from './../../../../../core/task/multi-list-task-handler';
+import { MultiListTaskHandler } from '../../../../core/task/multi-list-task-handler';
 
 export class HumbleBundleThreeTaskHandler extends MultiListTaskHandler {
   protected getMultiGameListContainer (): HTMLElement[] | undefined {

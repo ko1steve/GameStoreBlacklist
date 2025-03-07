@@ -105,47 +105,13 @@
     },
     {
       "css": [
-        "src/component/web/humblebundle/mainPage/style.css"
+        "src/component/web/humblebundle/style.css"
       ],
       "js": [
-        "src/component/web/humblebundle/mainPage/content.js"
+        "src/component/web/humblebundle/content.js"
       ],
       "matches": [
-        "https://www.humblebundle.com/"
-      ]
-    },
-    {
-      "css": [
-        "src/component/web/humblebundle/product/style.css"
-      ],
-      "js": [
-        "src/component/web/humblebundle/product/content.js"
-      ],
-      "matches": [
-        "https://www.humblebundle.com/store/*"
-      ]
-    },
-    {
-      "css": [
-        "src/component/web/humblebundle/search/style.css"
-      ],
-      "js": [
-        "src/component/web/humblebundle/search/content.js"
-      ],
-      "matches": [
-        "https://www.humblebundle.com/store/search?*",
-        "https://www.humblebundle.com/store/c/*"
-      ]
-    },
-    {
-      "css": [
-        "src/component/web/humblebundle/promo/style.css"
-      ],
-      "js": [
-        "src/component/web/humblebundle/promo/content.js"
-      ],
-      "matches": [
-        "https://www.humblebundle.com/store/promo/*"
+        "https://www.humblebundle.com/*"
       ]
     }
   ],
