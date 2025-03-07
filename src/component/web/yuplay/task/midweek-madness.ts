@@ -1,4 +1,4 @@
-import { ListTaskHandler } from './../../../../../core/task/list-task-handler';
+import { ListTaskHandler } from '../../../../core/task/list-task-handler';
 
 export class YuplayMidweekMadnessTaskHandler extends ListTaskHandler {
   protected getGameListContainer (): HTMLElement | undefined {

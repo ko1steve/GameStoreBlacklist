@@ -17,28 +17,6 @@
   "content_scripts": [
     {
       "css": [
-        "src/component/web/greenmangaming/style.css"
-      ],
-      "js": [
-        "src/component/web/greenmangaming/content.js"
-      ],
-      "matches": [
-        "https://www.greenmangaming.com/*"
-      ]
-    },
-    {
-      "css": [
-        "src/component/web/gamesplanet/style.css"
-      ],
-      "js": [
-        "src/component/web/gamesplanet/content.js"
-      ],
-      "matches": [
-        "https://*.gamesplanet.com/*"
-      ]
-    },
-    {
-      "css": [
         "src/component/web/fanatical/style.css"
       ],
       "js": [
@@ -50,35 +28,13 @@
     },
     {
       "css": [
-        "src/component/web/yuplay/mainPage/style.css"
+        "src/component/web/gamesplanet/style.css"
       ],
       "js": [
-        "src/component/web/yuplay/mainPage/content.js"
+        "src/component/web/gamesplanet/content.js"
       ],
       "matches": [
-        "https://www.yuplay.com/"
-      ]
-    },
-    {
-      "css": [
-        "src/component/web/yuplay/product/style.css"
-      ],
-      "js": [
-        "src/component/web/yuplay/product/content.js"
-      ],
-      "matches": [
-        "https://www.yuplay.com/product/*"
-      ]
-    },
-    {
-      "css": [
-        "src/component/web/yuplay/search/style.css"
-      ],
-      "js": [
-        "src/component/web/yuplay/search/content.js"
-      ],
-      "matches": [
-        "https://www.yuplay.com/products/*"
+        "https://*.gamesplanet.com/*"
       ]
     },
     {
@@ -105,6 +61,17 @@
     },
     {
       "css": [
+        "src/component/web/greenmangaming/style.css"
+      ],
+      "js": [
+        "src/component/web/greenmangaming/content.js"
+      ],
+      "matches": [
+        "https://www.greenmangaming.com/*"
+      ]
+    },
+    {
+      "css": [
         "src/component/web/humblebundle/style.css"
       ],
       "js": [
@@ -112,6 +79,17 @@
       ],
       "matches": [
         "https://www.humblebundle.com/*"
+      ]
+    },
+    {
+      "css": [
+        "src/component/web/yuplay/style.css"
+      ],
+      "js": [
+        "src/component/web/yuplay/content.js"
+      ],
+      "matches": [
+        "https://www.yuplay.com/*"
       ]
     }
   ],

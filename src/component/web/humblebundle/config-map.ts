@@ -35,7 +35,7 @@ export const UrlTypeMap = new TSMap<RegExp, ControllerType>([
   ]
 ]);
 
-export const ConfigClassMap = new TSMap<string, new () => ComponentConfig>([
+export const ConfigClassMap = new TSMap<string, new() => ComponentConfig>([
   [
     ControllerType.MAIN_PAGE, HumbleBundleMainPageConfig
   ],
@@ -50,7 +50,7 @@ export const ConfigClassMap = new TSMap<string, new () => ComponentConfig>([
   ]
 ]);
 
-export const ControllerClassMap = new TSMap<string, new (componentConfig: ComponentConfig) => ComponentController>([
+export const ControllerClassMap = new TSMap<string, new(componentConfig: ComponentConfig) => ComponentController>([
   [
     ControllerType.MAIN_PAGE, HumbleBundleMainPageController
   ],
