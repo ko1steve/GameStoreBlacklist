@@ -1,7 +1,7 @@
 import { ComponentConfig, ITextHandleConfig } from './../../../../core/component-config';
 
 export class GamivoSearchConfig extends ComponentConfig {
-  public componentId: string = 'GamivoSearch';
+  public componentId: string = 'gamivo-search';
   public texthandle: ITextHandleConfig = {
     startWords: [],
     cutToEndWords: [

@@ -57,6 +57,6 @@ function addPopupListener (): void {
   });
 }
 
-function mathchStoreUrls (url: string): string | undefined {
-  return UrlTypeMap.keys().find(e => CommonUtil.matchWildcardPattern(e, url));
+function mathchStoreUrls (url: string): RegExp | undefined {
+  return UrlTypeMap.keys().find(e => e.test(url));
 }

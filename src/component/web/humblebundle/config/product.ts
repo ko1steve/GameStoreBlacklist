@@ -1,5 +1,5 @@
 import { ComponentConfig } from './../../../../core/component-config';
 
 export class HumbleBundleProductConfig extends ComponentConfig {
-  public componentId: string = 'humble-bundle-product';
+  public componentId: string = 'humblebundle-product';
 }

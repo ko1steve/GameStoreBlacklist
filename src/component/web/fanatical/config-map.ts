@@ -14,21 +14,18 @@ export enum ControllerType {
   SEARCH = 'SEARCH'
 }
 
-export const UrlTypeMap = new TSMap<string, ControllerType>([
+export const UrlTypeMap = new TSMap<RegExp, ControllerType>([
   [
-    'https://www.fanatical.com/*/', ControllerType.GENERAL
+    /^https:\/\/www\.fanatical\.com\/.+\/(\?.*)?$/, ControllerType.GENERAL
   ],
   [
-    'https://www.fanatical.com/*/?*', ControllerType.GENERAL
+    /^https:\/\/www\.fanatical\.com\/.+\/on-sale\/$/, ControllerType.GENERAL
   ],
   [
-    'https://www.fanatical.com/*/on-sale', ControllerType.GENERAL
+    /^https:\/\/www\.fanatical\.com\/.+\/game\/.*$/, ControllerType.PRODUCT
   ],
   [
-    'https://www.fanatical.com/*/game/*', ControllerType.PRODUCT
-  ],
-  [
-    'https://www.fanatical.com/*/search*', ControllerType.SEARCH
+    /^https:\/\/www\.fanatical\.com\/.+\/search(\?.*)?$/, ControllerType.SEARCH
   ]
 ]);
 

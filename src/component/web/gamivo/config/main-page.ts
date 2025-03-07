@@ -1,7 +1,7 @@
 import { ComponentConfig, ITextHandleConfig } from './../../../../core/component-config';
 
 export class GamivoMainPageConfig extends ComponentConfig {
-  public componentId: string = 'GamivoMainPage';
+  public componentId: string = 'gamivo-main-page';
   public texthandle: ITextHandleConfig = {
     startWords: ['Buy '],
     endWords: [' EN', ' EU', ' DE', ' FR', ' IT', ' ZH', ' JA', ' ES', ' RU', ' PL', ' CS', ' ROW'],
