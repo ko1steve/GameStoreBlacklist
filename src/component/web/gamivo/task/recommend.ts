@@ -1,4 +1,4 @@
-import { ListTaskHandler } from './../../../../core/task/listTaskHandler';
+import { ListTaskHandler } from './../../../../core/task/list-task-handler';
 
 export class GamivoRecommendTaskHandler extends ListTaskHandler {
   protected isGameListFirstChildExist (children: HTMLElement[]): boolean {

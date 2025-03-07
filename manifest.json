@@ -17,87 +17,6 @@
   "content_scripts": [
     {
       "css": [
-        "src/component/web/greenmangaming/mainPage/style.css"
-      ],
-      "js": [
-        "src/component/web/greenmangaming/mainPage/content.js"
-      ],
-      "matches": [
-        "https://www.greenmangaming.com/",
-        "https://www.greenmangaming.com/de/",
-        "https://www.greenmangaming.com/fr/",
-        "https://www.greenmangaming.com/es/",
-        "https://www.greenmangaming.com/pt/",
-        "https://www.greenmangaming.com/zh/",
-        "https://www.greenmangaming.com/ja/",
-        "https://www.greenmangaming.com/ko/",
-        "https://www.greenmangaming.com/ru/",
-        "https://www.greenmangaming.com/tr/"
-      ]
-    },
-    {
-      "css": [
-        "src/component/web/greenmangaming/sales/style.css"
-      ],
-      "js": [
-        "src/component/web/greenmangaming/sales/content.js"
-      ],
-      "matches": [
-        "https://www.greenmangaming.com/sales/*",
-        "https://www.greenmangaming.com/*/sales/*",
-        "https://www.greenmangaming.com/hot-deals/*",
-        "https://www.greenmangaming.com/*/hot-deals/*"
-      ]
-    },
-    {
-      "css": [
-        "src/component/web/greenmangaming/comingSoon/style.css"
-      ],
-      "js": [
-        "src/component/web/greenmangaming/comingSoon/content.js"
-      ],
-      "matches": [
-        "https://www.greenmangaming.com/all-games/",
-        "https://www.greenmangaming.com/*/all-games/",
-        "https://www.greenmangaming.com/coming-soon/",
-        "https://www.greenmangaming.com/*/coming-soon/",
-        "https://www.greenmangaming.com/top-upcoming-games/",
-        "https://www.greenmangaming.com/*/top-upcoming-games/",
-        "https://www.greenmangaming.com/new-gmg/",
-        "https://www.greenmangaming.com/*/new-gmg/"
-      ]
-    },
-    {
-      "css": [
-        "src/component/web/greenmangaming/search/style.css"
-      ],
-      "js": [
-        "src/component/web/greenmangaming/search/content.js"
-      ],
-      "matches": [
-        "https://www.greenmangaming.com/all-games/*",
-        "https://www.greenmangaming.com/*/all-games/*",
-        "https://www.greenmangaming.com/top-upcoming-games/pre-purchase/",
-        "https://www.greenmangaming.com/*/top-upcoming-games/pre-purchase/",
-        "https://www.greenmangaming.com/new-gmg/all-results/",
-        "https://www.greenmangaming.com/new-gmg/*/all-results/",
-        "https://www.greenmangaming.com/search?*",
-        "https://www.greenmangaming.com/*/search?*"
-      ]
-    },
-    {
-      "css": [
-        "src/component/web/gamesplanet/search/style.css"
-      ],
-      "js": [
-        "src/component/web/gamesplanet/search/content.js"
-      ],
-      "matches": [
-        "https://*.gamesplanet.com/search?*"
-      ]
-    },
-    {
-      "css": [
         "src/component/web/fanatical/style.css"
       ],
       "js": [
@@ -109,35 +28,13 @@
     },
     {
       "css": [
-        "src/component/web/yuplay/mainPage/style.css"
+        "src/component/web/gamesplanet/style.css"
       ],
       "js": [
-        "src/component/web/yuplay/mainPage/content.js"
+        "src/component/web/gamesplanet/content.js"
       ],
       "matches": [
-        "https://www.yuplay.com/"
-      ]
-    },
-    {
-      "css": [
-        "src/component/web/yuplay/product/style.css"
-      ],
-      "js": [
-        "src/component/web/yuplay/product/content.js"
-      ],
-      "matches": [
-        "https://www.yuplay.com/product/*"
-      ]
-    },
-    {
-      "css": [
-        "src/component/web/yuplay/search/style.css"
-      ],
-      "js": [
-        "src/component/web/yuplay/search/content.js"
-      ],
-      "matches": [
-        "https://www.yuplay.com/products/*"
+        "https://*.gamesplanet.com/*"
       ]
     },
     {
@@ -153,82 +50,46 @@
     },
     {
       "css": [
-        "src/component/web/ggdeals/product/style.css"
+        "src/component/web/ggdeals/style.css"
       ],
       "js": [
-        "src/component/web/ggdeals/product/content.js"
+        "src/component/web/ggdeals/content.js"
       ],
       "matches": [
-        "https://gg.deals/game/*",
-        "https://gg.deals/dlc/*",
-        "https://gg.deals/pack/*"
+        "https://gg.deals/*"
       ]
     },
     {
       "css": [
-        "src/component/web/ggdeals/deals/style.css"
+        "src/component/web/greenmangaming/style.css"
       ],
       "js": [
-        "src/component/web/ggdeals/deals/content.js"
+        "src/component/web/greenmangaming/content.js"
       ],
       "matches": [
-        "https://gg.deals/deals/*"
+        "https://www.greenmangaming.com/*"
       ]
     },
     {
       "css": [
-        "src/component/web/ggdeals/games/style.css"
+        "src/component/web/humblebundle/style.css"
       ],
       "js": [
-        "src/component/web/ggdeals/games/content.js"
+        "src/component/web/humblebundle/content.js"
       ],
       "matches": [
-        "https://gg.deals/games/*"
+        "https://www.humblebundle.com/*"
       ]
     },
     {
       "css": [
-        "src/component/web/humblebundle/mainPage/style.css"
+        "src/component/web/yuplay/style.css"
       ],
       "js": [
-        "src/component/web/humblebundle/mainPage/content.js"
+        "src/component/web/yuplay/content.js"
       ],
       "matches": [
-        "https://www.humblebundle.com/"
-      ]
-    },
-    {
-      "css": [
-        "src/component/web/humblebundle/product/style.css"
-      ],
-      "js": [
-        "src/component/web/humblebundle/product/content.js"
-      ],
-      "matches": [
-        "https://www.humblebundle.com/store/*"
-      ]
-    },
-    {
-      "css": [
-        "src/component/web/humblebundle/search/style.css"
-      ],
-      "js": [
-        "src/component/web/humblebundle/search/content.js"
-      ],
-      "matches": [
-        "https://www.humblebundle.com/store/search?*",
-        "https://www.humblebundle.com/store/c/*"
-      ]
-    },
-    {
-      "css": [
-        "src/component/web/humblebundle/promo/style.css"
-      ],
-      "js": [
-        "src/component/web/humblebundle/promo/content.js"
-      ],
-      "matches": [
-        "https://www.humblebundle.com/store/promo/*"
+        "https://www.yuplay.com/*"
       ]
     }
   ],
