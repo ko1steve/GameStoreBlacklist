@@ -1,4 +1,4 @@
-import { ComponentController } from './../../../../core/component-controller';
+import { ComponentController } from './../../../../core/component/component-controller';
 import { FanaticalSearchTaskHandler } from './../task/search';
 
 export class FanaticalSearchController extends ComponentController {

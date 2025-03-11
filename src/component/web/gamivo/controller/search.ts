@@ -1,4 +1,4 @@
-import { ComponentController } from './../../../../core/component-controller';
+import { ComponentController } from './../../../../core/component/component-controller';
 import { GamivoSearchTaskHandler } from './../task/search';
 
 export class GamivoSearchController extends ComponentController {

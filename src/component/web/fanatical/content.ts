@@ -1,7 +1,7 @@
 import './style.css';
 import { TSMap } from 'typescript-map';
 import { Container } from 'typescript-ioc';
-import { ComponentController } from './../../../core/component-controller';
+import { ComponentController } from './../../../core/component/component-controller';
 import { CommonUtil } from './../../../util/common-util';
 import { StringFormatter } from './../../../util/string-formatter';
 import { MessageDispatcher } from './../../../util/message-dispatcher';

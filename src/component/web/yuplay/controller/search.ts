@@ -1,4 +1,4 @@
-import { ComponentController } from './../../../../core/component-controller';
+import { ComponentController } from './../../../../core/component/component-controller';
 import { YuplaySearchTaskHandler } from './../task/search';
 
 export class YuplaySearchController extends ComponentController {

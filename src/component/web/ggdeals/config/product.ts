@@ -1,4 +1,4 @@
-import { ComponentConfig, ICheckBoxContainer } from './../../../../core/component-config';
+import { ComponentConfig, ICheckBoxContainer } from './../../../../core/component/component-config';
 
 export class GgdealsProductConfig extends ComponentConfig {
   public componentId: string = 'ggdeals-product';

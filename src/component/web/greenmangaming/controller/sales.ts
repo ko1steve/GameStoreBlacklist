@@ -1,4 +1,4 @@
-import { ComponentController } from './../../../../core/component-controller';
+import { ComponentController } from './../../../../core/component/component-controller';
 import { GreenManGamingMediumProductBlockTaskHandler } from './../task/mediumProductBlock';
 
 export class GreenManGamingSalesController extends ComponentController {

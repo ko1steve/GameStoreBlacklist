@@ -1,6 +1,6 @@
 import { TSMap } from 'typescript-map';
-import { ComponentConfig } from './../../../core/component-config';
-import { ComponentController } from './../../../core/component-controller';
+import { ComponentConfig } from './../../../core/component/component-config';
+import { ComponentController } from './../../../core/component/component-controller';
 import { GgdealsProductConfig } from './config/product';
 import { GgdealsDealsConfig } from './config/deals';
 import { GgdealsGamesConfig } from './config/games';

@@ -1,6 +1,6 @@
 import { TSMap } from 'typescript-map';
-import { ComponentConfig } from './../../../core/component-config';
-import { ComponentController } from './../../../core/component-controller';
+import { ComponentConfig } from './../../../core/component/component-config';
+import { ComponentController } from './../../../core/component/component-controller';
 import { YuplayMainPageConfig } from './config/main-page';
 import { YuplayProductConfig } from './config/product';
 import { YuplaySearchConfig } from './config/search';
