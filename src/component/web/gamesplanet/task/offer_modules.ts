@@ -1,16 +1,13 @@
 import { MultiListTaskHandler } from '../../../../core/task/multi-list-task-handler';
 
-export class GamesplanetFlexMdWrapTaskHandler extends MultiListTaskHandler {
-  protected isGameListFirstChildExist (children: HTMLElement[]): boolean {
-    return children[0]?.children[0] !== undefined;
-  }
-
+export class GamesplanetOfferModulesTaskHandler extends MultiListTaskHandler {
   protected getMultiGameListContainer (): HTMLElement[] | undefined {
-    const collection = document.getElementsByClassName('flex-md-wrap');
+    const containerParent = document.getElementById('offer_modules');
+    const collection = containerParent?.children;
     if (!collection) {
       return undefined;
     }
-    return Array.from(collection) as HTMLElement[];
+    return Array.from(collection).filter(e => e.className.split(' ').includes('row')) as HTMLElement[];
   }
 
   protected getRawGameTitle (infoContainer: HTMLElement): string | undefined {

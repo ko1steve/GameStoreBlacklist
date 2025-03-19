@@ -18,6 +18,6 @@ export class GamesplanetRowPageCtnTaskHandler extends ListTaskHandler {
   }
 
   protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | undefined {
-    return infoContainer.getElementsByClassName('card ')[0] as HTMLElement;
+    return infoContainer.getElementsByClassName('card')[0] as HTMLElement;
   }
 }

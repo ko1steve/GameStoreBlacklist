@@ -1,15 +1,21 @@
 import { TSMap } from 'typescript-map';
 import { ComponentConfig } from './../../../core/component/component-config';
 import { ComponentController } from './../../../core/component/component-controller';
-import { GamesplanetSearchConfig } from './config/search';
-import { GamesplanetSearchController } from './controller/search';
 import { WebObserverConfig } from '../../../core/web-observer/web-observer-config';
 import { GamesplanetMainPageConfig } from './config/main-page';
+import { GamesplanetSearchConfig } from './config/search';
+import { GamesplanetOffersConfig } from './config/offers';
+import { GamesplanetChartsConfig } from './config/charts';
 import { GamesplanetMainPageController } from './controller/main-page';
+import { GamesplanetSearchController } from './controller/search';
+import { GamesplanetOffersController } from './controller/offers';
+import { GamesplanetChartsController } from './controller/charts';
 
 export enum ControllerType {
   MAIN_PAGE = 'MAIN_PAGE',
-  SEARCH = 'SEARCH'
+  SEARCH = 'SEARCH',
+  OFFERS = 'OFFERS',
+  CHART = 'CHART'
 }
 
 export class GamesplanetWebObserverConfig extends WebObserverConfig {
@@ -19,6 +25,12 @@ export class GamesplanetWebObserverConfig extends WebObserverConfig {
     ],
     [
       /^https:\/\/.+\.gamesplanet\.com\/search\?.*$/, ControllerType.SEARCH
+    ],
+    [
+      /^https:\/\/.+\.gamesplanet\.com\/games\/offers$/, ControllerType.OFFERS
+    ],
+    [
+      /^https:\/\/.+\.gamesplanet\.com\/games\/charts$/, ControllerType.CHART
     ]
   ]);
 
@@ -28,6 +40,12 @@ export class GamesplanetWebObserverConfig extends WebObserverConfig {
     ],
     [
       ControllerType.SEARCH, GamesplanetSearchConfig
+    ],
+    [
+      ControllerType.OFFERS, GamesplanetOffersConfig
+    ],
+    [
+      ControllerType.CHART, GamesplanetChartsConfig
     ]
   ]);
 
@@ -37,6 +55,12 @@ export class GamesplanetWebObserverConfig extends WebObserverConfig {
     ],
     [
       ControllerType.SEARCH, GamesplanetSearchController
+    ],
+    [
+      ControllerType.OFFERS, GamesplanetOffersController
+    ],
+    [
+      ControllerType.CHART, GamesplanetChartsController
     ]
   ]);
 }
