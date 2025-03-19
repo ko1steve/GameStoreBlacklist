@@ -1,4 +1,4 @@
-import { ComponentController } from './../../../../core/component-controller';
+import { ComponentController } from './../../../../core/component/component-controller';
 import { GreenManGamingSearchTaskHandler } from './../task/search';
 
 export class GreenManGamingSearchController extends ComponentController {

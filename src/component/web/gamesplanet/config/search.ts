@@ -1,4 +1,4 @@
-import { ComponentConfig } from './../../../../core/component-config';
+import { ComponentConfig } from './../../../../core/component/component-config';
 
 export class GamesplanetSearchConfig extends ComponentConfig {
   public componentId: string = 'gamesplanet-search';

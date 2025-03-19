@@ -1,4 +1,4 @@
-import { IShowBlacklistGameCheckbox } from './../../core/component-config';
+import { IShowBlacklistGameCheckbox } from './../../core/component/component-config';
 import { IButtonElement, IHTMLElement, ILabelEleemnt } from './../../data/common-data';
 
 export interface IPopupConfig {

@@ -1,14 +1,14 @@
 import { Container, Inject } from 'typescript-ioc';
-import { MainConfig } from './../main-config';
-import { ComponentConfig } from './component-config';
-import { CommonUtil } from './../util/common-util';
-import { DataModel } from './../model/data-model';
-import { MessageDispatcher } from './../util/message-dispatcher';
-import { IShowBlacklistGammeMessage, IUpdateBlacklistDataFromPopupMessage, MessageType } from './../data/message-data';
-import { IReqeustBlacklistDataResponse, IReqeustPopupInitDataResponse } from './../component/popup/data/message-data';
-import { GlobalEventDispatcher, GlobalEventType } from './../util/global-event-dispatcher';
-import { StorageType } from './../util/data-storage';
-import { TaskHandler } from './task/task-handler';
+import { MainConfig } from './../../main-config';
+import { ComponentConfig } from './../component/component-config';
+import { CommonUtil } from './../../util/common-util';
+import { DataModel } from './../../model/data-model';
+import { MessageDispatcher } from './../../util/message-dispatcher';
+import { IShowBlacklistGammeMessage, IUpdateBlacklistDataFromPopupMessage, MessageType } from './../../data/message-data';
+import { IReqeustBlacklistDataResponse, IReqeustPopupInitDataResponse } from './../../component/popup/data/message-data';
+import { GlobalEventDispatcher, GlobalEventType } from './../../util/global-event-dispatcher';
+import { StorageType } from './../../util/data-storage';
+import { TaskHandler } from './../task/task-handler';
 
 export class ComponentController {
   @Inject

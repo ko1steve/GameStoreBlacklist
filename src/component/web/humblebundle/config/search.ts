@@ -1,4 +1,4 @@
-import { ComponentConfig } from './../../../../core/component-config';
+import { ComponentConfig } from './../../../../core/component/component-config';
 
 export class HumbleBundleSearchConfig extends ComponentConfig {
   public componentId: string = 'humblebundle-search';

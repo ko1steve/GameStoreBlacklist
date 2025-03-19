@@ -1,4 +1,4 @@
-import { ComponentController } from './../../../../core/component-controller';
+import { ComponentController } from './../../../../core/component/component-controller';
 import { YuplayRecommendedTaskHandler } from './../task/recommended';
 import { YuplayMostWantedTaskHandler } from './../task/most-wanted';
 import { YuplayMidweekMadnessTaskHandler } from './../task/midweek-madness';

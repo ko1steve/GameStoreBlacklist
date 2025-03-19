@@ -1,4 +1,4 @@
-import { ComponentConfig, ITextHandleConfig } from './../../../../core/component-config';
+import { ComponentConfig, ITextHandleConfig } from './../../../../core/component/component-config';
 
 export class YuplayProductConfig extends ComponentConfig {
   public componentId: string = 'yuplay-product';

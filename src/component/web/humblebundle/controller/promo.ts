@@ -1,4 +1,4 @@
-import { ComponentController } from './../../../../core/component-controller';
+import { ComponentController } from './../../../../core/component/component-controller';
 import { HumbleBundlePromoSlickTrackTaskHandler } from '../task/promo-slick-track';
 import { HumbleBundleChunkEntityListTaskHandler } from '../task/chunk-entity-list';
 

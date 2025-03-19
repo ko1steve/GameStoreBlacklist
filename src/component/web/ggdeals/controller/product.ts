@@ -1,4 +1,4 @@
-import { ComponentController } from './../../../../core/component-controller';
+import { ComponentController } from './../../../../core/component/component-controller';
 import { GgdealsProductTaskHandler } from './../task/product';
 
 export class GgdealsProductController extends ComponentController {

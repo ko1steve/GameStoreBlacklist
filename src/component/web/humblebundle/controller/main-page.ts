@@ -1,4 +1,4 @@
-import { ComponentController } from './../../../../core/component-controller';
+import { ComponentController } from './../../../../core/component/component-controller';
 import { HumbleBundleThreeTaskHandler } from './../task/three';
 import { HumbleBundleSlickTrackTaskHandler } from './../task/slick-track';
 

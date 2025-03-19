@@ -1,6 +1,6 @@
 import { FanaticalHitCardsRowTaskHandler } from './../task/hitCardsRow';
 import { FanaticalSlickTrackTaskHandler } from './../task/slickTrack';
-import { ComponentController } from './../../../../core/component-controller';
+import { ComponentController } from './../../../../core/component/component-controller';
 
 export class FanaticalGeneralController extends ComponentController {
   protected setupTaskQueue (): void {

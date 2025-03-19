@@ -1,10 +1,10 @@
-import { ComponentController } from './../../../../core/component-controller';
-import { GreenManGamingMediumProductBlockTaskHandler } from './../task/mediumProductBlock';
-import { GreenManGamingProductBlockTaskHandler } from './../task/productBlock';
+import { ComponentController } from './../../../../core/component/component-controller';
+import { GreenManGamingMediumProductBlockModuleContentTaskHandler } from '../task/medium-product-block-module-content';
+import { GreenManGamingLargeProductBlockExcludeFirstTaskHandler } from './../task/large-product-block-exclude-first';
 
 export class GreenManGamingMainPageController extends ComponentController {
   protected setupTaskQueue (): void {
-    this.taskQueue.push(new GreenManGamingMediumProductBlockTaskHandler(this.componentConfig, this.dataModel));
-    this.taskQueue.push(new GreenManGamingProductBlockTaskHandler(this.componentConfig, this.dataModel));
+    this.taskQueue.push(new GreenManGamingLargeProductBlockExcludeFirstTaskHandler(this.componentConfig, this.dataModel));
+    this.taskQueue.push(new GreenManGamingMediumProductBlockModuleContentTaskHandler(this.componentConfig, this.dataModel));
   }
 }
