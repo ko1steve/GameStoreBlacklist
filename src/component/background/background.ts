@@ -1,5 +1,5 @@
-import { IShowLogMessage, IShowObjectMessage, MessageType } from './../../data/messageData';
-import { MessageDispatcher } from './../../util/messageDispatcher';
+import { IShowLogMessage, IShowObjectMessage, MessageType } from './../../data/message-data';
+import { MessageDispatcher } from './../../util/message-dispatcher';
 
 MessageDispatcher.addListener(MessageType.SHOW_LOG, (message, sender, sendResponse) => {
   message = message as IShowLogMessage;

@@ -1,4 +1,4 @@
-import { ComponentController } from './../../../../core/componentController';
+import { ComponentController } from './../../../../core/component/component-controller';
 import { FanaticalProductTaskHandler } from './../task/product';
 
 export class FanaticalProductController extends ComponentController {
