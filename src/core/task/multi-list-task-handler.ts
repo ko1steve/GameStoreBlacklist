@@ -9,16 +9,13 @@ export class MultiListTaskHandler extends TaskHandler {
   public start (): Promise<void> {
     return new Promise<void>(resolve => {
       const gameListContainerArr = this.getMultiGameListContainer();
-      if (!gameListContainerArr) {
+      if (!gameListContainerArr || gameListContainerArr.length === 0) {
         return resolve();
       }
       for (const gameListContainer of gameListContainerArr) {
-        if (!gameListContainer) {
-          return resolve();
-        }
         const gameListChildren = this.getGameListChildren(gameListContainer);
         if (gameListChildren.length === 0 || !this.isGameListFirstChildExist(gameListChildren)) {
-          return resolve();
+          continue;
         }
         gameListChildren.forEach((gameInfoElement, i) => {
           this.addCheckBoxToGameListEachChild(gameInfoElement, gameListContainer);

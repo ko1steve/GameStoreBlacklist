@@ -1,6 +1,7 @@
+import { ComponentConfig } from '../../../../core/component/component-config';
 import { MultiListTaskHandler } from '../../../../core/task/multi-list-task-handler';
 
-export class GreenManGamingProductBlockTaskHandler extends MultiListTaskHandler {
+export class GreenManGamingMediumProductBlockModuleContentTaskHandler extends MultiListTaskHandler {
   protected getMultiGameListContainer (): HTMLElement[] | undefined {
     const collection = Array.from(document.getElementsByClassName('medium-product-block')) as HTMLElement[];
     if (!collection || collection.length === 0) {
@@ -16,12 +17,19 @@ export class GreenManGamingProductBlockTaskHandler extends MultiListTaskHandler 
   }
 
   protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] {
-    return super.getGameListChildren(gameListContainer).filter(e => !e.getElementsByTagName('a')[0].href.includes('/publisher-sale/'));
+    return super.getGameListChildren(gameListContainer).filter(e => {
+      for (const excludeClass of this.componentConfig.texthandle.excludeClassNames!) {
+        if (e.getElementsByTagName('a')[0]?.href?.includes(excludeClass)) {
+          return false;
+        }
+      }
+      return true;
+    });
   }
 
   protected isGameListFirstChildExist (children: HTMLElement[]): boolean {
     const firstGameInfo = children[0];
-    return firstGameInfo?.children[0]?.children[0] !== undefined;
+    return firstGameInfo?.children[0] !== undefined;
   }
 
   protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | undefined {

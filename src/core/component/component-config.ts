@@ -11,6 +11,7 @@ export interface ITextHandleConfig {
   endWords: string[]
   cutToEndWords: string[]
   excludeTitleWords: string[]
+  excludeClassNames?: string[]
 }
 
 export interface ICheckBoxContainer extends IHTMLElement {
