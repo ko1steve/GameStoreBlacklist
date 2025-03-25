@@ -6,6 +6,7 @@ import { GamesplanetGameOfferHighlightsTaskHandler } from '../task/game-offer-hi
 import { GamesplanetGameListTabTaskHandler } from '../task/main-page/game-list-tab';
 import { GamesplanetRowPageCtnTaskHandler } from '../task/row-page-ctn';
 import { GamesplanetSlickTrackTaskHandler } from '../task/slick-track';
+import { GamesplanetWeeklyDealsTaskHandler } from '../task/weekly-deals';
 import { ComponentConfig } from './../../../../core/component/component-config';
 
 export class GamesplanetMainPageConfig extends ComponentConfig {
@@ -15,6 +16,7 @@ export class GamesplanetMainPageConfig extends ComponentConfig {
     GamesplanetSlickTrackTaskHandler,
     GamesplanetFrontHighlightsTaskHandler,
     GamesplanetGameOfferHighlightsTaskHandler,
+    GamesplanetWeeklyDealsTaskHandler,
     GamesplanetRowPageCtnTaskHandler,
     GamesplanetGameListTabTaskHandler
   ];
