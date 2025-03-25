@@ -10,6 +10,7 @@ export class MultiListTaskHandler extends TaskHandler {
     return new Promise<void>(resolve => {
       const gameListContainerArr = this.getMultiGameListContainer();
       if (!gameListContainerArr || gameListContainerArr.length === 0) {
+        CommonUtil.showLog('[' + this.constructor.name + '] Can\'t find the information list.');
         return resolve();
       }
       for (const gameListContainer of gameListContainerArr) {
@@ -136,7 +137,7 @@ export class MultiListTaskHandler extends TaskHandler {
       };
       checkboxParent.dataset.hasInit = 'true';
       if (inBlacklist) {
-        CommonUtil.showLog('In Blacklist : ' + gameTitle);
+        CommonUtil.showLog('[' + this.constructor.name + '] In Blacklist : ' + gameTitle);
         this.setCheckboxEnabled(checkboxImg);
       }
     }

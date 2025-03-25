@@ -1,9 +1,12 @@
+import { DataModel } from '../../model/data-model';
+import { TaskHandler } from '../task/task-handler';
 import { ICheckboxImageElement, IHTMLElement } from './../../data/common-data';
 
 export interface IComponentConfig {
   componentId: string
   checkboxContainer: ICheckBoxContainer
   texthandle: ITextHandleConfig
+  taskClasses: (new (componentConfig: ComponentConfig, dataModel: DataModel) => TaskHandler)[];
 }
 
 export interface ITextHandleConfig {
@@ -42,4 +45,10 @@ export class ComponentConfig implements IComponentConfig {
     cutToEndWords: [],
     excludeTitleWords: []
   };
+
+  public taskClasses: (new (componentConfig: ComponentConfig, dataModel: DataModel) => TaskHandler)[] = [
+    // ProductTaskHandler,
+    // ListTaskHandler,
+    // MultiListTaskHandler
+  ];
 }

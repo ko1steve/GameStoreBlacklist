@@ -1,6 +1,44 @@
+import { CommonUtil } from '../../../../util/common-util';
 import { ListTaskHandler } from './../../../../core/task/list-task-handler';
 
 export class FanaticalSearchTaskHandler extends ListTaskHandler {
+  public start (): Promise<void> {
+    return new Promise<void>(resolve => {
+      const resizeCallback: () => void = () => {
+        const gameListContainer = this.getGameListContainer();
+        if (gameListContainer) {
+          gameListContainer.dataset.hasInit = undefined;
+          const gameListChildren = this.getGameListChildren(gameListContainer);
+          gameListChildren.forEach(e => { e.dataset.hasInit = undefined; });
+        }
+      };
+      window.addEventListener('resize', resizeCallback);
+      const gameListContainer = this.getGameListContainer();
+      if (!gameListContainer) {
+        CommonUtil.showLog('Can\'t find the information list.');
+        return resolve();
+      }
+      if (gameListContainer.dataset.hasInit === 'true') {
+        window.removeEventListener('resize', resizeCallback);
+        return resolve();
+      }
+      const gameListChildren = this.getGameListChildren(gameListContainer);
+      if (gameListChildren.length === 0 || !this.isGameListFirstChildExist(gameListChildren)) {
+        window.removeEventListener('resize', resizeCallback);
+        return resolve();
+      }
+      gameListChildren.forEach(gameInfoElement => {
+        this.addCheckBoxToGameListEachChild(gameInfoElement, gameListContainer);
+      });
+      if (this.countGameListElementInit === gameListChildren.length) {
+        gameListContainer.dataset.hasInit = 'true';
+      }
+      this.countGameListElementInit = 0;
+      window.removeEventListener('resize', resizeCallback);
+      resolve();
+    });
+  }
+
   protected isGameListFirstChildExist (children: HTMLElement[]): boolean {
     const firstGameInfo = children[0];
     return firstGameInfo?.children[0]?.getElementsByClassName('hit-card-overlay')[0] !== undefined;

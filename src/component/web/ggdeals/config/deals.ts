@@ -1,8 +1,10 @@
 import { ComponentConfig, ITextHandleConfig } from '../../../../core/component/component-config';
+import { TaskHandler } from '../../../../core/task/task-handler';
+import { DataModel } from '../../../../model/data-model';
+import { GgdealsDealsListItemsTaskHandler } from '../task/deals-list-items';
 
 export class GgdealsDealsConfig extends ComponentConfig {
   public componentId: string = 'ggdeals-deals';
-
   public texthandle: ITextHandleConfig = {
     startWords: [],
     endWords: [],
@@ -11,4 +13,8 @@ export class GgdealsDealsConfig extends ComponentConfig {
     ],
     excludeTitleWords: []
   };
+
+  public taskClasses: (new (componentConfig: ComponentConfig, dataModel: DataModel) => TaskHandler)[] = [
+    GgdealsDealsListItemsTaskHandler
+  ];
 }

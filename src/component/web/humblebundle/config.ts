@@ -5,10 +5,6 @@ import { HumbleBundleMainPageConfig } from './config/main-page';
 import { HumbleBundleProductConfig } from './config/product';
 import { HumbleBundlePromoConfig } from './config/promo';
 import { HumbleBundleSearchConfig } from './config/search';
-import { HumbleBundleMainPageController } from './controller/main-page';
-import { HumbleBundleProductController } from './controller/product';
-import { HumbleBundlePromoController } from './controller/promo';
-import { HumbleBundleSearchController } from './controller/search';
 import { WebObserverConfig } from '../../../core/web-observer/web-observer-config';
 
 export enum ControllerType {
@@ -49,21 +45,6 @@ export class HumbleBundleWebObserverConfig extends WebObserverConfig {
     ],
     [
       ControllerType.SEARCH, HumbleBundleSearchConfig
-    ]
-  ]);
-
-  public controllerClassMap = new TSMap<string, new(componentConfig: ComponentConfig) => ComponentController>([
-    [
-      ControllerType.MAIN_PAGE, HumbleBundleMainPageController
-    ],
-    [
-      ControllerType.PRODUCT, HumbleBundleProductController
-    ],
-    [
-      ControllerType.PROMO, HumbleBundlePromoController
-    ],
-    [
-      ControllerType.SEARCH, HumbleBundleSearchController
     ]
   ]);
 }

@@ -10,7 +10,7 @@ export class ListTaskHandler extends TaskHandler {
     return new Promise<void>(resolve => {
       const gameListContainer = this.getGameListContainer();
       if (!gameListContainer) {
-        CommonUtil.showLog('Can\'t find the information list.');
+        CommonUtil.showLog('[' + this.constructor.name + '] Can\'t find the information list.');
         return resolve();
       }
       if (gameListContainer.dataset.hasInit === 'true') {
@@ -138,7 +138,7 @@ export class ListTaskHandler extends TaskHandler {
       };
       checkboxParent.dataset.hasInit = 'true';
       if (inBlacklist) {
-        CommonUtil.showLog('In Blacklist : ' + gameTitle);
+        CommonUtil.showLog('[' + this.constructor.name + '] In Blacklist : ' + gameTitle);
         this.setCheckboxEnabled(checkboxImg);
       }
     }
