@@ -4,9 +4,6 @@ import { ComponentController } from './../../../core/component/component-control
 import { GamivoMainPageConfig } from './config/main-page';
 import { GamivoProductConfig } from './config/product';
 import { GamivoSearchConfig } from './config/search';
-import { GamivoMainPageController } from './controller/main-page';
-import { GamivoProductController } from './controller/product';
-import { GamivoSearchController } from './controller/search';
 import { WebObserverConfig } from '../../../core/web-observer/web-observer-config';
 
 export enum ControllerType {
@@ -40,18 +37,6 @@ export class GamivoWebObserverConfig extends WebObserverConfig {
     ],
     [
       ControllerType.SEARCH, GamivoSearchConfig
-    ]
-  ]);
-
-  public controllerClassMap = new TSMap<string, new(componentConfig: ComponentConfig) => ComponentController>([
-    [
-      ControllerType.MAIN_PAGE, GamivoMainPageController
-    ],
-    [
-      ControllerType.PRODUCT, GamivoProductController
-    ],
-    [
-      ControllerType.SEARCH, GamivoSearchController
     ]
   ]);
 }

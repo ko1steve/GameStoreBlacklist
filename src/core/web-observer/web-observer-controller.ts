@@ -49,12 +49,11 @@ export class WebObserverController {
           }
         } else {
           const ConfigClass = this.config.configClassMap.get(controllerType);
-          const ControllerClass = this.config.controllerClassMap.get(controllerType);
-          if (!ConfigClass || !ControllerClass) {
+          if (!ConfigClass) {
             CommonUtil.showLog('Can\'t find any related controller\'s class');
             return;
           }
-          this.currentController = new ControllerClass(Container.get(ConfigClass));
+          this.currentController = new ComponentController(Container.get(ConfigClass));
           this.currentController.running = true;
           this.controllerMap.set(controllerType, this.currentController);
         }

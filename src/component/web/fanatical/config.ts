@@ -1,9 +1,6 @@
 import { TSMap } from 'typescript-map';
 import { ComponentConfig } from './../../../core/component/component-config';
 import { ComponentController } from './../../../core/component/component-controller';
-import { FanaticalGeneralController } from './controller/general';
-import { FanaticalProductController } from './controller/product';
-import { FanaticalSearchController } from './controller/search';
 import { FanaticalGeneralConfig } from './config/general';
 import { FanaticalProductConfig } from './config/product';
 import { FanaticalSearchConfig } from './config/search';
@@ -40,18 +37,6 @@ export class FanaticalWebObserverConfig extends WebObserverConfig {
     ],
     [
       ControllerType.SEARCH, FanaticalSearchConfig
-    ]
-  ]);
-
-  public controllerClassMap = new TSMap<string, new(componentConfig: ComponentConfig) => ComponentController>([
-    [
-      ControllerType.GENERAL, FanaticalGeneralController
-    ],
-    [
-      ControllerType.PRODUCT, FanaticalProductController
-    ],
-    [
-      ControllerType.SEARCH, FanaticalSearchController
     ]
   ]);
 }
