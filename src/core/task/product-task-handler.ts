@@ -77,7 +77,7 @@ export class ProductTaskHandler extends TaskHandler {
       };
       checkboxParent.dataset.hasInit = 'true';
       if (inBlacklist) {
-        CommonUtil.showLog('In Blacklist : ' + gameTitle);
+        CommonUtil.showLog('[' + this.constructor.name + '] In Blacklist : ' + gameTitle);
         this.setCheckboxEnabled(checkboxImg);
       }
     }
