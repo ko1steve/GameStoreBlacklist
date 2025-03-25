@@ -1,6 +1,6 @@
 import { MultiListTaskHandler } from '../../../../core/task/multi-list-task-handler';
 
-export class GreenManGamingComingSoonTaskHandler extends MultiListTaskHandler {
+export class GreenManGamingLargeProductBlockTaskHandler extends MultiListTaskHandler {
   protected getMultiGameListContainer (): HTMLElement[] | undefined {
     const collection = Array.from(document.getElementsByClassName('large-product-block')) as HTMLElement[];
     if (!collection || collection.length === 0) {

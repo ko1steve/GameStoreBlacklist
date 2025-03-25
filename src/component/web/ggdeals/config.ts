@@ -4,9 +4,6 @@ import { ComponentController } from './../../../core/component/component-control
 import { GgdealsProductConfig } from './config/product';
 import { GgdealsDealsConfig } from './config/deals';
 import { GgdealsGamesConfig } from './config/games';
-import { GgdealsProductController } from './controller/product';
-import { GgdealsDealsController } from './controller/deals';
-import { GgdealsGamesController } from './controller/games';
 import { WebObserverConfig } from '../../../core/web-observer/web-observer-config';
 
 export enum ControllerType {
@@ -43,18 +40,6 @@ export class GgdealsWebObserverConfig extends WebObserverConfig {
     ],
     [
       ControllerType.GAMES, GgdealsGamesConfig
-    ]
-  ]);
-
-  public controllerClassMap = new TSMap<string, new(componentConfig: ComponentConfig) => ComponentController>([
-    [
-      ControllerType.PRODUCT, GgdealsProductController
-    ],
-    [
-      ControllerType.DEALS, GgdealsDealsController
-    ],
-    [
-      ControllerType.GAMES, GgdealsGamesController
     ]
   ]);
 }

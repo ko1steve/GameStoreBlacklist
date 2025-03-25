@@ -4,9 +4,6 @@ import { ComponentController } from './../../../core/component/component-control
 import { YuplayMainPageConfig } from './config/main-page';
 import { YuplayProductConfig } from './config/product';
 import { YuplaySearchConfig } from './config/search';
-import { YuplayMainPageController } from './controller/main-page';
-import { YuplayProductController } from './controller/product';
-import { YuplaySearchController } from './controller/search';
 import { WebObserverConfig } from '../../../core/web-observer/web-observer-config';
 
 export enum ControllerType {
@@ -37,18 +34,6 @@ export class YuplayWebObserverConfig extends WebObserverConfig {
     ],
     [
       ControllerType.SEARCH, YuplaySearchConfig
-    ]
-  ]);
-
-  public controllerClassMap = new TSMap<string, new(componentConfig: ComponentConfig) => ComponentController>([
-    [
-      ControllerType.MAIN_PAGE, YuplayMainPageController
-    ],
-    [
-      ControllerType.PRODUCT, YuplayProductController
-    ],
-    [
-      ControllerType.SEARCH, YuplaySearchController
     ]
   ]);
 }

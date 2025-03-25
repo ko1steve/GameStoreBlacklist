@@ -153,9 +153,9 @@ export class ComponentController {
   }
 
   protected setupTaskQueue (): void {
-    // this.taskQueue.push(new ProductTaskHandler(this.componentConfig, this.dataModel));
-    // this.taskQueue.push(new ListTaskHandler(this.componentConfig, this.dataModel));
-    // this.taskQueue.push(new MultiListTaskHandler(this.componentConfig, this.dataModel));
+    this.componentConfig.taskClasses.forEach(Task => {
+      this.taskQueue.push(new Task(this.componentConfig, this.dataModel));
+    });
   }
 
   protected clearTaskQueue (): void {

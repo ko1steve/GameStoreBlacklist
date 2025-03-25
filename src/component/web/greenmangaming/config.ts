@@ -5,10 +5,6 @@ import { GreenManGamingComingSoonConfig } from './config/coming-soon';
 import { GreenManGamingMainPageConfig } from './config/main-page';
 import { GreenManGamingSalesConfig } from './config/sales';
 import { GreenManGamingSearchConfig } from './config/search';
-import { GreenManGamingComingSoonController } from './controller/coming-soon';
-import { GreenManGamingMainPageController } from './controller/main-page';
-import { GreenManGamingSalesController } from './controller/sales';
-import { GreenManGamingSearchController } from './controller/search';
 import { WebObserverConfig } from '../../../core/web-observer/web-observer-config';
 
 export enum ControllerType {
@@ -67,21 +63,6 @@ export class GreenManGamingWebObserverConfig extends WebObserverConfig {
     ],
     [
       ControllerType.SEARCH, GreenManGamingSearchConfig
-    ]
-  ]);
-
-  public controllerClassMap = new TSMap<string, new(componentConfig: ComponentConfig) => ComponentController>([
-    [
-      ControllerType.COMING_SOON, GreenManGamingComingSoonController
-    ],
-    [
-      ControllerType.MAIN_PAGE, GreenManGamingMainPageController
-    ],
-    [
-      ControllerType.SALES, GreenManGamingSalesController
-    ],
-    [
-      ControllerType.SEARCH, GreenManGamingSearchController
     ]
   ]);
 }

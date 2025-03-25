@@ -1,3 +1,6 @@
+import { TaskHandler } from '../../../../core/task/task-handler';
+import { DataModel } from '../../../../model/data-model';
+import { GamivoSearchTaskHandler } from '../task/search';
 import { ComponentConfig, ITextHandleConfig } from './../../../../core/component/component-config';
 
 export class GamivoSearchConfig extends ComponentConfig {
@@ -16,4 +19,8 @@ export class GamivoSearchConfig extends ComponentConfig {
       ' EN', ' EU', ' DE', ' FR', ' IT', ' ZH', ' JA', ' ES', ' RU', ' PL', ' CS', ' ROW'
     ]
   };
+
+  public taskClasses: (new (componentConfig: ComponentConfig, dataModel: DataModel) => TaskHandler)[] = [
+    GamivoSearchTaskHandler
+  ];
 }

@@ -1,3 +1,7 @@
+import { TaskHandler } from '../../../../core/task/task-handler';
+import { DataModel } from '../../../../model/data-model';
+import { GamivoCarouselInnerTaskHandler } from '../task/carousel-inner';
+import { GamivoHomeRecommendTaskHandler } from '../task/home-recommend';
 import { ComponentConfig, ITextHandleConfig } from './../../../../core/component/component-config';
 
 export class GamivoMainPageConfig extends ComponentConfig {
@@ -14,4 +18,9 @@ export class GamivoMainPageConfig extends ComponentConfig {
       'Steam Gift', 'Global Steam Gift', 'Global Steam', 'Asia Steam'
     ]
   };
+
+  public taskClasses: (new (componentConfig: ComponentConfig, dataModel: DataModel) => TaskHandler)[] = [
+    GamivoHomeRecommendTaskHandler,
+    GamivoCarouselInnerTaskHandler
+  ];
 }
