@@ -7,7 +7,23 @@ export class GamesplanetOfferModulesTaskHandler extends MultiListTaskHandler {
     if (!collection) {
       return undefined;
     }
-    return Array.from(collection).filter(e => e.className.split(' ').includes('row')) as HTMLElement[];
+    return Array.from(collection).flatMap(e => {
+      if (e.className.split(' ').includes('row')) {
+        const gamelistContainers = Array.from(e.children).filter(e => e.className.split(' ').includes('game_list'));
+        if (gamelistContainers && gamelistContainers.length > 0) {
+          const collection = gamelistContainers.map(c => {
+            const row = c.getElementsByClassName('row')[0];
+            if (row) {
+              return row;
+            }
+            return c;
+          });
+          return collection as HTMLElement[];
+        }
+        return [e];
+      }
+      return [e];
+    }) as HTMLElement[];
   }
 
   protected getRawGameTitle (infoContainer: HTMLElement): string | undefined {
