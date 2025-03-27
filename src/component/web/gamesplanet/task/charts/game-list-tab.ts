@@ -5,9 +5,10 @@ export class GamesplanetGameListTabTaskHandler extends ListTaskHandler {
     return document.getElementsByClassName('col-12 game_list')[0] as HTMLElement;
   }
 
-  protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] {
-    const children = super.getGameListChildren(gameListContainer);
-    return children.filter(e => e.className.split(' ').includes('game_list_big'));
+  protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] | undefined {
+    return super.getGameListChildren(gameListContainer)?.filter(e =>
+      e.className.split(' ').includes('game_list_big')
+    );
   }
 
   protected getRawGameTitle (infoContainer: HTMLElement): string | undefined {

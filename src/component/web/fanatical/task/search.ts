@@ -9,7 +9,9 @@ export class FanaticalSearchTaskHandler extends ListTaskHandler {
         if (gameListContainer) {
           gameListContainer.dataset.hasInit = undefined;
           const gameListChildren = this.getGameListChildren(gameListContainer);
-          gameListChildren.forEach(e => { e.dataset.hasInit = undefined; });
+          if (gameListChildren) {
+            gameListChildren.forEach(e => { e.dataset.hasInit = undefined; });
+          }
         }
       };
       window.addEventListener('resize', resizeCallback);
@@ -23,7 +25,7 @@ export class FanaticalSearchTaskHandler extends ListTaskHandler {
         return resolve();
       }
       const gameListChildren = this.getGameListChildren(gameListContainer);
-      if (gameListChildren.length === 0 || !this.isGameListFirstChildExist(gameListChildren)) {
+      if (!gameListChildren || gameListChildren.length === 0 || !this.isGameListFirstChildExist(gameListChildren)) {
         window.removeEventListener('resize', resizeCallback);
         return resolve();
       }
@@ -48,8 +50,8 @@ export class FanaticalSearchTaskHandler extends ListTaskHandler {
     return document.getElementsByClassName('ProductListingPage__grid')[0] as HTMLElement;
   }
 
-  protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] {
-    return super.getGameListChildren(gameListContainer).filter(e => {
+  protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] | undefined {
+    return super.getGameListChildren(gameListContainer)?.filter(e => {
       return e.getElementsByClassName('hitCardStripe__content')[0]?.getElementsByClassName('card-price-container')[0];
     });
   }

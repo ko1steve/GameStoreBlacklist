@@ -14,8 +14,12 @@ export class MultiListTaskHandler extends TaskHandler {
         return resolve();
       }
       for (const gameListContainer of gameListContainerArr) {
+        if (!gameListContainer) {
+          CommonUtil.showLog('[' + this.constructor.name + '] Information list is undefined.');
+          continue;
+        }
         const gameListChildren = this.getGameListChildren(gameListContainer);
-        if (gameListChildren.length === 0 || !this.isGameListFirstChildExist(gameListChildren)) {
+        if (!gameListChildren || gameListChildren.length === 0 || !this.isGameListFirstChildExist(gameListChildren)) {
           continue;
         }
         gameListChildren.forEach((gameInfoElement, i) => {
@@ -38,7 +42,10 @@ export class MultiListTaskHandler extends TaskHandler {
     return containers;
   }
 
-  protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] {
+  protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] | undefined {
+    if (!gameListContainer.children) {
+      return undefined;
+    }
     return Array.from(gameListContainer.children) as HTMLElement[];
   }
 
@@ -59,12 +66,14 @@ export class MultiListTaskHandler extends TaskHandler {
     gameInfoElement = modifiedInfoElement;
     const rawGameTitle = this.getRawGameTitle(gameInfoElement);
     if (!rawGameTitle) {
+      CommonUtil.showLog('Can\'t get game titile.');
       return;
     }
     const gameTitle = this.getModifiedGameTitle(rawGameTitle);
 
     const checkboxParent = this.getCheckboxParent(gameInfoElement);
     if (!checkboxParent) {
+      CommonUtil.showLog('Can\'t get checkbox parent.');
       return;
     }
     const inBlacklist = this.dataModel.getGameStatus(gameTitle);

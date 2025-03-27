@@ -14,6 +14,7 @@ module.exports = {
   entry: {
     'src/component/popup/popup': './src/component/popup/popup.ts',
     'src/component/background/background': './src/component/background/background.ts',
+    'src/component/web/2game/content': './src/component/web/2game/content.ts',
     'src/component/web/fanatical/content': './src/component/web/fanatical/content.ts',
     'src/component/web/gamesplanet/content': './src/component/web/gamesplanet/content.ts',
     'src/component/web/gamivo/content': './src/component/web/gamivo/content.ts',
