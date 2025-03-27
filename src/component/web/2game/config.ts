@@ -4,11 +4,13 @@ import { WebObserverConfig } from '../../../core/web-observer/web-observer-confi
 import { TwoGameMainPageConfig } from './config/main-page';
 import { TwoGameSearchConfig } from './config/search';
 import { TwoGamePoductConfig } from './config/product';
+import { TwoGameHotDealsConfig } from './config/hot-deals';
 
 export enum ControllerType {
   MAIN_PAGE = 'MAIN_PAGE',
   SEARCH = 'SEARCH',
-  PRODUCT = 'PRODUCT'
+  PRODUCT = 'PRODUCT',
+  HOT_DEALS = 'HOT_DEALS'
 }
 
 export class TwoGameWebObserverConfig extends WebObserverConfig {
@@ -30,6 +32,9 @@ export class TwoGameWebObserverConfig extends WebObserverConfig {
     ],
     [
       /^https:\/\/2game\.com\/(?!en\/|zh\/)(.+[^/])$/, ControllerType.PRODUCT
+    ],
+    [
+      /^https:\/\/2game\.com\/((en|zh)\/)?hot-deals(\?.+)?$/, ControllerType.HOT_DEALS
     ]
   ]);
 
@@ -42,6 +47,9 @@ export class TwoGameWebObserverConfig extends WebObserverConfig {
     ],
     [
       ControllerType.PRODUCT, TwoGamePoductConfig
+    ],
+    [
+      ControllerType.HOT_DEALS, TwoGameHotDealsConfig
     ]
   ]);
 }
