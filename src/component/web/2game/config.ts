@@ -19,16 +19,16 @@ export class TwoGameWebObserverConfig extends WebObserverConfig {
       /^https:\/\/2game\.com\/$/, ControllerType.MAIN_PAGE
     ],
     [
-      /^https:\/\/2game\.com\/((en|zh)\/)?bestsellers$/, ControllerType.SEARCH
+      /^https:\/\/2game\.com\/((en|zh)\/)?bestsellers(\?.+)?$/, ControllerType.SEARCH
     ],
     [
-      /^https:\/\/2game\.com\/((en|zh)\/)?coming-soon$/, ControllerType.SEARCH
+      /^https:\/\/2game\.com\/((en|zh)\/)?coming-soon(\?.+)?$/, ControllerType.SEARCH
     ],
     [
-      /^https:\/\/2game\.com\/((en|zh)\/)?new-in$/, ControllerType.SEARCH
+      /^https:\/\/2game\.com\/((en|zh)\/)?new-in(\?.+)?$/, ControllerType.SEARCH
     ],
     [
-      /^https:\/\/2game\.com\/((en|zh)\/)?search\/.+$/, ControllerType.SEARCH
+      /^https:\/\/2game\.com\/((en|zh)\/)?search\/.+(\?.+)?$/, ControllerType.SEARCH
     ],
     [
       /^https:\/\/2game\.com\/(?!en\/|zh\/)(.+[^/])$/, ControllerType.PRODUCT
