@@ -15,7 +15,10 @@ export class GreenManGamingLargeProductBlockExcludeFirstTaskHandler extends Mult
     return gameListContainers;
   }
 
-  protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] {
+  protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] | undefined {
+    if (!gameListContainer.children) {
+      return undefined;
+    }
     return Array.from(gameListContainer.children).slice(1) as HTMLElement[];
   }
 

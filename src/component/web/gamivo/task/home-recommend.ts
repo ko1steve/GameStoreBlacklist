@@ -9,7 +9,10 @@ export class GamivoHomeRecommendTaskHandler extends ListTaskHandler {
     return document.getElementsByClassName('row home-recommendations__row')[0] as HTMLElement;
   }
 
-  protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] {
+  protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] | undefined {
+    if (!gameListContainer.children) {
+      return undefined;
+    }
     return Array.from(gameListContainer.children).slice(1) as HTMLElement[];
   }
 
