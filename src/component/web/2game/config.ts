@@ -3,10 +3,12 @@ import { ComponentConfig } from './../../../core/component/component-config';
 import { WebObserverConfig } from '../../../core/web-observer/web-observer-config';
 import { TwoGameMainPageConfig } from './config/main-page';
 import { TwoGameSearchConfig } from './config/search';
+import { TwoGamePoductConfig } from './config/product';
 
 export enum ControllerType {
   MAIN_PAGE = 'MAIN_PAGE',
-  SEARCH = 'SEARCH'
+  SEARCH = 'SEARCH',
+  PRODUCT = 'PRODUCT'
 }
 
 export class TwoGameWebObserverConfig extends WebObserverConfig {
@@ -25,6 +27,9 @@ export class TwoGameWebObserverConfig extends WebObserverConfig {
     ],
     [
       /^https:\/\/2game\.com\/((en|zh)\/)?search\/.+$/, ControllerType.SEARCH
+    ],
+    [
+      /^https:\/\/2game\.com\/(?!en\/|zh\/)(.+[^/])$/, ControllerType.PRODUCT
     ]
   ]);
 
@@ -34,6 +39,9 @@ export class TwoGameWebObserverConfig extends WebObserverConfig {
     ],
     [
       ControllerType.SEARCH, TwoGameSearchConfig
+    ],
+    [
+      ControllerType.PRODUCT, TwoGamePoductConfig
     ]
   ]);
 }
