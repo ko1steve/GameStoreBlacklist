@@ -16,8 +16,8 @@ export class GreenManGamingMediumProductBlockModuleContentTaskHandler extends Mu
     return gameListContainers;
   }
 
-  protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] {
-    return super.getGameListChildren(gameListContainer).filter(e => {
+  protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] | undefined {
+    return super.getGameListChildren(gameListContainer)?.filter(e => {
       for (const excludeClass of this.componentConfig.texthandle.excludeClassNames!) {
         if (e.getElementsByTagName('a')[0]?.href?.includes(excludeClass)) {
           return false;

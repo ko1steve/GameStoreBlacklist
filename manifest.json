@@ -1,7 +1,7 @@
 {
   "name": "GameStoreBlacklist",
   "manifest_version": 3,
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "",
   "action": {
     "default_popup": "src/component/popup/popup.html",
@@ -15,6 +15,17 @@
     "activeTab"
   ],
   "content_scripts": [
+    {
+      "css": [
+        "src/component/web/2game/style.css"
+      ],
+      "js": [
+        "src/component/web/2game/content.js"
+      ],
+      "matches": [
+        "https://2game.com/*"
+      ]
+    },
     {
       "css": [
         "src/component/web/fanatical/style.css"
@@ -102,6 +113,7 @@
         "image/checkbox_tick_disabled.png"
       ],
       "matches": [
+        "https://2game.com/*",
         "https://www.yuplay.com/*",
         "https://www.gamivo.com/*",
         "https://gg.deals/*",
@@ -113,6 +125,7 @@
     }
   ],
   "host_permissions": [
+    "https://2game.com/*",
     "https://www.yuplay.com/*",
     "https://www.gamivo.com/*",
     "https://gg.deals/*",

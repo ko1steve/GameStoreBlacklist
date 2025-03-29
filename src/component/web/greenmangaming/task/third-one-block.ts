@@ -10,8 +10,11 @@ export class GreenManGamingThirdOneBlockTaskHandler extends MultiListTaskHandler
         return resolve();
       }
       for (const gameListContainer of gameListContainerArr) {
+        if (!gameListContainer) {
+          continue;
+        }
         const gameListChildren = this.getGameListChildren(gameListContainer);
-        if (gameListChildren.length === 0 || !this.isGameListFirstChildExist(gameListChildren)) {
+        if (!gameListChildren || gameListChildren.length === 0 || !this.isGameListFirstChildExist(gameListChildren)) {
           CommonUtil.showLog('No gameListChildren, continue');
           continue;
         }
