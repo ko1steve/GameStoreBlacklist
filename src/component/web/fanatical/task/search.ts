@@ -4,7 +4,7 @@ import { ListTaskHandler } from './../../../../core/task/list-task-handler';
 export class FanaticalSearchTaskHandler extends ListTaskHandler {
   public start (): Promise<void> {
     return new Promise<void>(resolve => {
-      const resizeCallback: () => void = () => {
+      const reAddCheckbox: () => void = () => {
         const gameListContainer = this.getGameListContainer();
         if (gameListContainer) {
           gameListContainer.dataset.hasInit = undefined;
@@ -14,36 +14,25 @@ export class FanaticalSearchTaskHandler extends ListTaskHandler {
           }
         }
       };
-      window.addEventListener('resize', resizeCallback);
+      window.addEventListener('resize', reAddCheckbox);
       const gameListContainer = this.getGameListContainer();
       if (!gameListContainer) {
-        CommonUtil.showLog('Can\'t find the information list.');
-        return resolve();
-      }
-      if (gameListContainer.dataset.hasInit === 'true') {
-        window.removeEventListener('resize', resizeCallback);
+        CommonUtil.showLog('[' + this.constructor.name + '] Can\'t find the information list.');
         return resolve();
       }
       const gameListChildren = this.getGameListChildren(gameListContainer);
       if (!gameListChildren || gameListChildren.length === 0 || !this.isGameListFirstChildExist(gameListChildren)) {
-        window.removeEventListener('resize', resizeCallback);
+        CommonUtil.showLog('[' + this.constructor.name + '] Can\'t find the information list\'s children.');
+        window.removeEventListener('resize', reAddCheckbox);
         return resolve();
       }
       gameListChildren.forEach(gameInfoElement => {
         this.addCheckBoxToGameListEachChild(gameInfoElement, gameListContainer);
       });
-      if (this.countGameListElementInit === gameListChildren.length) {
-        gameListContainer.dataset.hasInit = 'true';
-      }
       this.countGameListElementInit = 0;
-      window.removeEventListener('resize', resizeCallback);
+      window.removeEventListener('resize', reAddCheckbox);
       resolve();
     });
-  }
-
-  protected isGameListFirstChildExist (children: HTMLElement[]): boolean {
-    const firstGameInfo = children[0];
-    return firstGameInfo?.children[0]?.getElementsByClassName('hit-card-overlay')[0] !== undefined;
   }
 
   protected getGameListContainer (): HTMLElement | undefined {
@@ -51,16 +40,12 @@ export class FanaticalSearchTaskHandler extends ListTaskHandler {
   }
 
   protected getGameListChildren (gameListContainer: HTMLElement): HTMLElement[] | undefined {
-    return super.getGameListChildren(gameListContainer)?.filter(e => {
-      return e.getElementsByClassName('hitCardStripe__content')[0]?.getElementsByClassName('card-price-container')[0];
-    });
+    return super.getGameListChildren(gameListContainer)?.filter(e =>
+      e.getElementsByClassName('hitCardStripe__content')[0]?.getElementsByClassName('card-price-container')[0]
+    )?.map(e => e.getElementsByClassName('HitCard')[0] as HTMLElement);
   }
 
   protected getRawGameTitle (infoContainer: HTMLElement): string | undefined {
-    return (infoContainer.getElementsByClassName('hit-card-overlay')[0]?.getElementsByTagName('a')[0])?.innerText;
-  }
-
-  protected getCheckboxParent (infoContainer: HTMLElement): HTMLElement | undefined {
-    return infoContainer.getElementsByClassName('HitCard')[0] as HTMLElement;
+    return infoContainer.getElementsByClassName('hit-card-overlay')[0]?.getElementsByTagName('a')[0]?.innerText;
   }
 }
