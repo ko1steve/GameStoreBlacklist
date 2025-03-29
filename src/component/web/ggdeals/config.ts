@@ -1,6 +1,5 @@
 import { TSMap } from 'typescript-map';
 import { ComponentConfig } from './../../../core/component/component-config';
-import { ComponentController } from './../../../core/component/component-controller';
 import { GgdealsProductConfig } from './config/product';
 import { GgdealsDealsConfig } from './config/deals';
 import { GgdealsGamesConfig } from './config/games';
@@ -24,10 +23,10 @@ export class GgdealsWebObserverConfig extends WebObserverConfig {
       /^https:\/\/gg\.deals\/pack\/.+$/, ControllerType.PRODUCT
     ],
     [
-      /^https:\/\/gg\.deals\/deals\/$/, ControllerType.DEALS
+      /^https:\/\/gg\.deals\/deals(\/.*)?$/, ControllerType.DEALS
     ],
     [
-      /^https:\/\/gg\.deals\/games\/$/, ControllerType.GAMES
+      /^https:\/\/gg\.deals\/games(\/.*)?$/, ControllerType.GAMES
     ]
   ]);
 
